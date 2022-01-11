@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Sergey\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Sergey\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Stickmans Party 2.-748634308.00" t="ExcludeRecursive" />
+    <e p="E:\04. Unity\Stickmans Party 2" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Minigame_Tactics" t="Include">
+          <e p="Architecture" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="LevelLoader.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Stickmans Party 2.sln" t="IncludeFlat" />
+      <e p="Temp\Bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
