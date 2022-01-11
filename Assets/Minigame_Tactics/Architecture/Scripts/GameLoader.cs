@@ -3,37 +3,44 @@ using UnityEngine;
 
 namespace Tactics 
 {
-    sealed class LevelLoader : MonoBehaviour 
+    sealed class GameLoader : MonoBehaviour
     {
         [SerializeField] private string _presetName = "Forest";
         [SerializeField] private bool _debug = true;
         
+        [Header("Data")]
+        [SerializeField] private GameData _gameData;
+        [SerializeField] private GameServices _gameServices;
+
         private EcsWorld _world;
-        private EcsSystems _systems;
+        private EcsSystems _generalSystems;
 
         
         private void Start() 
         {
             _world = new EcsWorld();
-            _systems = new EcsSystems(_world);
+            _generalSystems = new EcsSystems(_world);
             
             Debug(_debug);
             
-            _systems
+            _generalSystems
+                .Add(new SpawnSystem())
+                .Inject(_gameData)
+                .Inject(_gameServices)
                 .Init();
         }
 
         private void Update()
         {
-            _systems?.Run();
+            _generalSystems?.Run();
         }
 
         private void OnDestroy() 
         {
-            if (_systems != null) 
+            if (_generalSystems != null) 
             {
-                _systems.Destroy();
-                _systems = null;
+                _generalSystems.Destroy();
+                _generalSystems = null;
             }
             
             _world.Destroy();
@@ -47,7 +54,7 @@ namespace Tactics
 
             #if UNITY_EDITOR
                 Leopotam.Ecs.UnityIntegration.EcsWorldObserver.Create(_world);
-                Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
+                Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_generalSystems);
             #endif
         }
     }
