@@ -2,10 +2,10 @@ using Leopotam.Ecs;
 
 sealed class SpawnSystem : IEcsRunSystem 
 {
-    private readonly EcsWorld _world;
-    private readonly GameServices _gameServices;
+    private EcsWorld _world;
+    private GameServices _gameServices;
 
-    private readonly EcsFilter<SpawnPrefab> _spawnFilter;
+    private EcsFilter<SpawnPrefab> _spawnFilter;
     
 
     void IEcsRunSystem.Run()

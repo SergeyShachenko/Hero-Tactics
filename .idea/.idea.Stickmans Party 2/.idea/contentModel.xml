@@ -18,17 +18,22 @@
                 <e p="Spawn" t="Include">
                   <e p="SpawnPrefab.cs" t="Include" />
                 </e>
+                <e p="Tags" t="Include">
+                  <e p="BossTag.cs" t="Include" />
+                </e>
               </e>
               <e p="Systems" t="Include">
                 <e p="Battle" t="Include">
                   <e p="BattlefieldSystem.cs" t="Include" />
-                  <e p="WarriorSystem.cs" t="Include" />
+                  <e p="WarriorsSystem.cs" t="Include" />
                 </e>
                 <e p="SpawnSystem.cs" t="Include" />
               </e>
               <e p="UnityComponents" t="Include">
                 <e p="Data" t="Include">
+                  <e p="EnemysData.cs" t="Include" />
                   <e p="GameData.cs" t="Include" />
+                  <e p="HeroesData.cs" t="Include" />
                 </e>
                 <e p="GameLoader.cs" t="Include" />
                 <e p="MonoLinks" t="Include">

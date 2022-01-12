@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using General.Components.Battle;
 using UnityEngine;
 
 namespace General.UnityComponents.Data
@@ -5,6 +8,8 @@ namespace General.UnityComponents.Data
     [CreateAssetMenu(menuName = "Develop/Data/GameData", fileName = "GameData", order = 0)]
     public class GameData : ScriptableObject
     {
-        public GameObject StickmanPrefab;
+        [Header("Warriors")]
+        public HeroesData HeroesData;
+        public EnemysData EnemysData;
     }
 }

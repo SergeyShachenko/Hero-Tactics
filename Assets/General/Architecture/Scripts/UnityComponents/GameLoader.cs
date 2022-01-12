@@ -1,3 +1,4 @@
+using System;
 using General.Systems.Battle;
 using General.UnityComponents.Data;
 using General.UnityComponents.MonoLinks.Base;
@@ -28,11 +29,8 @@ namespace General.UnityComponents
             Debug(_debug);
             
             _generalSystems
-                    //Чистим от беспролезных Warrior
                 .Add(new BattlefieldSystem())
-                    //Создаёт сущности с компонентами Warrior и Fighter (Задаёт все необходимые данные)
-                //.Add(new WarriorSystem())
-                    //Спавн всех префабов с компонентом SpawnTag
+                .Add(new WarriorsSystem())
                 //.Add(new SpawnSystem())
                 .Inject(_gameData)
                 .Inject(_gameServices)

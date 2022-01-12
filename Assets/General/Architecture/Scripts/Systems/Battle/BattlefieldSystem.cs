@@ -3,11 +3,11 @@ using Leopotam.Ecs;
 
 namespace General.Systems.Battle
 {
-    sealed class BattlefieldSystem : IEcsInitSystem, IEcsRunSystem 
+    sealed class BattlefieldSystem : IEcsInitSystem
     {
-        private readonly EcsWorld _world;
+        private EcsWorld _world;
 
-        private readonly EcsFilter<BattlefieldLink> _battlefieldsFilter;
+        private EcsFilter<BattlefieldLink> _battlefieldsFilter;
         
         
         void IEcsInitSystem.Init()
@@ -21,12 +21,7 @@ namespace General.Systems.Battle
             }    
         }
 
-        void IEcsRunSystem.Run()
-        {
-            
-        }
-        
-        
+
         private void CleaningTrashWarriors(BattlefieldLink battlefield)
         {
             var warriors = battlefield.Warriors;
