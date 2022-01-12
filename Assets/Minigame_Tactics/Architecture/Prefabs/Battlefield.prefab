@@ -40,6 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2756776535109580306}
+  - component: {fileID: 6583248312542319610}
+  - component: {fileID: 6504461724943105828}
   m_Layer: 0
   m_Name: Battlefield
   m_TagString: Untagged
@@ -65,6 +67,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6583248312542319610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756776535109580305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80201279dbd4e14c8df5a816b4c7577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6504461724943105828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756776535109580305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feaad7818fbba8245854e3361687835d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    BattleSide: 0
+    Warriors:
+    - isBoss: 0
+      Type: 1
+      SpawnPoint: {fileID: 0}
+    - isBoss: 0
+      Type: 0
+      SpawnPoint: {fileID: 0}
+    - isBoss: 0
+      Type: 0
+      SpawnPoint: {fileID: 0}
+    - isBoss: 0
+      Type: 0
+      SpawnPoint: {fileID: 0}
+    LinkedBattlefields: []
 --- !u!1 &2756776535111819134
 GameObject:
   m_ObjectHideFlags: 0

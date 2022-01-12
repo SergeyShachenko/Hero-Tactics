@@ -6,28 +6,38 @@
     <e p="E:\04. Unity\Stickmans Party 2" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="Minigame_Tactics" t="Include">
+        <e p="General" t="Include">
           <e p="Architecture" t="Include">
             <e p="Scripts" t="Include">
               <e p="Components" t="Include">
+                <e p="Battle" t="Include">
+                  <e p="BattlefieldLink.cs" t="Include" />
+                  <e p="Fighter.cs" t="Include" />
+                  <e p="Warrior.cs" t="Include" />
+                </e>
                 <e p="Spawn" t="Include">
                   <e p="SpawnPrefab.cs" t="Include" />
                 </e>
               </e>
-              <e p="GameLoader.cs" t="Include" />
               <e p="Systems" t="Include">
+                <e p="Battle" t="Include">
+                  <e p="BattlefieldSystem.cs" t="Include" />
+                  <e p="WarriorSystem.cs" t="Include" />
+                </e>
                 <e p="SpawnSystem.cs" t="Include" />
               </e>
               <e p="UnityComponents" t="Include">
                 <e p="Data" t="Include">
                   <e p="GameData.cs" t="Include" />
                 </e>
+                <e p="GameLoader.cs" t="Include" />
                 <e p="MonoLinks" t="Include">
                   <e p="Base" t="Include">
                     <e p="MonoEntity.cs" t="Include" />
                     <e p="MonoLink.cs" t="Include" />
                     <e p="MonoLinkBase.cs" t="Include" />
                   </e>
+                  <e p="BattlefieldMonoLink.cs" t="Include" />
                 </e>
                 <e p="Tools" t="Include">
                   <e p="GameServices.cs" t="Include" />

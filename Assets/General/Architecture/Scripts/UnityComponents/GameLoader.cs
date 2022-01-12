@@ -1,7 +1,10 @@
+using General.Systems.Battle;
+using General.UnityComponents.Data;
+using General.UnityComponents.MonoLinks.Base;
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace Tactics 
+namespace General.UnityComponents 
 {
     sealed class GameLoader : MonoBehaviour
     {
@@ -20,11 +23,17 @@ namespace Tactics
         {
             _world = new EcsWorld();
             _generalSystems = new EcsSystems(_world);
-            
+
+            InitMonoEntitys(_world);
             Debug(_debug);
             
             _generalSystems
-                .Add(new SpawnSystem())
+                    //Чистим от беспролезных Warrior
+                .Add(new BattlefieldSystem())
+                    //Создаёт сущности с компонентами Warrior и Fighter (Задаёт все необходимые данные)
+                //.Add(new WarriorSystem())
+                    //Спавн всех префабов с компонентом SpawnTag
+                //.Add(new SpawnSystem())
                 .Inject(_gameData)
                 .Inject(_gameServices)
                 .Init();
@@ -47,6 +56,17 @@ namespace Tactics
             _world = null;
         }
         
+        
+        private void InitMonoEntitys(EcsWorld world)
+        {
+            var monoEntitys = FindObjectsOfType<MonoEntity>();
+
+
+            foreach (var monoEntity in monoEntitys)
+            {
+                monoEntity.Init(world);
+            }
+        }
         
         private void Debug(bool isEnable)
         {
