@@ -1,7 +1,7 @@
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.UnityComponents.MonoLinks.Base
+namespace General.MonoLinks
 {
     public abstract class MonoLinkBase : MonoBehaviour
     {

@@ -1,11 +1,11 @@
-using System;
+using General.Data;
+using General.MonoLinks;
+using General.Services;
 using General.Systems.Battle;
-using General.UnityComponents.Data;
-using General.UnityComponents.MonoLinks.Base;
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.UnityComponents 
+namespace General 
 {
     sealed class GameLoader : MonoBehaviour
     {
@@ -14,10 +14,12 @@ namespace General.UnityComponents
         
         [Header("Data")]
         [SerializeField] private GameData _gameData;
-        [SerializeField] private GameServices _gameServices;
+        [SerializeField] private GameService _gameService;
 
         private EcsWorld _world;
         private EcsSystems _generalSystems;
+
+        private EventService _eventService;
 
         
         private void Start() 
@@ -25,15 +27,16 @@ namespace General.UnityComponents
             _world = new EcsWorld();
             _generalSystems = new EcsSystems(_world);
 
+            InitServices();
             InitMonoEntitys(_world);
             Debug(_debug);
             
             _generalSystems
                 .Add(new BattlefieldSystem())
-                .Add(new WarriorsSystem())
-                //.Add(new SpawnSystem())
+                .Add(new SpawnWarriorSystem())
                 .Inject(_gameData)
-                .Inject(_gameServices)
+                .Inject(_gameService)
+                .Inject(_eventService)
                 .Init();
         }
 
@@ -54,6 +57,11 @@ namespace General.UnityComponents
             _world = null;
         }
         
+        
+        private void InitServices()
+        {
+            _eventService = new EventService(_world);
+        }
         
         private void InitMonoEntitys(EcsWorld world)
         {

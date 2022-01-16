@@ -1,21 +1,27 @@
-﻿namespace General.Components.Battle
+﻿using System;
+
+namespace General.Components.Battle
 {
     public struct Fighter
     {
         public BattleSide BattleSide;
         public FighterState State;
-        public byte Health, Armor, Damage;
+        public FighterStats Stats;
     }
+    
     
     public enum BattleSide
     {
-        Hero, 
-        Enemy
+        Hero, Enemy
     }
 
     public enum FighterState
     {
-        Alive, 
-        Dead
+        Alive, Dead, Disabled
+    }
+
+    [Serializable] public struct FighterStats
+    {
+        public byte Health, Armor, Damage;
     }
 }

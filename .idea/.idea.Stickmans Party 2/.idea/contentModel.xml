@@ -11,9 +11,12 @@
             <e p="Scripts" t="Include">
               <e p="Components" t="Include">
                 <e p="Battle" t="Include">
-                  <e p="BattlefieldLink.cs" t="Include" />
+                  <e p="Battlefield.cs" t="Include" />
                   <e p="Fighter.cs" t="Include" />
                   <e p="Warrior.cs" t="Include" />
+                </e>
+                <e p="Events" t="Include">
+                  <e p="SpawnWarriorEvent.cs" t="Include" />
                 </e>
                 <e p="Spawn" t="Include">
                   <e p="SpawnPrefab.cs" t="Include" />
@@ -22,12 +25,15 @@
                   <e p="BossTag.cs" t="Include" />
                 </e>
               </e>
+              <e p="GameLoader.cs" t="Include" />
+              <e p="Services" t="Include">
+                <e p="EventService.cs" t="Include" />
+              </e>
               <e p="Systems" t="Include">
                 <e p="Battle" t="Include">
                   <e p="BattlefieldSystem.cs" t="Include" />
-                  <e p="WarriorsSystem.cs" t="Include" />
                 </e>
-                <e p="SpawnSystem.cs" t="Include" />
+                <e p="SpawnWarriorSystem.cs" t="Include" />
               </e>
               <e p="UnityComponents" t="Include">
                 <e p="Data" t="Include">
@@ -35,18 +41,22 @@
                   <e p="GameData.cs" t="Include" />
                   <e p="HeroesData.cs" t="Include" />
                 </e>
-                <e p="GameLoader.cs" t="Include" />
                 <e p="MonoLinks" t="Include">
                   <e p="Base" t="Include">
                     <e p="MonoEntity.cs" t="Include" />
                     <e p="MonoLink.cs" t="Include" />
                     <e p="MonoLinkBase.cs" t="Include" />
                   </e>
-                  <e p="BattlefieldMonoLink.cs" t="Include" />
+                  <e p="Battle" t="Include">
+                    <e p="BattlefieldMonoLink.cs" t="Include" />
+                    <e p="BossTagMonoLink.cs" t="Include" />
+                    <e p="FighterMonoLink.cs" t="Include" />
+                    <e p="WarriorMonoLink.cs" t="Include" />
+                  </e>
                 </e>
-                <e p="Tools" t="Include">
-                  <e p="GameServices.cs" t="Include" />
-                  <e p="Spawner.cs" t="Include" />
+                <e p="Services" t="Include">
+                  <e p="GameService.cs" t="Include" />
+                  <e p="WarriorFactory.cs" t="Include" />
                 </e>
               </e>
             </e>

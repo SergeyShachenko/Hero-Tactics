@@ -1,4 +1,5 @@
-using General.Components.Links;
+using General.Components.Battle;
+using General.Services;
 using Leopotam.Ecs;
 
 namespace General.Systems.Battle
@@ -6,45 +7,71 @@ namespace General.Systems.Battle
     sealed class BattlefieldSystem : IEcsInitSystem
     {
         private EcsWorld _world;
+        private EventService _eventService;
 
-        private EcsFilter<BattlefieldLink> _battlefieldsFilter;
-        
-        
+        private EcsFilter<Battlefield> _battlefieldFilter;
+
+
         void IEcsInitSystem.Init()
         {
-            foreach (var index in _battlefieldsFilter)
+            if (_battlefieldFilter.IsEmpty()) return;
+            
+            
+            foreach (var index in _battlefieldFilter)
             {
-                ref EcsEntity entity = ref _battlefieldsFilter.GetEntity(index);
-                var battlefield = entity.Get<BattlefieldLink>();
+                ref EcsEntity entity = ref _battlefieldFilter.GetEntity(index);
+                var battlefield = entity.Get<Battlefield>();
 
-                CleaningTrashWarriors(battlefield);
+                
+                OptimizeData(battlefield);
+                CreateSpawnWarriorEvents(battlefield);
             }    
         }
 
 
-        private void CleaningTrashWarriors(BattlefieldLink battlefield)
+        private void OptimizeData(Battlefield battlefield)
         {
-            var warriors = battlefield.Warriors;
+            var warriors = battlefield.WarriorTypes;
             
+            
+            if (battlefield.IsBoss)
+            {
+                warriors.RemoveRange(1, warriors.Count-1);
+                battlefield.BattleSide = BattleSide.Enemy;
+                return;
+            }
             
             if (warriors.Count > 3)
             {
-                battlefield.Warriors.RemoveRange(3, warriors.Count-3);
+                warriors.RemoveRange(3, warriors.Count-3);
             }
-            
-            foreach (var warrior in warriors)
+        }
+        
+        private void CreateSpawnWarriorEvents(Battlefield battlefield)
+        {
+            if (battlefield.IsBoss)
             {
-                if (!warrior.isBoss) continue;
-                
-                var boss = warrior;
-                var tempList = battlefield.Warriors;
-                    
-                tempList.Clear();
-                tempList.Add(boss);
+                var spawnPoint = battlefield.StandPositions.GetChild(0);
+                _eventService.WarriorSpawn(
+                    true,
+                    battlefield.BattleSide,
+                    battlefield.WarriorTypes[0],
+                    spawnPoint);
+            }
+            else
+            {
+                byte counter = 1;
 
-                battlefield.Warriors = tempList;
-                    
-                break;
+                foreach (var warriorType in battlefield.WarriorTypes)
+                {
+                    var spawnPoint = battlefield.StandPositions.GetChild(counter++);
+
+                    _eventService.WarriorSpawn(
+                        false,
+                        battlefield.BattleSide,
+                        warriorType,
+                        spawnPoint);
+                }
             }
         }
     }
