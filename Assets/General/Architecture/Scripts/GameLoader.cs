@@ -9,7 +9,7 @@ namespace General
 {
     sealed class GameLoader : MonoBehaviour
     {
-        [SerializeField] private string _presetName = "Forest";
+        [SerializeField] private LevelPreset _levelPreset = LevelPreset.Forest;
         [SerializeField] private bool _debug = true;
         
         [Header("Data")]
@@ -34,6 +34,7 @@ namespace General
             _generalSystems
                 .Add(new BattlefieldSystem())
                 .Add(new SpawnWarriorSystem())
+                .Add(new WarriorSystem())
                 .Inject(_gameData)
                 .Inject(_gameService)
                 .Inject(_eventService)
@@ -51,10 +52,14 @@ namespace General
             {
                 _generalSystems.Destroy();
                 _generalSystems = null;
+                
             }
-            
-            _world.Destroy();
-            _world = null;
+
+            if (_world != null)
+            {
+                _world.Destroy();
+                _world = null;
+            }
         }
         
         
@@ -82,6 +87,12 @@ namespace General
                 Leopotam.Ecs.UnityIntegration.EcsWorldObserver.Create(_world);
                 Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_generalSystems);
             #endif
+        }
+
+
+        public enum LevelPreset
+        {
+            Forest, Desert, Winter
         }
     }
 }

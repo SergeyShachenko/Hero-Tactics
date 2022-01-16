@@ -40,7 +40,11 @@ sealed class SpawnWarriorSystem : IEcsInitSystem, IEcsRunSystem
                     foreach (var heroData in _heroesData.Where(
                         heroData => heroData.Warrior.Type == spawnEvent.WarriorType))
                     {
-                        _gameService.WarriorFactory.Spawn(_world, heroData, spawnEvent.SpawnPoint);
+                        _gameService.WarriorFactory.Spawn(
+                            _world, 
+                            heroData, 
+                            spawnEvent.SquadID, 
+                            spawnEvent.SpawnPoint);
                         break;
                     }
                     break;
@@ -51,7 +55,11 @@ sealed class SpawnWarriorSystem : IEcsInitSystem, IEcsRunSystem
                         foreach (var enemyData in _enemysData.Where(
                             enemyData => enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                         {
-                            _gameService.WarriorFactory.Spawn(_world, enemyData, spawnEvent.SpawnPoint);
+                            _gameService.WarriorFactory.Spawn(
+                                _world, 
+                                enemyData, 
+                                spawnEvent.SquadID, 
+                                spawnEvent.SpawnPoint);
                             break;
                         }
                     }
@@ -60,7 +68,11 @@ sealed class SpawnWarriorSystem : IEcsInitSystem, IEcsRunSystem
                         foreach (var enemyData in _enemysData.Where(
                             enemyData => !enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                         {
-                            _gameService.WarriorFactory.Spawn(_world, enemyData, spawnEvent.SpawnPoint);
+                            _gameService.WarriorFactory.Spawn(
+                                _world, 
+                                enemyData, 
+                                spawnEvent.SquadID, 
+                                spawnEvent.SpawnPoint);
                             break;
                         }
                     }

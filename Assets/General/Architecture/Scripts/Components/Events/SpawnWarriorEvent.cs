@@ -5,9 +5,10 @@ namespace General.Components.Events
 {
     public struct SpawnWarriorEvent
     {
-        public bool IsBoss;
         public BattleSide BattleSide;
         public WarriorType WarriorType;
+        public bool IsBoss;
+        public byte SquadID;
         public Transform SpawnPoint;
     }
 }

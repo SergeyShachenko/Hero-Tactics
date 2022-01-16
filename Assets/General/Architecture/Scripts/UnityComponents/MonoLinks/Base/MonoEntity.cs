@@ -6,31 +6,28 @@ namespace General.MonoLinks
     public class MonoEntity : MonoBehaviour
     {
         private EcsWorld _world;
+        
         private MonoLinkBase[] _monoLinks;
+        private EcsEntity _entity;
 
 
         public void Init(EcsWorld world)
         {
             _world = world;
-            
-            var entity = _world.NewEntity();
+            _entity = _world.NewEntity();
             _monoLinks = GetComponents<MonoLinkBase>();
         
 
             foreach (var monoLink in _monoLinks)
             {
-                monoLink.Link(ref entity);
+                monoLink.Link(ref _entity);
             }
         }
-        
-        public MonoLink<T> Get<T>() where T : struct
-        {
-            foreach (var monoLink in _monoLinks)
-            {
-                if (monoLink is MonoLink<T> targetMonoLink) return targetMonoLink;
-            }
 
-            return null;
+
+        public EcsEntity GetEntity()
+        {
+            return _entity;
         }
     }
 }

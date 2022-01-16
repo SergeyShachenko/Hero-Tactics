@@ -15,6 +15,9 @@ namespace General.Systems.Battle
         void IEcsInitSystem.Init()
         {
             if (_battlefieldFilter.IsEmpty()) return;
+
+
+            byte counter = 0;
             
             
             foreach (var index in _battlefieldFilter)
@@ -24,7 +27,7 @@ namespace General.Systems.Battle
 
                 
                 OptimizeData(battlefield);
-                CreateSpawnWarriorEvents(battlefield);
+                CreateSpawnWarriorEvents(battlefield, counter++);
             }    
         }
 
@@ -47,15 +50,16 @@ namespace General.Systems.Battle
             }
         }
         
-        private void CreateSpawnWarriorEvents(Battlefield battlefield)
+        private void CreateSpawnWarriorEvents(Battlefield battlefield, byte squadID)
         {
             if (battlefield.IsBoss)
             {
                 var spawnPoint = battlefield.StandPositions.GetChild(0);
                 _eventService.WarriorSpawn(
-                    true,
                     battlefield.BattleSide,
                     battlefield.WarriorTypes[0],
+                    true,
+                    squadID,
                     spawnPoint);
             }
             else
@@ -67,9 +71,10 @@ namespace General.Systems.Battle
                     var spawnPoint = battlefield.StandPositions.GetChild(counter++);
 
                     _eventService.WarriorSpawn(
-                        false,
                         battlefield.BattleSide,
                         warriorType,
+                        false,
+                        squadID,
                         spawnPoint);
                 }
             }

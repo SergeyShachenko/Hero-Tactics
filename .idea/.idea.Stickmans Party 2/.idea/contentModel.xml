@@ -32,6 +32,7 @@
               <e p="Systems" t="Include">
                 <e p="Battle" t="Include">
                   <e p="BattlefieldSystem.cs" t="Include" />
+                  <e p="WarriorSystem.cs" t="Include" />
                 </e>
                 <e p="SpawnWarriorSystem.cs" t="Include" />
               </e>
