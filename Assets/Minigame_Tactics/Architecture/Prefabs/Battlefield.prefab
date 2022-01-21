@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7588113592196318571}
   - component: {fileID: 7725275278747227278}
   - component: {fileID: 6504461724943105828}
-  - component: {fileID: 8197134412516206733}
+  - component: {fileID: 7893564973182649289}
   m_Layer: 0
   m_Name: Battlefield
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MonoBehaviour:
     StandPositions: {fileID: 2756776536823809962}
     BattlePositions: {fileID: 2756776535541352830}
     LinkedBattlefields: []
---- !u!114 &8197134412516206733
+--- !u!114 &7893564973182649289
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2756776535109580305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f39e93c64944309abac55227668cfe3, type: 3}
+  m_Script: {fileID: 11500000, guid: fb2aca7b5cba4b658ae47f6d8d683a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2756776535111819134
