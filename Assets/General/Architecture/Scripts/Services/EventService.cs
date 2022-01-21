@@ -16,7 +16,7 @@ namespace General.Services
         }
         
         
-        public void WarriorSpawn(BattleSide battleSide, WarriorType type, bool isBoss, byte squadID, Transform spawnPoint)
+        public void SpawnWarrior(BattleSide battleSide, WarriorType type, bool isBoss, byte squadID, Transform spawnPoint)
         {
             _world.NewEntity().Get<SpawnWarriorEvent>() = new SpawnWarriorEvent
             {

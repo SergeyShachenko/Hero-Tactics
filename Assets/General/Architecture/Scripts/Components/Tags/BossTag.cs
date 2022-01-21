@@ -1,7 +1,4 @@
 ﻿namespace General.Components.Tags
 {
-    public struct BossTag
-    {
-        
-    }
+    public struct BossTag {}
 }

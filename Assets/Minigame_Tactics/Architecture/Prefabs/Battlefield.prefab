@@ -40,8 +40,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2756776535109580306}
-  - component: {fileID: 6583248312542319610}
+  - component: {fileID: 7588113592196318571}
+  - component: {fileID: 7725275278747227278}
   - component: {fileID: 6504461724943105828}
+  - component: {fileID: 8197134412516206733}
   m_Layer: 0
   m_Name: Battlefield
   m_TagString: Untagged
@@ -67,7 +69,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6583248312542319610
+--- !u!65 &7588113592196318571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756776535109580305}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 0.65, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7725275278747227278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,6 +113,18 @@ MonoBehaviour:
     StandPositions: {fileID: 2756776536823809962}
     BattlePositions: {fileID: 2756776535541352830}
     LinkedBattlefields: []
+--- !u!114 &8197134412516206733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756776535109580305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f39e93c64944309abac55227668cfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2756776535111819134
 GameObject:
   m_ObjectHideFlags: 0

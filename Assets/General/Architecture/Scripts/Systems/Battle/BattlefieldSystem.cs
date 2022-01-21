@@ -55,7 +55,7 @@ namespace General.Systems.Battle
             if (battlefield.IsBoss)
             {
                 var spawnPoint = battlefield.StandPositions.GetChild(0);
-                _eventService.WarriorSpawn(
+                _eventService.SpawnWarrior(
                     battlefield.BattleSide,
                     battlefield.WarriorTypes[0],
                     true,
@@ -70,7 +70,7 @@ namespace General.Systems.Battle
                 {
                     var spawnPoint = battlefield.StandPositions.GetChild(counter++);
 
-                    _eventService.WarriorSpawn(
+                    _eventService.SpawnWarrior(
                         battlefield.BattleSide,
                         warriorType,
                         false,

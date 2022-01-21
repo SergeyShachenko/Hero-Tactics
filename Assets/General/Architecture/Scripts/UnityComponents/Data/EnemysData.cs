@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace General.Data
+namespace General.UnityComponents.Data
 {
     [CreateAssetMenu(menuName = "Develop/Data/EnemysData", fileName = "EnemysData", order = 2)]
     public class EnemysData : ScriptableObject

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace General.Components.Events
 {
-    public struct SpawnWarriorEvent
+    internal struct SpawnWarriorEvent
     {
         public BattleSide BattleSide;
         public WarriorType WarriorType;

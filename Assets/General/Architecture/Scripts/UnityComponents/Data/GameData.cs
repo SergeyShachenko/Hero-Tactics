@@ -2,7 +2,7 @@ using System;
 using General.Components.Battle;
 using UnityEngine;
 
-namespace General.Data
+namespace General.UnityComponents.Data
 {
     [CreateAssetMenu(menuName = "Develop/Data/GameData", fileName = "GameData", order = 0)]
     public class GameData : ScriptableObject

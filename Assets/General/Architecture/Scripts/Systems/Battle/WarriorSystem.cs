@@ -3,7 +3,7 @@ using Leopotam.Ecs;
 
 namespace General.Systems.Battle
 {
-    public class WarriorSystem : IEcsRunSystem
+    sealed class WarriorSystem : IEcsRunSystem
     {
         private EcsWorld _world;
 

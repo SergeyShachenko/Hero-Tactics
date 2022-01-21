@@ -18,7 +18,7 @@ namespace General.Components.Battle
 
     public enum FighterState
     {
-        Alive, Dead, Disabled
+        Disabled, Alive, Dead, 
     }
 
     [Serializable] public struct FighterStats

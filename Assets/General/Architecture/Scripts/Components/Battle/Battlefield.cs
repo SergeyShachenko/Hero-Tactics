@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using General.MonoLinks;
+using General.UnityComponents.MonoLinks;
 using UnityEngine;
 
 namespace General.Components.Battle
