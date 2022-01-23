@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace General.Components.Events
+namespace General.Components.Events.Unity
 {
     internal struct OnPointerClickEvent
     {

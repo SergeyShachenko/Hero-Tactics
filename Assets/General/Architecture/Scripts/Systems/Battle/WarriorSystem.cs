@@ -17,7 +17,7 @@ namespace General.Systems.Battle
             
             foreach (var index in _warriors)
             {
-                var fighter = _warriors.GetEntity(index).Get<Fighter>();
+                ref var fighter = ref _warriors.GetEntity(index).Get<Fighter>();
 
 
                 if (fighter.State == FighterState.Disabled)

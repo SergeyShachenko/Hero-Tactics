@@ -292,6 +292,18 @@ PrefabInstance:
       propertyPath: value.WarriorTypes.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.data[0]
+      value: 
+      objectReference: {fileID: 1548267789}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.data[1]
+      value: 
+      objectReference: {fileID: 1413723345}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
 --- !u!4 &1081984851 stripped
@@ -524,6 +536,14 @@ PrefabInstance:
       propertyPath: Value.BattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.data[0]
+      value: 
+      objectReference: {fileID: 1843185781}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
 --- !u!4 &1413723342 stripped
@@ -531,11 +551,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
   m_PrefabInstance: {fileID: 1413723341}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1413723345 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7725275278747227278, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+  m_PrefabInstance: {fileID: 1413723341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80201279dbd4e14c8df5a816b4c7577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1548267786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
   m_PrefabInstance: {fileID: 2756776535978280728}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1548267789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7725275278747227278, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+  m_PrefabInstance: {fileID: 2756776535978280728}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80201279dbd4e14c8df5a816b4c7577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1712093229
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,6 +711,17 @@ Transform:
   m_Father: {fileID: 1199228951}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1843185781 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7725275278747227278, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+  m_PrefabInstance: {fileID: 1081984850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80201279dbd4e14c8df5a816b4c7577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1852384219
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +950,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.WarriorTypes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.LinkedBattlefields.Array.data[0]
+      value: 
+      objectReference: {fileID: 1843185781}
     m_RemovedComponents:
     - {fileID: 9004999675897547239, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}

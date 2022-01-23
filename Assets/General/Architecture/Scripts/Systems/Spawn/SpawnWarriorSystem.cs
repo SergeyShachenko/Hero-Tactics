@@ -30,9 +30,8 @@ namespace General.Systems.Spawn
             
             foreach (var index in _spawnWarriorEvents)
             {
-                ref var entity = ref _spawnWarriorEvents.GetEntity(index);
-                var spawnEvent = entity.Get<SpawnWarriorEvent>();
-
+                var spawnEvent = _spawnWarriorEvents.GetEntity(index).Get<SpawnWarriorEvent>();
+                
 
                 switch (spawnEvent.BattleSide)
                 {

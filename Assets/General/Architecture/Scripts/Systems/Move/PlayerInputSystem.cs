@@ -1,9 +1,7 @@
 ﻿using General.Components.Battle;
-using General.Components.Events;
+using General.Components.Events.Unity;
 using General.Services;
-using General.UnityComponents;
 using Leopotam.Ecs;
-using UnityEngine;
 
 namespace General.Systems
 {

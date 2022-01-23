@@ -1,4 +1,5 @@
 using General.Components.Events;
+using General.Components.Events.Unity;
 using General.UnityComponents.Data;
 using General.Services;
 using General.Systems;
@@ -93,6 +94,12 @@ namespace General
             AddMoveSystems();
             
             _fixedUpdateSystems
+                .OneFrame<OnTriggerEnterEvent>()
+                .OneFrame<OnTriggerStayEvent>()
+                .OneFrame<OnTriggerExitEvent>()
+                .OneFrame<OnCollisionEnterEvent>()
+                .OneFrame<OnCollisionStayEvent>()
+                .OneFrame<OnCollisionExitEvent>()
                 .OneFrame<OnPointerClickEvent>()
                 .Inject(_eventService)
                 .Init();

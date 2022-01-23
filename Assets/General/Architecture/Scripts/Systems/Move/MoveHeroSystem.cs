@@ -1,4 +1,5 @@
 ﻿using General.Components;
+using General.Components.Battle;
 using General.Components.Events;
 using General.Components.Tags;
 using Leopotam.Ecs;
@@ -12,6 +13,7 @@ namespace General.Systems
 
         private EcsFilter<MoveHeroToPositionEvent> _moveHeroTo;
         private EcsFilter<GameObj, Movable, PlayerTag> _movablePlayers;
+        private EcsFilter<GameObj, Battlefield> _battlefields;
 
         private Vector3 _targetPosition;
         private bool _wasHeroMoveEvent;
@@ -20,7 +22,7 @@ namespace General.Systems
         void IEcsRunSystem.Run()
         {
             SetTargetPosition();
-            MoveHeroTo(_targetPosition);
+            MoveHeroTo(CheckHeroWay(), _targetPosition);
         }
 
         private void SetTargetPosition()
@@ -40,22 +42,40 @@ namespace General.Systems
             }
         }
 
-        private void MoveHeroTo(Vector3 targetPosition)
+        private bool CheckHeroWay()
         {
-            if (!_wasHeroMoveEvent || _movablePlayers.IsEmpty()) return;
+            // foreach (var index in _battlefields)
+            // {
+            //     var battlefieldPosition = _battlefields.GetEntity()
+            // }
+
+            return true;
+        }
+
+        private void MoveHeroTo(bool canGo, Vector3 targetPosition)
+        {
+            if (!_wasHeroMoveEvent || _movablePlayers.IsEmpty() || !canGo) return;
             
             
             foreach (var index in _movablePlayers)
             {
                 ref var entity = ref _movablePlayers.GetEntity(index);
+
+
+                if (entity.Get<Fighter>().State != FighterState.Alive) return;
+                
+                
                 var gameObject = entity.Get<GameObj>().Value;
                 var speed = entity.Get<Movable>().Speed;
                 
                 var heroPosition = gameObject.transform.position;
                 var targetDirection = new Vector3(0, 0, _targetPosition.z - heroPosition.z);
+
                 
-                
-                gameObject.transform.position += targetDirection * (speed * Time.deltaTime);
+                if (gameObject.transform.position != _targetPosition)
+                {
+                    gameObject.transform.position += targetDirection * (speed * Time.deltaTime);
+                }
             }
         }
     }
