@@ -1,4 +1,5 @@
 using System;
+using General.Components;
 using General.Components.Battle;
 using UnityEngine;
 
@@ -18,5 +19,6 @@ namespace General.UnityComponents.Data
         public GameObject Prefab;
         public WarriorType Type;
         public FighterStats Stats;
+        public Movable Movable;
     }
 }

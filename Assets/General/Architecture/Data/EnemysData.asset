@@ -21,6 +21,8 @@ MonoBehaviour:
         Health: 5
         Armor: 0
         Damage: 5
+      Movable:
+        Speed: 3
   - IsBoss: 0
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: d8910126f2adc274d9d40d31b3659f33, type: 3}
@@ -29,6 +31,8 @@ MonoBehaviour:
         Health: 5
         Armor: 2
         Damage: 5
+      Movable:
+        Speed: 2.5
   - IsBoss: 1
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: 84e7f9b7bce743a46b5b5d697dd3cfc0, type: 3}
@@ -37,6 +41,8 @@ MonoBehaviour:
         Health: 10
         Armor: 0
         Damage: 10
+      Movable:
+        Speed: 2
   - IsBoss: 1
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: 919a22311a8c52c4981b84e493cc6064, type: 3}
@@ -45,3 +51,5 @@ MonoBehaviour:
         Health: 10
         Armor: 4
         Damage: 10
+      Movable:
+        Speed: 1.5

@@ -1,3 +1,4 @@
+using General.Components;
 using General.Components.Battle;
 using General.UnityComponents.Data;
 using General.UnityComponents.MonoLinks;
@@ -27,6 +28,10 @@ namespace General.UnityComponents.Services
             {
                 Type = heroData.Warrior.Type
             };
+            entity.Get<Movable>() = new Movable
+            {
+                Speed = heroData.Warrior.Movable.Speed
+            };
         }
 
         public void Spawn(EcsWorld world, EnemyData enemyData, byte squadID, Transform spawnPoint)
@@ -47,6 +52,10 @@ namespace General.UnityComponents.Services
             entity.Get<Warrior>() = new Warrior
             {
                 Type = enemyData.Warrior.Type
+            };
+            entity.Get<Movable>() = new Movable
+            {
+                Speed = enemyData.Warrior.Movable.Speed
             };
         }
     }

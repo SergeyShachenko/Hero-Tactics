@@ -2,7 +2,7 @@
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.Systems.Battle
+namespace General.Systems
 {
     sealed class InitMonoEntitySystem : IEcsInitSystem
     {
@@ -13,6 +13,7 @@ namespace General.Systems.Battle
         {
             var monoEntitys = GameObject.FindObjectsOfType<MonoEntity>();
 
+            
             foreach (var gameObject in monoEntitys)
             {
                 gameObject.GetComponent<MonoEntity>().Init(_world);

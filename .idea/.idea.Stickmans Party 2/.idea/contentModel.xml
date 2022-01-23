@@ -16,13 +16,15 @@
                   <e p="Warrior.cs" t="Include" />
                 </e>
                 <e p="Events" t="Include">
+                  <e p="MoveHeroToPositionEvent.cs" t="Include" />
                   <e p="OnPointerClickEvent.cs" t="Include" />
-                  <e p="PlayerSelectEvent.cs" t="Include" />
                   <e p="SpawnWarriorEvent.cs" t="Include" />
                 </e>
                 <e p="GameObj.cs" t="Include" />
+                <e p="Movable.cs" t="Include" />
                 <e p="Tags" t="Include">
                   <e p="BossTag.cs" t="Include" />
+                  <e p="PlayerTag.cs" t="Include" />
                 </e>
               </e>
               <e p="GameStartup.cs" t="Include" />
@@ -32,11 +34,15 @@
               <e p="Systems" t="Include">
                 <e p="Battle" t="Include">
                   <e p="BattlefieldSystem.cs" t="Include" />
-                  <e p="MoveWarriorSystem.cs" t="Include" />
-                  <e p="PlayerInputSystem.cs" t="Include" />
                   <e p="WarriorSystem.cs" t="Include" />
                 </e>
-                <e p="InitMonoEntitySystem.cs" t="Include" />
+                <e p="Main" t="Include">
+                  <e p="InitMonoEntitySystem.cs" t="Include" />
+                </e>
+                <e p="Move" t="Include">
+                  <e p="MoveHeroSystem.cs" t="Include" />
+                  <e p="PlayerInputSystem.cs" t="Include" />
+                </e>
                 <e p="Spawn" t="Include">
                   <e p="SpawnWarriorSystem.cs" t="Include" />
                 </e>
@@ -56,15 +62,18 @@
                   </e>
                   <e p="Battle" t="Include">
                     <e p="BattlefieldLink.cs" t="Include" />
-                    <e p="BossTagLink.cs" t="Include" />
                     <e p="FighterLink.cs" t="Include" />
                     <e p="WarriorLink.cs" t="Include" />
                   </e>
                   <e p="Events" t="Include">
                     <e p="OnPointerClickLink.cs" t="Include" />
                   </e>
+                  <e p="MovableLink.cs" t="Include" />
+                  <e p="Tags" t="Include">
+                    <e p="BossTagLink.cs" t="Include" />
+                    <e p="PlayerTagLink.cs" t="Include" />
+                  </e>
                 </e>
-                <e p="PlayerInput.cs" t="Include" />
                 <e p="Services" t="Include">
                   <e p="GameServices.cs" t="Include" />
                   <e p="WarriorFactory.cs" t="Include" />

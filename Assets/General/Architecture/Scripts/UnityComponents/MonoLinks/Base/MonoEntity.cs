@@ -16,7 +16,7 @@ namespace General.UnityComponents.MonoLinks
             _monoLinks = GetComponents<MonoLinkBase>();
             
             
-            _entity.Get<GameObj>() = new GameObj {GameObject = gameObject};
+            _entity.Get<GameObj>() = new GameObj {Value = gameObject};
 
 
             if (_monoLinks == null) return;

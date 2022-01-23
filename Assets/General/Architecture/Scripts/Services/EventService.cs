@@ -8,8 +8,7 @@ namespace General.Services
     public class EventService
     {
         private EcsWorld _world;
-
-
+        
         public EventService(EcsWorld world)
         {
             _world = world;
@@ -25,6 +24,14 @@ namespace General.Services
                 IsBoss = isBoss,
                 SquadID = squadID,
                 SpawnPoint = spawnPoint
+            };
+        }
+
+        public void MoveHeroTo(Vector3 position)
+        {
+            _world.NewEntity().Get<MoveHeroToPositionEvent>() = new MoveHeroToPositionEvent
+            {
+                Position = position
             };
         }
     }

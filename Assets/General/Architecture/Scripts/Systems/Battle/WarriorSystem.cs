@@ -17,8 +17,13 @@ namespace General.Systems.Battle
             
             foreach (var index in _warriors)
             {
-                ref EcsEntity entity = ref _warriors.GetEntity(index);
-                entity.Get<Fighter>().State = FighterState.Alive;
+                var fighter = _warriors.GetEntity(index).Get<Fighter>();
+
+
+                if (fighter.State == FighterState.Disabled)
+                {
+                    fighter.State = FighterState.Alive;   
+                }
             }
         }
     }

@@ -18,13 +18,11 @@ namespace General.Systems.Battle
 
 
             byte counter = 0;
-            
-            
+
             foreach (var index in _battlefieldFilter)
             {
-                ref EcsEntity entity = ref _battlefieldFilter.GetEntity(index);
-                var battlefield = entity.Get<Battlefield>();
-
+                var battlefield = _battlefieldFilter.GetEntity(index).Get<Battlefield>();;
+                
                 
                 OptimizeData(battlefield);
                 CreateSpawnWarriorEvents(battlefield, counter++);

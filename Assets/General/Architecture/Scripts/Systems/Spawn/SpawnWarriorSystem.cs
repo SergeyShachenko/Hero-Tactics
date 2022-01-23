@@ -8,7 +8,7 @@ using Leopotam.Ecs;
 
 namespace General.Systems.Spawn
 {
-    sealed class SpawnWarriorSystem : IEcsInitSystem, IEcsRunSystem
+    sealed class SpawnWarriorSystem : IEcsRunSystem
     {
         private EcsWorld _world;
         private GameData _gameData;
@@ -18,22 +18,19 @@ namespace General.Systems.Spawn
 
         private List<HeroData> _heroesData;
         private List<EnemyData> _enemysData;
-
-
-        void IEcsInitSystem.Init()
-        {
-            _heroesData = _gameData.HeroesData.Heroes;
-            _enemysData = _gameData.EnemysData.Enemys;
-        }
+        
 
         void IEcsRunSystem.Run()
         {
             if (_spawnWarriorEvents.IsEmpty()) return;
 
-
+            
+            _heroesData = _gameData.HeroesData.Heroes;
+            _enemysData = _gameData.EnemysData.Enemys;
+            
             foreach (var index in _spawnWarriorEvents)
             {
-                ref EcsEntity entity = ref _spawnWarriorEvents.GetEntity(index);
+                ref var entity = ref _spawnWarriorEvents.GetEntity(index);
                 var spawnEvent = entity.Get<SpawnWarriorEvent>();
 
 
