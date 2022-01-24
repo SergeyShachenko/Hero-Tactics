@@ -8,7 +8,7 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnCollisionEnter(Collision other)
         {
-            _entity.Get<OnCollisionEnterEvent>() = new OnCollisionEnterEvent
+            Entity.Get<OnCollisionEnterEvent>() = new OnCollisionEnterEvent
             {
                 Sender = gameObject,
                 Collision = other

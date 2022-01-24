@@ -38,6 +38,8 @@
               <e p="GameStartup.cs" t="Include" />
               <e p="Services" t="Include">
                 <e p="EventService.cs" t="Include" />
+                <e p="GameplayService.cs" t="Include" />
+                <e p="Tools.cs" t="Include" />
               </e>
               <e p="Systems" t="Include">
                 <e p="Battle" t="Include">

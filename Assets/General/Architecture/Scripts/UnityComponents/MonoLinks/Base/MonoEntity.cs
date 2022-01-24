@@ -15,14 +15,17 @@ namespace General.UnityComponents.MonoLinks
             _entity = world.NewEntity();
             _monoLinks = GetComponents<MonoLinkBase>();
             
-            
             _entity.Get<GameObj>() = new GameObj {Value = gameObject};
 
 
             if (_monoLinks == null) return;
+            
+            
             foreach (var monoLink in _monoLinks)
             {
                 monoLink.Link(ref _entity);
+                if (monoLink is PhysicsLinkBase) return;
+                Destroy(monoLink);
             }
         }
 

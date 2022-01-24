@@ -3,11 +3,11 @@ using Leopotam.Ecs;
 
 namespace General.Systems.Battle
 {
-    sealed class WarriorSystem : IEcsRunSystem
+    public sealed class WarriorSystem : IEcsRunSystem
     {
-        private EcsWorld _world;
+        private readonly EcsWorld _world;
 
-        private EcsFilter<Fighter, Warrior> _warriors;
+        private readonly EcsFilter<Fighter, Warrior> _warriors;
 
 
         void IEcsRunSystem.Run()

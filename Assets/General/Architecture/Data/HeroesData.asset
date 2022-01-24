@@ -30,4 +30,4 @@ MonoBehaviour:
         Armor: 2
         Damage: 5
       Movable:
-        Speed: 2.5
+        Speed: 3

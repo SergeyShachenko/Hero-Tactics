@@ -238,15 +238,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.3
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.76
+      value: -2.34
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -285,6 +285,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[0]
+      value: 
+      objectReference: {fileID: 1548267786}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[1]
+      value: 
+      objectReference: {fileID: 1413723342}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorTypes.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
@@ -299,11 +311,11 @@ PrefabInstance:
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.LinkedBattlefields.Array.data[0]
       value: 
-      objectReference: {fileID: 1548267789}
+      objectReference: {fileID: 1413723345}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.LinkedBattlefields.Array.data[1]
       value: 
-      objectReference: {fileID: 1413723345}
+      objectReference: {fileID: 1548267789}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
 --- !u!4 &1081984851 stripped
@@ -490,15 +502,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.88
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.15
+      value: 9.48
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -534,8 +546,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.BattleSide
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[0]
+      value: 
+      objectReference: {fileID: 1081984851}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[1]
+      value: 
+      objectReference: {fileID: 1548267786}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.LinkedBattlefields.Array.size
       value: 1
@@ -677,7 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   m_MaxRayIntersections: 0
 --- !u!1 &1763045449
 GameObject:
@@ -916,11 +940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -13.33
       objectReference: {fileID: 0}
     - target: {fileID: 2756776535109580306, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -951,9 +975,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
-      propertyPath: Value.WarriorTypes.Array.size
-      value: 4
+      propertyPath: Value.ApprovedWays.Array.size
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.WarriorTypes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[0]
+      value: 
+      objectReference: {fileID: 1081984851}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.ApprovedWays.Array.data[1]
+      value: 
+      objectReference: {fileID: 1413723342}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.LinkedBattlefields.Array.size
       value: 1
@@ -1019,10 +1055,6 @@ PrefabInstance:
     - target: {fileID: 7944987110334753068, guid: c6fe968b8e2208546b7a6bd90c991511, type: 3}
       propertyPath: m_Name
       value: Tools
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363654100067676570, guid: c6fe968b8e2208546b7a6bd90c991511, type: 3}
-      propertyPath: _debug
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6fe968b8e2208546b7a6bd90c991511, type: 3}

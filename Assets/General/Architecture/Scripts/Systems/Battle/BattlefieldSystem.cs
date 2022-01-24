@@ -4,12 +4,12 @@ using Leopotam.Ecs;
 
 namespace General.Systems.Battle
 {
-    sealed class BattlefieldSystem : IEcsInitSystem
+    public sealed class BattlefieldSystem : IEcsInitSystem
     {
-        private EcsWorld _world;
-        private EventService _eventService;
+        private readonly EcsWorld _world;
+        private readonly Tools _tools;
 
-        private EcsFilter<Battlefield> _battlefieldFilter;
+        private readonly EcsFilter<Battlefield> _battlefieldFilter;
 
 
         void IEcsInitSystem.Init()
@@ -17,24 +17,21 @@ namespace General.Systems.Battle
             if (_battlefieldFilter.IsEmpty()) return;
 
 
-            byte counter = 0;
-
+            byte squadID = 0;
             foreach (var index in _battlefieldFilter)
             {
-                var battlefield = _battlefieldFilter.GetEntity(index).Get<Battlefield>();;
+                ref var battlefield = ref _battlefieldFilter.GetEntity(index).Get<Battlefield>();
                 
-                
-                OptimizeData(battlefield);
-                CreateSpawnWarriorEvents(battlefield, counter++);
+                OptimizeData(ref battlefield);
+                CreateSpawnWarriorEvents(ref battlefield, squadID++);
             }    
         }
 
 
-        private void OptimizeData(Battlefield battlefield)
+        private void OptimizeData(ref Battlefield battlefield)
         {
-            var warriors = battlefield.WarriorTypes;
-            
-            
+            ref var warriors = ref battlefield.WarriorTypes;
+
             if (battlefield.IsBoss)
             {
                 warriors.RemoveRange(1, warriors.Count-1);
@@ -48,12 +45,12 @@ namespace General.Systems.Battle
             }
         }
         
-        private void CreateSpawnWarriorEvents(Battlefield battlefield, byte squadID)
+        private void CreateSpawnWarriorEvents(ref Battlefield battlefield, byte squadID)
         {
             if (battlefield.IsBoss)
             {
                 var spawnPoint = battlefield.StandPositions.GetChild(0);
-                _eventService.SpawnWarrior(
+                _tools.Events.SpawnWarrior(
                     battlefield.BattleSide,
                     battlefield.WarriorTypes[0],
                     true,
@@ -62,13 +59,12 @@ namespace General.Systems.Battle
             }
             else
             {
-                byte counter = 1;
-
+                byte spawnPointID = 1;
                 foreach (var warriorType in battlefield.WarriorTypes)
                 {
-                    var spawnPoint = battlefield.StandPositions.GetChild(counter++);
+                    var spawnPoint = battlefield.StandPositions.GetChild(spawnPointID++);
 
-                    _eventService.SpawnWarrior(
+                    _tools.Events.SpawnWarrior(
                         battlefield.BattleSide,
                         warriorType,
                         false,

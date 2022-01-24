@@ -8,7 +8,7 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            _entity.Get<OnPointerClickEvent>() = new OnPointerClickEvent {GameObject = gameObject};
+            Entity.Get<OnPointerClickEvent>() = new OnPointerClickEvent {GameObject = gameObject};
         }
     }
 }

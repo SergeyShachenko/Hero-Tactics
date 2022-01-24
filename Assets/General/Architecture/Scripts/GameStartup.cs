@@ -11,20 +11,19 @@ using UnityEngine;
 
 namespace General 
 {
-    sealed class GameStartup : MonoBehaviour
+    public sealed class GameStartup : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] private LevelPreset _levelPreset = LevelPreset.Forest;
-        [SerializeField] private bool _debug = true;
+        [SerializeField] private EnvironmentPreset Environment = EnvironmentPreset.Forest;
+        [SerializeField] private bool ECSDebug = true;
         
         [Header("Data")]
-        [SerializeField] private GameData _gameData;
-        [SerializeField] private GameServices _gameServices;
+        [SerializeField] private GameData GameData;
+        [SerializeField] private GameServices GameServices;
 
         private EcsWorld _world;
         private EcsSystems _systems, _fixedUpdateSystems;
-
-        private EventService _eventService;
+        private Tools _tools;
 
         
         private void Start() 
@@ -33,7 +32,7 @@ namespace General
             _systems = new EcsSystems(_world);
             _fixedUpdateSystems = new EcsSystems(_world, "Fixed Update Systems");
             
-            Debug(_debug);
+            Debug(ECSDebug);
             
             InitServices();
             InitSystems();
@@ -74,7 +73,7 @@ namespace General
         
         private void InitServices()
         {
-            _eventService = new EventService(_world);
+            _tools = new Tools(_world);
         }
 
         private void InitSystems()
@@ -83,9 +82,9 @@ namespace General
             AddBattleSystems();
             
             _systems
-                .Inject(_gameData)
-                .Inject(_gameServices)
-                .Inject(_eventService)
+                .Inject(GameData)
+                .Inject(GameServices)
+                .Inject(_tools)
                 .Init();
         }
 
@@ -94,20 +93,15 @@ namespace General
             AddMoveSystems();
             
             _fixedUpdateSystems
-                .OneFrame<OnTriggerEnterEvent>()
-                .OneFrame<OnTriggerStayEvent>()
-                .OneFrame<OnTriggerExitEvent>()
-                .OneFrame<OnCollisionEnterEvent>()
-                .OneFrame<OnCollisionStayEvent>()
-                .OneFrame<OnCollisionExitEvent>()
                 .OneFrame<OnPointerClickEvent>()
-                .Inject(_eventService)
+                .OneFrame<OnTriggerEnterEvent>()
+                .Inject(_tools)
                 .Init();
         }
         
         private void AddMainSystems()
         {
-            EcsSystems mainSystems = new EcsSystems(_world, "Main Systems");
+            var mainSystems = new EcsSystems(_world, "Main Systems");
 
             mainSystems
                 .Add(new InitMonoEntitySystem());
@@ -117,7 +111,7 @@ namespace General
 
         private void AddBattleSystems()
         {
-            EcsSystems battleSystems = new EcsSystems(_world, "Battle Systems");
+            var battleSystems = new EcsSystems(_world, "Battle Systems");
 
             battleSystems
                 .Add(new BattlefieldSystem())
@@ -130,7 +124,7 @@ namespace General
         
         private void AddMoveSystems()
         {
-            EcsSystems moveSystems = new EcsSystems(_world, "Move Systems");
+            var moveSystems = new EcsSystems(_world, "Move Systems");
 
             moveSystems
                 .Add(new PlayerInputSystem())
@@ -153,7 +147,7 @@ namespace General
         }
         
         
-        public enum LevelPreset
+        public enum EnvironmentPreset
         {
             Forest, Desert, Winter
         }

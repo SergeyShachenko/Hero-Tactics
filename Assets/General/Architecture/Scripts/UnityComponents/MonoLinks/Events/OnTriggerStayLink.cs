@@ -8,7 +8,7 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnTriggerStay(Collider other)
         {
-            _entity.Get<OnTriggerStayEvent>() = new OnTriggerStayEvent
+            Entity.Get<OnTriggerStayEvent>() = new OnTriggerStayEvent
             {
                 Sender = gameObject,
                 Collider = other

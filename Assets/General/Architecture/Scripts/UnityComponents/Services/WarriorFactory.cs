@@ -14,8 +14,8 @@ namespace General.UnityComponents.Services
             var monoEntity = Instantiate(heroData.Warrior.Prefab, spawnPoint).GetComponent<MonoEntity>();
             monoEntity.Init(world);
             
-            
             var entity = monoEntity.GetEntity();
+            var speedOffset = 0.6f;
             
             entity.Get<Fighter>() = new Fighter
             {
@@ -30,7 +30,7 @@ namespace General.UnityComponents.Services
             };
             entity.Get<Movable>() = new Movable
             {
-                Speed = heroData.Warrior.Movable.Speed
+                Speed = Random.Range(heroData.Warrior.Movable.Speed - speedOffset, heroData.Warrior.Movable.Speed)
             };
         }
 
@@ -39,8 +39,8 @@ namespace General.UnityComponents.Services
             var monoEntity = Instantiate(enemyData.Warrior.Prefab, spawnPoint).GetComponent<MonoEntity>();
             monoEntity.Init(world);
             
-            
             var entity = monoEntity.GetEntity();
+            var speedOffset = 0.6f;
 
             entity.Get<Fighter>() = new Fighter
             {
@@ -55,7 +55,7 @@ namespace General.UnityComponents.Services
             };
             entity.Get<Movable>() = new Movable
             {
-                Speed = enemyData.Warrior.Movable.Speed
+                Speed = Random.Range(enemyData.Warrior.Movable.Speed - speedOffset, enemyData.Warrior.Movable.Speed)
             };
         }
     }

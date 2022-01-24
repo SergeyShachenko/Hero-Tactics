@@ -5,15 +5,15 @@ using Leopotam.Ecs;
 
 namespace General.Systems
 {
-    sealed class PlayerInputSystem : IEcsRunSystem
+    public sealed class PlayerInputSystem : IEcsRunSystem
     {
-        private EcsWorld _world;
-        private EventService _eventService;
+        private readonly EcsWorld _world;
+        private readonly Tools _tools;
 
-        private EcsFilter<Battlefield, OnPointerClickEvent> _onPointerClicks;
-        
+        private readonly EcsFilter<Battlefield, OnPointerClickEvent> _onPointerClicks;
 
-        public void Run()
+
+        void IEcsRunSystem.Run()
         {
             OnPointerClick();
         }
@@ -28,9 +28,8 @@ namespace General.Systems
             {
                 ref var entity = ref _onPointerClicks.GetEntity(index);
                 var clickPosition = entity.Get<OnPointerClickEvent>().GameObject.transform.position;
-
                 
-                _eventService.MoveHeroTo(clickPosition);
+                _tools.Events.MoveHeroTo(clickPosition);
             }
         }
     }

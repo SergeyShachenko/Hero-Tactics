@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using General.UnityComponents.MonoLinks;
 using UnityEngine;
 
 namespace General.Components.Battle
@@ -11,6 +10,6 @@ namespace General.Components.Battle
         public bool IsBoss;
         public List<WarriorType> WarriorTypes;
         public Transform StandPositions, BattlePositions;
-        public List<MonoEntity> LinkedBattlefields;
+        public List<Transform> ApprovedWays;
     }
 }

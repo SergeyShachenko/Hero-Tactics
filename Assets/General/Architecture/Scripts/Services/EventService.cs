@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace General.Services
 {
-    public class EventService
+    public sealed class EventService
     {
-        private EcsWorld _world;
+        private readonly EcsWorld _world;
         
         public EventService(EcsWorld world)
         {
