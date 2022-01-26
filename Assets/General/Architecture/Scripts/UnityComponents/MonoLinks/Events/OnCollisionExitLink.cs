@@ -8,10 +8,16 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnCollisionExit(Collision other)
         {
-            Entity.Get<OnCollisionExitEvent>() = new OnCollisionExitEvent
+            var entitySender = gameObject.GetComponent<MonoEntity>().GetEntity();
+            var entityVisitor = other.gameObject.GetComponent<MonoEntity>().GetEntity();
+            
+            
+            World.NewEntity().Get<OnCollisionExitEvent>() = new OnCollisionExitEvent
             {
                 Sender = gameObject,
-                Collision = other
+                Collision = other,
+                EntitySender = entitySender,
+                EntityVisitor = entityVisitor
             };
         }
     }

@@ -5,7 +5,7 @@ namespace General.Components.Battle
     public struct Fighter
     {
         public BattleSide BattleSide;
-        public byte SquadID;
+        public int SquadID;
         public FighterState State;
         public FighterStats Stats;
     }

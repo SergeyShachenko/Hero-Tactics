@@ -8,7 +8,7 @@ namespace General.Components.Events
         public BattleSide BattleSide;
         public WarriorType WarriorType;
         public bool IsBoss;
-        public byte SquadID;
+        public int SquadID;
         public Transform SpawnPoint;
     }
 }

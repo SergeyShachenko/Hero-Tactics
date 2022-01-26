@@ -2,7 +2,7 @@
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.Systems
+namespace General.Systems.Main
 {
     public sealed class InitMonoEntitySystem : IEcsInitSystem
     {

@@ -2,9 +2,11 @@ using General.Components.Events;
 using General.Components.Events.Unity;
 using General.UnityComponents.Data;
 using General.Services;
-using General.Systems;
 using General.Systems.Battle;
+using General.Systems.Main;
+using General.Systems.Move;
 using General.Systems.Spawn;
+using General.Systems.States;
 using General.UnityComponents.Services;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -95,6 +97,7 @@ namespace General
             _fixedUpdateSystems
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
+                .OneFrame<OnTriggerExitEvent>()
                 .Inject(_tools)
                 .Init();
         }
@@ -117,7 +120,8 @@ namespace General
                 .Add(new BattlefieldSystem())
                 .Add(new SpawnWarriorSystem())
                 .Add(new WarriorSystem())
-                .OneFrame<SpawnWarriorEvent>();
+                .OneFrame<SpawnWarriorEvent>()
+                .OneFrame<BattlefieldChangeStateEvent>();
 
             _systems.Add(battleSystems);
         }
@@ -129,7 +133,10 @@ namespace General
             moveSystems
                 .Add(new PlayerInputSystem())
                 .Add(new MoveHeroSystem())
-                .OneFrame<MoveHeroToPositionEvent>();
+                .Add(new VisitorsSystem())
+                .Add(new BattlefieldPositionsSystem())
+                .OneFrame<MoveHeroToPositionEvent>()
+                .OneFrame<StopMoveHeroSystemEvent>();
 
             _fixedUpdateSystems.Add(moveSystems);
         }

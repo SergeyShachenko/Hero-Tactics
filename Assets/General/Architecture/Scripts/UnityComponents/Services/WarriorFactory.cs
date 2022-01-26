@@ -9,14 +9,30 @@ namespace General.UnityComponents.Services
 {
     public class WarriorFactory : MonoBehaviour
     {
-        public void Spawn(EcsWorld world, HeroData heroData, byte squadID, Transform spawnPoint)
+        [SerializeField] private Transform SpawnHeroesTo, SpawnEnemysTo;
+
+
+        public void Spawn(EcsWorld world, HeroData heroData, int squadID, Vector3 spawnPosition)
         {
-            var monoEntity = Instantiate(heroData.Warrior.Prefab, spawnPoint).GetComponent<MonoEntity>();
+            var spawnTo = SpawnHeroesTo.Find("Squad[" + squadID + "]");
+
+            if (spawnTo == null)
+            {
+                var instanceObject = new GameObject("Squad[" + squadID + "]");
+                instanceObject.transform.parent = SpawnHeroesTo;
+                
+                spawnTo = instanceObject.transform;
+            }
+
+
+            var monoEntity = Instantiate(
+                heroData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
+            monoEntity.transform.parent = spawnTo;
             monoEntity.Init(world);
-            
+
             var entity = monoEntity.GetEntity();
             var speedOffset = 0.6f;
-            
+
             entity.Get<Fighter>() = new Fighter
             {
                 BattleSide = BattleSide.Hero,
@@ -34,9 +50,22 @@ namespace General.UnityComponents.Services
             };
         }
 
-        public void Spawn(EcsWorld world, EnemyData enemyData, byte squadID, Transform spawnPoint)
+        public void Spawn(EcsWorld world, EnemyData enemyData, int squadID, Vector3 spawnPosition)
         {
-            var monoEntity = Instantiate(enemyData.Warrior.Prefab, spawnPoint).GetComponent<MonoEntity>();
+            var spawnTo = SpawnEnemysTo.Find("Squad[" + squadID + "]");
+
+            if (spawnTo == null)
+            {
+                var instanceObject = new GameObject("Squad[" + squadID + "]");
+                instanceObject.transform.parent = SpawnEnemysTo;
+                
+                spawnTo = instanceObject.transform;
+            }
+            
+            
+            var monoEntity = Instantiate(
+                enemyData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
+            monoEntity.transform.parent = spawnTo;
             monoEntity.Init(world);
             
             var entity = monoEntity.GetEntity();

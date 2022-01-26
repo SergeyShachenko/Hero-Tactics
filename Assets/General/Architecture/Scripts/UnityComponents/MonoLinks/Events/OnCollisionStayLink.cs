@@ -8,10 +8,16 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnCollisionStay(Collision other)
         {
-            Entity.Get<OnCollisionStayEvent>() = new OnCollisionStayEvent
+            var entitySender = gameObject.GetComponent<MonoEntity>().GetEntity();
+            var entityVisitor = other.gameObject.GetComponent<MonoEntity>().GetEntity();
+            
+            
+            World.NewEntity().Get<OnCollisionStayEvent>() = new OnCollisionStayEvent
             {
                 Sender = gameObject,
-                Collision = other
+                Collision = other,
+                EntitySender = entitySender,
+                EntityVisitor = entityVisitor
             };
         }
     }

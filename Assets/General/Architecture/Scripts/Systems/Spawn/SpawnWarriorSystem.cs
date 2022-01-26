@@ -34,52 +34,43 @@ namespace General.Systems.Spawn
             foreach (var index in _spawnWarriorEvents)
             {
                 var spawnEvent = _spawnWarriorEvents.GetEntity(index).Get<SpawnWarriorEvent>();
-                
-                switch (spawnEvent.BattleSide)
+
+
+                if (spawnEvent.BattleSide == BattleSide.Hero)
                 {
-                    case BattleSide.Hero:
-                        foreach (var heroData in _heroesData.Where(
-                            heroData => heroData.Warrior.Type == spawnEvent.WarriorType))
-                        {
-                            _gameServices.WarriorFactory.Spawn(
-                                _world,
-                                heroData,
-                                spawnEvent.SquadID,
-                                spawnEvent.SpawnPoint);
-                            break;
-                        }
-
-                        break;
-
-                    case BattleSide.Enemy:
-                        if (spawnEvent.IsBoss)
-                        {
-                            foreach (var enemyData in _enemysData.Where(
-                                enemyData => enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
-                            {
-                                _gameServices.WarriorFactory.Spawn(
-                                    _world,
-                                    enemyData,
-                                    spawnEvent.SquadID,
-                                    spawnEvent.SpawnPoint);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            foreach (var enemyData in _enemysData.Where(
-                                enemyData => !enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
-                            {
-                                _gameServices.WarriorFactory.Spawn(
-                                    _world,
-                                    enemyData,
-                                    spawnEvent.SquadID,
-                                    spawnEvent.SpawnPoint);
-                                break;
-                            }
-                        }
-
-                        break;
+                    foreach (var heroData in _heroesData.Where(
+                        heroData => heroData.Warrior.Type == spawnEvent.WarriorType))
+                    {
+                        _gameServices.WarriorFactory.Spawn(
+                            _world, 
+                            heroData, 
+                            spawnEvent.SquadID, 
+                            spawnEvent.SpawnPoint.position);
+                    }
+                }
+                else if (spawnEvent.IsBoss)
+                {
+                    foreach (var enemyData in _enemysData.Where(
+                        enemyData => enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
+                    {
+                        _gameServices.WarriorFactory.Spawn(
+                            _world,
+                            enemyData,
+                            spawnEvent.SquadID,
+                            spawnEvent.SpawnPoint.position);
+                    }
+                }
+                else
+                {
+                    foreach (var enemyData in _enemysData.Where(
+                        enemyData => !enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
+                    {
+                        _gameServices.WarriorFactory.Spawn(
+                            _world,
+                            enemyData,
+                            spawnEvent.SquadID,
+                            spawnEvent.SpawnPoint.position);
+                    }
                 }
             }
         }

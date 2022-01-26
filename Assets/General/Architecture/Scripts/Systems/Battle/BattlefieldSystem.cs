@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using General.Components.Battle;
 using General.Services;
 using Leopotam.Ecs;
@@ -9,28 +10,33 @@ namespace General.Systems.Battle
         private readonly EcsWorld _world;
         private readonly Tools _tools;
 
-        private readonly EcsFilter<Battlefield> _battlefieldFilter;
-
+        private readonly EcsFilter<Battlefield> _battlefields;
+        
 
         void IEcsInitSystem.Init()
         {
-            if (_battlefieldFilter.IsEmpty()) return;
+            if (_battlefields.IsEmpty()) return;
 
-
-            byte squadID = 0;
-            foreach (var index in _battlefieldFilter)
+            
+            foreach (var index in _battlefields)
             {
-                ref var battlefield = ref _battlefieldFilter.GetEntity(index).Get<Battlefield>();
+                ref var battlefield = ref _battlefields.GetEntity(index).Get<Battlefield>();
+                battlefield.State = BattlefieldState.Free;
+                battlefield.Visitors = new List<EcsEntity>();
                 
-                OptimizeData(ref battlefield);
-                CreateSpawnWarriorEvents(ref battlefield, squadID++);
+                OptimizeSpawnOnStart(ref battlefield);
+                CallSpawnWarriorEvents(ref battlefield, squadID:index);
             }    
         }
 
 
-        private void OptimizeData(ref Battlefield battlefield)
+        private void OptimizeSpawnOnStart(ref Battlefield battlefield)
         {
-            ref var warriors = ref battlefield.WarriorTypes;
+            ref var warriors = ref battlefield.SpawnOnStart;
+            
+            
+            if(warriors.Count == 0) return; 
+            
 
             if (battlefield.IsBoss)
             {
@@ -45,14 +51,17 @@ namespace General.Systems.Battle
             }
         }
         
-        private void CreateSpawnWarriorEvents(ref Battlefield battlefield, byte squadID)
+        private void CallSpawnWarriorEvents(ref Battlefield battlefield, int squadID)
         {
+            if (battlefield.SpawnOnStart.Count == 0) return;
+             
+            
             if (battlefield.IsBoss)
             {
                 var spawnPoint = battlefield.StandPositions.GetChild(0);
                 _tools.Events.SpawnWarrior(
                     battlefield.BattleSide,
-                    battlefield.WarriorTypes[0],
+                    battlefield.SpawnOnStart[0],
                     true,
                     squadID,
                     spawnPoint);
@@ -60,7 +69,7 @@ namespace General.Systems.Battle
             else
             {
                 byte spawnPointID = 1;
-                foreach (var warriorType in battlefield.WarriorTypes)
+                foreach (var warriorType in battlefield.SpawnOnStart)
                 {
                     var spawnPoint = battlefield.StandPositions.GetChild(spawnPointID++);
 

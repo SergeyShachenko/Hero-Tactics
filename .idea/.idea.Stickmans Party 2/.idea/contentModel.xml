@@ -16,8 +16,10 @@
                   <e p="Warrior.cs" t="Include" />
                 </e>
                 <e p="Events" t="Include">
+                  <e p="BattlefieldChangeStateEvent.cs" t="Include" />
                   <e p="MoveHeroToPositionEvent.cs" t="Include" />
                   <e p="SpawnWarriorEvent.cs" t="Include" />
+                  <e p="StopMoveHeroSystemEvent.cs" t="Include" />
                   <e p="Unity" t="Include">
                     <e p="OnCollisionEnterEvent.cs" t="Include" />
                     <e p="OnCollisionExitEvent.cs" t="Include" />
@@ -50,11 +52,15 @@
                   <e p="InitMonoEntitySystem.cs" t="Include" />
                 </e>
                 <e p="Move" t="Include">
+                  <e p="BattlefieldPositionsSystem.cs" t="Include" />
                   <e p="MoveHeroSystem.cs" t="Include" />
                   <e p="PlayerInputSystem.cs" t="Include" />
                 </e>
                 <e p="Spawn" t="Include">
                   <e p="SpawnWarriorSystem.cs" t="Include" />
+                </e>
+                <e p="States" t="Include">
+                  <e p="VisitorsSystem.cs" t="Include" />
                 </e>
               </e>
               <e p="UnityComponents" t="Include">

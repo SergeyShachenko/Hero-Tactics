@@ -8,11 +8,19 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnTriggerEnter(Collider other)
         {
-            Entity.Get<OnTriggerEnterEvent>() = new OnTriggerEnterEvent
+            var entitySender = gameObject.GetComponent<MonoEntity>().GetEntity();
+            var entityVisitor = other.gameObject.GetComponent<MonoEntity>().GetEntity();
+            
+            
+            World.NewEntity().Get<OnTriggerEnterEvent>() = new OnTriggerEnterEvent
             {
                 Sender = gameObject,
-                Collider = other
+                Collider = other,
+                EntitySender = entitySender,
+                EntityVisitor = entityVisitor
             };
+            
+            //Debug.Log("OnTriggerEnter");
         }
     }
 }

@@ -8,11 +8,19 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         private void OnTriggerExit(Collider other)
         {
-            Entity.Get<OnTriggerExitEvent>() = new OnTriggerExitEvent
+            var entitySender = gameObject.GetComponent<MonoEntity>().GetEntity();
+            var entityVisitor = other.gameObject.GetComponent<MonoEntity>().GetEntity();
+            
+            
+            World.NewEntity().Get<OnTriggerExitEvent>() = new OnTriggerExitEvent
             {
                 Sender = gameObject,
-                Collider = other
+                Collider = other,
+                EntitySender = entitySender,
+                EntityGoneVisitor = entityVisitor
             };
+            
+            //Debug.Log("OnTriggerExit");
         }
     }
 }

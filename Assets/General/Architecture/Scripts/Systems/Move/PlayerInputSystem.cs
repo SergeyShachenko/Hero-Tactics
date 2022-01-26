@@ -3,33 +3,35 @@ using General.Components.Events.Unity;
 using General.Services;
 using Leopotam.Ecs;
 
-namespace General.Systems
+namespace General.Systems.Move
 {
     public sealed class PlayerInputSystem : IEcsRunSystem
     {
         private readonly EcsWorld _world;
         private readonly Tools _tools;
 
-        private readonly EcsFilter<Battlefield, OnPointerClickEvent> _onPointerClicks;
+        private readonly EcsFilter<OnPointerClickEvent> _onPointerClickEvents;
 
 
         void IEcsRunSystem.Run()
         {
-            OnPointerClick();
+            ClickOnBattlefield();
         }
 
         
-        private void OnPointerClick()
+        private void ClickOnBattlefield()
         {
-            if (_onPointerClicks.IsEmpty()) return;
+            if (_onPointerClickEvents.IsEmpty()) return;
 
 
-            foreach (var index in _onPointerClicks)
+            foreach (var index in _onPointerClickEvents)
             {
-                ref var entity = ref _onPointerClicks.GetEntity(index);
-                var clickPosition = entity.Get<OnPointerClickEvent>().GameObject.transform.position;
+                ref var clickEvent = ref _onPointerClickEvents.GetEntity(index).Get<OnPointerClickEvent>();
+
+                if (clickEvent.EntitySender.Has<Battlefield>() == false) continue;
                 
-                _tools.Events.MoveHeroTo(clickPosition);
+                
+                _tools.Events.MoveHeroTo(clickEvent.Sender.transform.position);
             }
         }
     }

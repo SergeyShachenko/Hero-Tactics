@@ -1,5 +1,6 @@
 ﻿using General.Components.Events.Unity;
 using Leopotam.Ecs;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace General.UnityComponents.MonoLinks.Events
@@ -8,7 +9,15 @@ namespace General.UnityComponents.MonoLinks.Events
     {
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            Entity.Get<OnPointerClickEvent>() = new OnPointerClickEvent {GameObject = gameObject};
+            var entitySender = gameObject.GetComponent<MonoEntity>().GetEntity();
+            
+            World.NewEntity().Get<OnPointerClickEvent>() = new OnPointerClickEvent
+            {
+                Sender = gameObject,
+                EntitySender = entitySender
+            };
+            
+            Debug.Log("OnPointerClick");
         }
     }
 }

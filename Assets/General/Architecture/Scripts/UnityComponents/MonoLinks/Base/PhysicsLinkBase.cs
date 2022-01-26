@@ -4,12 +4,12 @@ namespace General.UnityComponents.MonoLinks
 {
     public abstract class PhysicsLinkBase : MonoLinkBase
     {
-        protected EcsEntity Entity;
+        protected EcsWorld World;
         
         
         public override void Link(ref EcsEntity entity)
         {
-            Entity = entity;
+            World = entity.GetInternalWorld();
         }
     }
 }

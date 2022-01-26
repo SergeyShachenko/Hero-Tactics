@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using General.Components;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -13,17 +14,16 @@ namespace General.UnityComponents.MonoLinks
         public void Init(EcsWorld world)
         {
             _entity = world.NewEntity();
-            _monoLinks = GetComponents<MonoLinkBase>();
-            
             _entity.Get<GameObj>() = new GameObj {Value = gameObject};
+            _monoLinks = GetComponents<MonoLinkBase>();
 
 
             if (_monoLinks == null) return;
             
             
+            foreach (var monoLink in _monoLinks) monoLink.Link(ref _entity);
             foreach (var monoLink in _monoLinks)
             {
-                monoLink.Link(ref _entity);
                 if (monoLink is PhysicsLinkBase) return;
                 Destroy(monoLink);
             }
@@ -33,5 +33,27 @@ namespace General.UnityComponents.MonoLinks
         {
             return _entity;
         }
+
+        // public List<T> GetEntityComponents<T>() where T : struct 
+        // {
+        //     var components = new List<T>();
+        //     var countComponents = _entity.GetComponentsCount();
+        //
+        //     for (var i = 0; i < _entity.GetComponentsCount(); i++)
+        //     {
+        //         if (_entity.1())
+        //         {
+        //             
+        //         }
+        //     }
+        //     
+        //     
+        //     while (_entity.Has<T>())
+        //     {
+        //         components.Add(_entity.Get<T>());
+        //     }
+        //
+        //     return components;
+        // }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Leopotam.Ecs;
 using UnityEngine;
 
 namespace General.Components.Battle
@@ -8,8 +9,15 @@ namespace General.Components.Battle
     {
         public BattleSide BattleSide;
         public bool IsBoss;
-        public List<WarriorType> WarriorTypes;
+        public List<WarriorType> SpawnOnStart;
         public Transform StandPositions, BattlePositions;
         public List<Transform> ApprovedWays;
+        [HideInInspector] public BattlefieldState State;
+        [HideInInspector] public List<EcsEntity> Visitors;
+    }
+
+    public enum BattlefieldState
+    {
+        Free, Occupied, Battle
     }
 }
