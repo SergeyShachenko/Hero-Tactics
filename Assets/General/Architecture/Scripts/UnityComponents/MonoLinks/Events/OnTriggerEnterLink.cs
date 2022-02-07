@@ -16,8 +16,8 @@ namespace General.UnityComponents.MonoLinks.Events
             {
                 Sender = gameObject,
                 Collider = other,
-                EntitySender = entitySender,
-                EntityVisitor = entityVisitor
+                SenderEntity = entitySender,
+                VisitorEntity = entityVisitor
             };
             
             //Debug.Log("OnTriggerEnter");

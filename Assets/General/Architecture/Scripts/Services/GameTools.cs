@@ -2,12 +2,12 @@
 
 namespace General.Services
 {
-    public sealed class Tools
+    public sealed class GameTools
     {
         public readonly GameplayService Gameplay;
         public readonly EventService Events;
         
-        public Tools(EcsWorld world)
+        public GameTools(EcsWorld world)
         {
             Gameplay = new GameplayService(world);
             Events = new EventService(world);

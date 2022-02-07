@@ -6,7 +6,6 @@ using General.Systems.Battle;
 using General.Systems.Main;
 using General.Systems.Move;
 using General.Systems.Spawn;
-using General.Systems.States;
 using General.UnityComponents.Services;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -16,53 +15,53 @@ namespace General
     public sealed class GameStartup : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] private EnvironmentPreset Environment = EnvironmentPreset.Forest;
-        [SerializeField] private bool ECSDebug = true;
+        [SerializeField] private MapPreset Map = MapPreset.Forest;
+        [SerializeField] private GameSettings GameSettings;
         
         [Header("Data")]
         [SerializeField] private GameData GameData;
         [SerializeField] private GameServices GameServices;
 
         private EcsWorld _world;
-        private EcsSystems _systems, _fixedUpdateSystems;
-        private Tools _tools;
+        private EcsSystems _mainSystems, _gameplaySystems;
+        private GameTools _gameTools;
 
-        
+
         private void Start() 
         {
             _world = new EcsWorld();
-            _systems = new EcsSystems(_world);
-            _fixedUpdateSystems = new EcsSystems(_world, "Fixed Update Systems");
+            _mainSystems = new EcsSystems(_world, "Main Systems");
+            _gameplaySystems = new EcsSystems(_world, "Gameplay Systems");
             
-            Debug(ECSDebug);
+            Debug(GameSettings.ECSDebug);
             
             InitServices();
-            InitSystems();
-            InitFixedUpdateSystems();
+            InitMainSystems();
+            InitGameplaySystems();
         }
 
         private void Update()
         {
-            _systems?.Run();
+            _mainSystems?.Run();
         }
 
         private void FixedUpdate()
         {
-            _fixedUpdateSystems?.Run();
+            _gameplaySystems?.Run();
         }
 
         private void OnDestroy() 
         {
-            if (_systems != null) 
+            if (_mainSystems != null) 
             {
-                _systems.Destroy();
-                _systems = null;
+                _mainSystems.Destroy();
+                _mainSystems = null;
             }
 
-            if (_fixedUpdateSystems != null)
+            if (_gameplaySystems != null)
             {
-                _fixedUpdateSystems.Destroy();
-                _fixedUpdateSystems = null;
+                _gameplaySystems.Destroy();
+                _gameplaySystems = null;
             }
 
             if (_world != null)
@@ -75,70 +74,78 @@ namespace General
         
         private void InitServices()
         {
-            _tools = new Tools(_world);
+            _gameTools = new GameTools(_world);
         }
 
-        private void InitSystems()
+        private void InitMainSystems()
         {
-            AddMainSystems();
-            AddBattleSystems();
-            
-            _systems
+            _mainSystems
+                .Add(StartupSystems())
+                .Add(SpawnSystems())
+                
+                .OneFrame<SpawnWarriorEvent>()
+                
+                .Inject(GameSettings)
                 .Inject(GameData)
                 .Inject(GameServices)
-                .Inject(_tools)
+                .Inject(_gameTools)
                 .Init();
         }
 
-        private void InitFixedUpdateSystems()
+        private void InitGameplaySystems()
         {
-            AddMoveSystems();
-            
-            _fixedUpdateSystems
+            _gameplaySystems
+                .Add(BattleSystems())
+                .Add(MoveSystems())
+                
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
                 .OneFrame<OnTriggerExitEvent>()
-                .Inject(_tools)
+                .OneFrame<MoveHeroesToEvent>()
+                .OneFrame<BattlefieldChangeStateEvent>()
+
+                .Inject(GameSettings)
+                .Inject(GameData)
+                .Inject(GameServices)
+                .Inject(_gameTools)
                 .Init();
         }
-        
-        private void AddMainSystems()
+
+        private EcsSystems StartupSystems()
         {
-            var mainSystems = new EcsSystems(_world, "Main Systems");
+            var startupSystems = new EcsSystems(_world, "Startup Systems");
 
-            mainSystems
-                .Add(new InitMonoEntitySystem());
-                
-            _systems.Add(mainSystems);
-        }
-
-        private void AddBattleSystems()
-        {
-            var battleSystems = new EcsSystems(_world, "Battle Systems");
-
-            battleSystems
-                .Add(new BattlefieldSystem())
-                .Add(new SpawnWarriorSystem())
-                .Add(new WarriorSystem())
-                .OneFrame<SpawnWarriorEvent>()
-                .OneFrame<BattlefieldChangeStateEvent>();
-
-            _systems.Add(battleSystems);
+            return startupSystems
+                .Add(new MonoEntitySystem());
         }
         
-        private void AddMoveSystems()
+        private EcsSystems SpawnSystems()
+        {
+            var spawnSystems = new EcsSystems(_world, "Spawn Systems");
+
+            return spawnSystems
+                .Add(new SpawnWarriorSystem());
+        }
+
+        private EcsSystems MoveSystems()
         {
             var moveSystems = new EcsSystems(_world, "Move Systems");
 
-            moveSystems
+            return moveSystems
                 .Add(new PlayerInputSystem())
-                .Add(new MoveHeroSystem())
-                .Add(new VisitorsSystem())
-                .Add(new BattlefieldPositionsSystem())
-                .OneFrame<MoveHeroToPositionEvent>()
-                .OneFrame<StopMoveHeroSystemEvent>();
+                .Add(new PlacementHeroSystem())
+                .Add(new PlacementEnemySystem())
+                .Add(new MoveHeroSystem());
+        }
+        
+        private EcsSystems BattleSystems()
+        {
+            var battleSystems = new EcsSystems(_world, "Battle Systems");
 
-            _fixedUpdateSystems.Add(moveSystems);
+            return battleSystems
+                .Add(new BattlefieldSystem())
+                .Add(new BattlefieldVisitorsSystem())
+                .Add(new WarriorSystem());
         }
 
         private void Debug(bool isEnable)
@@ -148,13 +155,13 @@ namespace General
             
 #if UNITY_EDITOR
             Leopotam.Ecs.UnityIntegration.EcsWorldObserver.Create(_world);
-            Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
-            Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_fixedUpdateSystems);
+            Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_mainSystems);
+            Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_gameplaySystems);
 #endif
         }
         
         
-        public enum EnvironmentPreset
+        public enum MapPreset
         {
             Forest, Desert, Winter
         }

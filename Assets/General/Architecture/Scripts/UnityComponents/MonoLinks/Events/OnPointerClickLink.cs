@@ -17,7 +17,7 @@ namespace General.UnityComponents.MonoLinks.Events
                 EntitySender = entitySender
             };
             
-            Debug.Log("OnPointerClick");
+            //Debug.Log("OnPointerClick");
         }
     }
 }

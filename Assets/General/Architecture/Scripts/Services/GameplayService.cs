@@ -1,5 +1,4 @@
 ﻿using General.Components;
-using General.Components.Battle;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -13,24 +12,24 @@ namespace General.Services
         {
             _world = world;
         }
+        
 
-
-        public bool MoveFighterTo(ref EcsEntity entity, Vector3 targetPosition)
+        public bool MoveEntityTo(EcsEntity entity, Vector3 targetPosition, float minDistance)
         {
-            if (!entity.Has<GameObj>() || !entity.Has<Movable>()) return false;
-            if (entity.Get<Fighter>().State != FighterState.Alive) return false;
-                
+            if (entity.Has<GameObj>() == false || entity.Has<Movable>() == false) return false;
+
             
             ref var gameObject = ref entity.Get<GameObj>().Value;
             ref var speed = ref entity.Get<Movable>().Speed;
-            var currentPosition = gameObject.transform.position;
-            var direction = targetPosition - currentPosition;
             
-            currentPosition += direction * (speed * Time.deltaTime);
-            gameObject.transform.position = currentPosition;
-            
-            
-            return !(direction.magnitude <= 0.5f);
+            var newPosition = gameObject.transform.position;
+            var moveDirection = targetPosition - newPosition;
+
+            newPosition += moveDirection * (speed * Time.deltaTime);
+
+            gameObject.transform.position = newPosition;
+
+            return Vector3.Distance(newPosition, targetPosition) >= minDistance;
         }
     }
 }

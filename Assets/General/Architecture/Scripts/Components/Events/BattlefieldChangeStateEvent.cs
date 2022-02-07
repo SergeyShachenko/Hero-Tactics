@@ -4,6 +4,6 @@ namespace General.Components.Events
 {
     internal struct BattlefieldChangeStateEvent
     {
-        public EcsEntity Battlefield;
+        public EcsEntity BattlefieldEntity;
     }
 }

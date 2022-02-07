@@ -46,7 +46,9 @@ namespace General.UnityComponents.Services
             };
             entity.Get<Movable>() = new Movable
             {
-                Speed = Random.Range(heroData.Warrior.Movable.Speed - speedOffset, heroData.Warrior.Movable.Speed)
+                Speed = Random.Range(heroData.Warrior.Movable.Speed - speedOffset, heroData.Warrior.Movable.Speed),
+                State = MovableState.Stand,
+                IsMovable = true
             };
         }
 
@@ -84,7 +86,9 @@ namespace General.UnityComponents.Services
             };
             entity.Get<Movable>() = new Movable
             {
-                Speed = Random.Range(enemyData.Warrior.Movable.Speed - speedOffset, enemyData.Warrior.Movable.Speed)
+                Speed = Random.Range(enemyData.Warrior.Movable.Speed - speedOffset, enemyData.Warrior.Movable.Speed),
+                State = MovableState.Stand,
+                IsMovable = true
             };
         }
     }

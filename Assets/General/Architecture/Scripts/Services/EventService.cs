@@ -1,4 +1,5 @@
-﻿using General.Components.Battle;
+﻿using System.Collections.Generic;
+using General.Components.Battle;
 using General.Components.Events;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -27,11 +28,29 @@ namespace General.Services
             };
         }
 
-        public void MoveHeroTo(Vector3 position)
+        public void MoveEntitysTo(List<EcsEntity> entities, Vector3 targetPosition)
         {
-            _world.NewEntity().Get<MoveHeroToPositionEvent>() = new MoveHeroToPositionEvent
+            _world.NewEntity().Get<MoveHeroesToEvent>() = new MoveHeroesToEvent
             {
-                Position = position
+                Heroes = entities,
+                TargetPosition = targetPosition
+            };
+        }
+        
+        public void MoveEntityTo(EcsEntity entity, Vector3 targetPosition)
+        {
+            _world.NewEntity().Get<MoveHeroToEvent>() = new MoveHeroToEvent
+            {
+                Entity = entity,
+                Position = targetPosition
+            };
+        }
+
+        public void BattlefieldChangeState(ref EcsEntity entity)
+        {
+            _world.NewEntity().Get<BattlefieldChangeStateEvent>() = new BattlefieldChangeStateEvent
+            {
+                BattlefieldEntity = entity
             };
         }
     }

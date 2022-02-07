@@ -1,12 +1,11 @@
-﻿using General.Components.Battle;
+﻿using General.Components;
+using General.Components.Battle;
 using Leopotam.Ecs;
 
 namespace General.Systems.Battle
 {
     public sealed class WarriorSystem : IEcsRunSystem
     {
-        private readonly EcsWorld _world;
-
         private readonly EcsFilter<Fighter, Warrior> _warriors;
 
 
@@ -17,12 +16,13 @@ namespace General.Systems.Battle
             
             foreach (var index in _warriors)
             {
-                ref var fighter = ref _warriors.GetEntity(index).Get<Fighter>();
-
+                ref var entity = ref _warriors.GetEntity(index);
+                ref var fighter = ref entity.Get<Fighter>();
 
                 if (fighter.State == FighterState.Disabled)
                 {
-                    fighter.State = FighterState.Alive;   
+                    fighter.State = FighterState.Alive;
+                    entity.Get<Movable>().State = MovableState.Stand;
                 }
             }
         }

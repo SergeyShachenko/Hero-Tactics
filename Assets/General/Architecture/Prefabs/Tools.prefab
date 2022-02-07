@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde95f99ab6cdaf4e86f987104e8a336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnHeroesTo: {fileID: 0}
+  SpawnEnemysTo: {fileID: 0}
 --- !u!1 &8363654100067676568
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7786b982631884293229e4a1b87649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Environment: 0
-  ECSDebug: 1
+  Map: 0
+  GameSettings: {fileID: 11400000, guid: ba9bd564162a71e48aa47441eb332fa1, type: 2}
   GameData: {fileID: 11400000, guid: fbd6e7392fa218c489ca096e2d5a5ce3, type: 2}
   GameServices: {fileID: 8363654098589357896}

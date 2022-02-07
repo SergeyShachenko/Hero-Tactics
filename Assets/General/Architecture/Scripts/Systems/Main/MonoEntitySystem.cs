@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace General.Systems.Main
 {
-    public sealed class InitMonoEntitySystem : IEcsInitSystem
+    public sealed class MonoEntitySystem : IEcsInitSystem
     {
         private readonly EcsWorld _world;
 

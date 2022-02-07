@@ -7,7 +7,7 @@ namespace General.Components.Events.Unity
     {
         public GameObject Sender;
         public Collider Collider;
-        public EcsEntity EntitySender;
-        public EcsEntity EntityVisitor;
+        public EcsEntity SenderEntity;
+        public EcsEntity VisitorEntity;
     }
 }

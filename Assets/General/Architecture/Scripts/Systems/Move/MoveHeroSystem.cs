@@ -5,6 +5,7 @@ using General.Components.Events;
 using General.Components.Events.Unity;
 using General.Components.Tags;
 using General.Services;
+using General.UnityComponents.Data;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -12,104 +13,152 @@ namespace General.Systems.Move
 {
     public sealed class MoveHeroSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly EcsWorld _world;
-        private readonly Tools _tools;
-
-        private readonly EcsFilter<StopMoveHeroSystemEvent> _stopSystemEvent;
-        private readonly EcsFilter<MoveHeroToPositionEvent> _moveHeroEvents;
-        private readonly EcsFilter<GameObj, Movable, PlayerTag> _movablePlayers;
+        private readonly GameTools _gameTools;
+        private readonly GameSettings _gameSettings;
+        
+        private readonly EcsFilter<MoveHeroesToEvent> _moveHeroesEvents;
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggerEnterEvents;
 
         private Vector3 _currentPosition, _nextPosition;
-        private List<Vector3> _approvedWays, _standPositions;
-        private bool _heroesMove;
+        private List<Vector3> _availablePositions, _placementPositions;
+        private List<EcsEntity> _heroesForMove, _heroesCompleteMove;
+        private float _walkOffset, _zOffset;
 
 
         void IEcsInitSystem.Init()
         {
-            _approvedWays = new List<Vector3>();
+            _nextPosition = new Vector3();
+            _currentPosition = new Vector3();
+            _availablePositions = new List<Vector3>();
+            _placementPositions = new List<Vector3>();
+            
+            _heroesForMove = new List<EcsEntity>();
+            _heroesCompleteMove = new List<EcsEntity>();
+            
+            _walkOffset = _gameSettings.WalkOffset;
+            _zOffset = _gameSettings.ZOffset;
         }
 
         void IEcsRunSystem.Run()
         {
-            if (!_stopSystemEvent.IsEmpty()) return;
-            
-            
-            GetTargetPosition(canGet: !_heroesMove);
-            GetApprovedWays();
-            MoveHeroes(canMove:_approvedWays.Contains(_nextPosition));
+            UpdateHeroesForMove(canUpdate:_moveHeroesEvents.IsEmpty() == false);
+            UpdatePlacementPositions(canUpdate:_heroesForMove.Count > 0);
+            UpdateAvailablePositions(canUpdate:_onTriggerEnterEvents.IsEmpty() == false);
+
+            MoveHeroes(canMove:_availablePositions.Contains(_nextPosition));
+            ClearHeroesForMove(canClear:_heroesForMove.Count == _heroesCompleteMove.Count && _heroesForMove.Count > 0);
         }
         
 
-        private void GetTargetPosition(bool canGet)
+        private void UpdateHeroesForMove(bool canUpdate)
         {
-            if (!canGet || _moveHeroEvents.IsEmpty()) return;
-
-
-            var newPosition = Vector3.zero;
-            foreach (var index in _moveHeroEvents)
+            if (canUpdate == false) return;
+            
+            
+            var heroes = new List<EcsEntity>();
+            var targetPosition = new Vector3();
+            
+            foreach (var index in _moveHeroesEvents)
             {
-                newPosition = _moveHeroEvents.GetEntity(index).Get<MoveHeroToPositionEvent>().Position;
+                ref var moveEvent = ref _moveHeroesEvents.GetEntity(index).Get<MoveHeroesToEvent>();
+                heroes = moveEvent.Heroes;
+                targetPosition = moveEvent.TargetPosition;
+            }
+
+            if (targetPosition == _currentPosition) return;
+
+
+            _nextPosition = targetPosition;
+            
+            foreach (var hero in heroes)
+            {
+                if (_heroesForMove.Contains(hero) == false) _heroesForMove.Add(hero);
+            }
+        }
+
+        private void UpdatePlacementPositions(bool canUpdate)
+        {
+            if (canUpdate == false || _moveHeroesEvents.IsEmpty()) return;
+
+
+            var targetPosition = new Vector3();
+            
+            foreach (var index in _moveHeroesEvents)
+            {
+                targetPosition = _moveHeroesEvents.GetEntity(index).Get<MoveHeroesToEvent>().TargetPosition;
             }
             
-            if (_approvedWays.Contains(newPosition) == false || newPosition == _currentPosition) return;
+            if (_availablePositions.Contains(targetPosition) == false || targetPosition == _currentPosition) return;
             
             
-            _nextPosition = newPosition;
-
-            var standOffset = 0.9f;
-            _standPositions = new List<Vector3>
+            _placementPositions = new List<Vector3>
             {
-                new Vector3(_nextPosition.x, _nextPosition.y, _nextPosition.z + standOffset),
-                new Vector3(_nextPosition.x + standOffset, _nextPosition.y, _nextPosition.z),
-                new Vector3(_nextPosition.x - standOffset, _nextPosition.y, _nextPosition.z),
-                new Vector3(_nextPosition.x, _nextPosition.y, _nextPosition.z - standOffset)
+                new Vector3(targetPosition.x, targetPosition.y, targetPosition.z + _walkOffset - _zOffset),
+                new Vector3(targetPosition.x + _walkOffset, targetPosition.y, targetPosition.z - _zOffset),
+                new Vector3(targetPosition.x - _walkOffset, targetPosition.y, targetPosition.z - _zOffset),
             };
                 
             //Debug.Log("Move heroes to " + _nextPosition);
         }
 
-        private void GetApprovedWays()
+        private void UpdateAvailablePositions(bool canUpdate)
         {
-            if (_onTriggerEnterEvents.IsEmpty()) return;
+            if (canUpdate == false) return;
 
             
-            _approvedWays.Clear();
+            _availablePositions.Clear();
 
             foreach (var index in _onTriggerEnterEvents)
             {
                 ref var enterEvent = ref _onTriggerEnterEvents.GetEntity(index).Get<OnTriggerEnterEvent>();
 
-                if (enterEvent.EntitySender.Has<Battlefield>() == false) continue;
-                if (enterEvent.EntityVisitor.Has<PlayerTag>() == false) continue;
+                if (enterEvent.SenderEntity.Has<Battlefield>() == false) continue;
+                if (enterEvent.VisitorEntity.Has<PlayerTag>() == false) continue;
                 
                 
-                ref var entitySender = ref enterEvent.EntitySender;
-                var approvedWays = entitySender.Get<Battlefield>().ApprovedWays;
+                ref var entitySender = ref enterEvent.SenderEntity;
+                var approvedWays = entitySender.Get<Battlefield>().AvailablePositions;
                 _currentPosition = entitySender.Get<GameObj>().Value.transform.position;
-                _approvedWays.Add(_currentPosition);
+                _availablePositions.Add(_currentPosition);
 
                 if (approvedWays.Count == 0) continue;
                 
                 
-                foreach (var approvedWay in approvedWays) _approvedWays.Add(approvedWay.position);
+                foreach (var approvedWay in approvedWays) _availablePositions.Add(approvedWay.position);
             }
         }
 
         private void MoveHeroes(bool canMove)
         {
-            if (!canMove || _movablePlayers.IsEmpty()) return;
+            if (canMove == false || _heroesForMove.Count == 0) return;
             
 
-            var standPositionsIndex = 0;
-            foreach (var index in _movablePlayers)
+            var placementPositionsIndex = 0;
+            
+            foreach (var hero in _heroesForMove)
             {
-                var targetPosition = _standPositions[standPositionsIndex++];
-                if (standPositionsIndex >= _standPositions.Count) standPositionsIndex = 0;
+                var targetPosition = _placementPositions[placementPositionsIndex++];
+                if (placementPositionsIndex >= _placementPositions.Count) placementPositionsIndex = 0;
                 
-                ref var entity = ref _movablePlayers.GetEntity(index);
-                _heroesMove = _tools.Gameplay.MoveFighterTo(ref entity, targetPosition);
+                var heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(hero, targetPosition, 0.5f);
+                hero.Get<GameObj>().Value.transform.LookAt(targetPosition);
+                hero.Get<Movable>().State = heroOnTheMove ? MovableState.Run : MovableState.Stand;
+
+                
+                if (heroOnTheMove == false || hero.Get<Movable>().IsMovable == false)
+                {
+                    if (_heroesCompleteMove.Contains(hero) == false) _heroesCompleteMove.Add(hero);
+                }
             }
+        }
+        
+        private void ClearHeroesForMove(bool canClear)
+        {
+            if (canClear == false) return;
+            
+            
+            _heroesForMove.Clear();
+            _heroesCompleteMove.Clear();
         }
     }
 }

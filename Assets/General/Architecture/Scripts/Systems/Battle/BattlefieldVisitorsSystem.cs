@@ -1,18 +1,19 @@
 ﻿using General.Components.Battle;
 using General.Components.Events.Unity;
+using General.Services;
+using General.UnityComponents.Data;
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.Systems.States
+namespace General.Systems.Battle
 {
-    public sealed class VisitorsSystem : IEcsRunSystem
+    public sealed class BattlefieldVisitorsSystem : IEcsRunSystem
     {
-        private readonly EcsWorld _world;
+        private readonly GameSettings _gameSettings;
+        private readonly GameTools _gameTools;
         
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggerEnterEvents;
         private readonly EcsFilter<OnTriggerExitEvent> _onTriggerExitEvents;
-
-        private bool _debug = false;
         
         
         void IEcsRunSystem.Run()
@@ -31,16 +32,21 @@ namespace General.Systems.States
             {
                 ref var enterEvent = ref _onTriggerEnterEvents.GetEntity(index).Get<OnTriggerEnterEvent>();
 
-                if (enterEvent.EntitySender.Has<Battlefield>() == false) continue;
-                if (enterEvent.EntityVisitor.Has<Fighter>() == false) continue;
+                if (enterEvent.SenderEntity.Has<Battlefield>() == false) continue;
+                if (enterEvent.VisitorEntity.Has<Fighter>() == false) continue;
                     
                     
-                ref var battlefield = ref enterEvent.EntitySender.Get<Battlefield>();
-                battlefield.Visitors.Add(enterEvent.EntityVisitor);
+                ref var battlefield = ref enterEvent.SenderEntity.Get<Battlefield>();
+                battlefield.Visitors.Add(enterEvent.VisitorEntity);
                 
-                UpdateState(ref battlefield);
                 
-                if (_debug) Debug.Log("Add Visitor");
+                if (UpdateState(ref battlefield))
+                {
+                    _gameTools.Events.BattlefieldChangeState(ref enterEvent.SenderEntity);
+                    //Debug.Log(battlefield.State);
+                }
+                
+                //Debug.Log("Add Visitor");
             }
         }
         
@@ -60,15 +66,20 @@ namespace General.Systems.States
                 ref var battlefield = ref exitEvent.EntitySender.Get<Battlefield>();
                 battlefield.Visitors.Remove(exitEvent.EntityGoneVisitor);
                 
-                UpdateState(ref battlefield);
                 
-                if (_debug) Debug.Log("Remove Visitor");
+                if (UpdateState(ref battlefield))
+                {
+                    _gameTools.Events.BattlefieldChangeState(ref exitEvent.EntitySender);
+                    //Debug.Log(battlefield.State);
+                }
+                
+                //Debug.Log("Remove Visitor");
             }
         }
         
-        private void UpdateState(ref Battlefield battlefield)
+        private bool UpdateState(ref Battlefield battlefield)
         {
-            if (battlefield.Visitors.Count == 0) return;
+            if (battlefield.Visitors.Count == 0) return false;
 
                 
             bool haveHeroes = false, haveEnemys = false;
@@ -87,35 +98,41 @@ namespace General.Systems.States
 
             if (haveHeroes == false && haveEnemys == false)
             {
-                if (_debug && battlefield.State != BattlefieldState.Free) 
-                    Debug.Log( battlefield + " FREE!");
-                
-                battlefield.State = BattlefieldState.Free;
+                if (battlefield.State != BattlefieldState.Free)
+                {
+                    battlefield.State = BattlefieldState.Free;
+                    return true;
+                }
             }
             
             if (haveHeroes && haveEnemys == false)
             {
-                if (_debug && battlefield.State != BattlefieldState.Free) 
-                    Debug.Log( battlefield + " FREE!");
-                
-                battlefield.State = BattlefieldState.Free;
+                if (battlefield.State != BattlefieldState.Free)
+                {
+                    battlefield.State = BattlefieldState.Free;
+                    return true;
+                }
             }
 
             if (haveEnemys && haveHeroes == false)
             {
-                if (_debug && battlefield.State != BattlefieldState.Occupied) 
-                    Debug.Log( battlefield + " OCCUPIED!");
-                
-                battlefield.State = BattlefieldState.Occupied;
+                if (battlefield.State != BattlefieldState.Occupied)
+                {
+                    battlefield.State = BattlefieldState.Occupied;
+                    return true;
+                }
             }
 
             if (haveHeroes && haveEnemys)
             {
-                if (_debug && battlefield.State != BattlefieldState.Battle) 
-                    Debug.Log( battlefield + " BATTLE!");
-                
-                battlefield.State = BattlefieldState.Battle;
+                if (battlefield.State != BattlefieldState.Battle)
+                {
+                    battlefield.State = BattlefieldState.Battle;
+                    return true;
+                }
             }
+
+            return false;
         }
     }
 }
