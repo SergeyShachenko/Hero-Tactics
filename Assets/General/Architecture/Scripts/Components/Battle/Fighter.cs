@@ -1,4 +1,6 @@
 ﻿using System;
+using Leopotam.Ecs;
+using UnityEngine;
 
 namespace General.Components.Battle
 {
@@ -23,6 +25,22 @@ namespace General.Components.Battle
 
     [Serializable] public struct FighterStats
     {
-        public byte Health, Armor, Damage;
+        public int Health;
+        public int Damage;
+        [Range(0, 100)] public int Armor;
+    }
+    
+    public struct FighterSquad
+    {
+        public BattleSide BattleSide;
+        public SquadState State;
+        public int ID;
+        public float Health, Armor, Damage;
+        public EcsEntity Place;
+    }
+
+    public enum SquadState
+    {
+        Alive, Dead
     }
 }

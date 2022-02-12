@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6798695928544941526}
   - component: {fileID: 5837057649197979851}
   - component: {fileID: 2133476153213878697}
+  - component: {fileID: 4528524466137786507}
   m_Layer: 0
   m_Name: Warrior_Hero
   m_TagString: Untagged
@@ -119,6 +120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Value:
     Speed: 3
+    State: 0
+    IsMovable: 0
 --- !u!114 &2133476153213878697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +134,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42a848137294ca28835d02d230d0205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4528524466137786507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210573583222284281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d2b3d1512e457f8306b76ed22a6bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    Rigidbody: {fileID: 2925107299434743484}
 --- !u!1 &1393369067268978924
 GameObject:
   m_ObjectHideFlags: 0

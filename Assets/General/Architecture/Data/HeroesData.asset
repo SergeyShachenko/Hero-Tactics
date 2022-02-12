@@ -18,16 +18,20 @@ MonoBehaviour:
       Type: 0
       Stats:
         Health: 5
-        Armor: 0
         Damage: 5
+        Armor: 0
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0
   - Warrior:
       Prefab: {fileID: 3026205881318650062, guid: cda94b3db5f9e5941a5d94fbf13aad47, type: 3}
       Type: 1
       Stats:
         Health: 5
-        Armor: 2
         Damage: 5
+        Armor: 20
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0

@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 7435591869714219350}
   - component: {fileID: -3508538751313576379}
   - component: {fileID: 3165084090023040205}
+  - component: {fileID: -825122248489539245}
   m_Layer: 0
   m_Name: Warrior_Enemy
   m_TagString: Untagged
@@ -336,3 +337,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583f4ee92341474dab9664a70ad4fcc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-825122248489539245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9137643030443803827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d2b3d1512e457f8306b76ed22a6bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    Rigidbody: {fileID: 3182190104025390865}

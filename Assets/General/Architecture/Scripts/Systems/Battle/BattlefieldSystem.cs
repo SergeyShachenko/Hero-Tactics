@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using General.Components;
 using General.Components.Battle;
+using General.Components.Events.Battle;
 using General.Services;
 using Leopotam.Ecs;
 
@@ -12,6 +12,7 @@ namespace General.Systems.Battle
         private readonly GameTools _gameTools;
 
         private readonly EcsFilter<Battlefield> _battlefields;
+        private readonly EcsFilter<BattlefieldChangeStateEvent> _battlefieldChangeStateEvents;
         
 
         void IEcsInitSystem.Init()
@@ -34,20 +35,20 @@ namespace General.Systems.Battle
                 CallSpawnWarriorEvents(ref battlefield, squadID:index);
             }    
         }
-
-
+        
+        
         private void OptimizeSpawnOnStart(ref Battlefield battlefield)
         {
-            ref var warriors = ref battlefield.SpawnOnStart;
+            ref var warriors = ref battlefield.SpawnWarriorOnStart;
             
             
             if(warriors.Count == 0) return; 
             
 
-            if (battlefield.IsBoss)
+            if (battlefield.SpawnBoss)
             {
                 warriors.RemoveRange(1, warriors.Count-1);
-                battlefield.BattleSide = BattleSide.Enemy;
+                battlefield.WarriorBattleSide = BattleSide.Enemy;
                 return;
             }
             
@@ -59,17 +60,17 @@ namespace General.Systems.Battle
         
         private void CallSpawnWarriorEvents(ref Battlefield battlefield, int squadID)
         {
-            if (battlefield.SpawnOnStart.Count == 0) return;
+            if (battlefield.SpawnWarriorOnStart.Count == 0) return;
              
             
-            if (battlefield.IsBoss)
+            if (battlefield.SpawnBoss)
             {
                 var standPoints = battlefield.StandPoints;
                 var spawnPoint = standPoints.GetChild(standPoints.childCount - 1);
                 
                 _gameTools.Events.SpawnWarrior(
-                    battlefield.BattleSide,
-                    battlefield.SpawnOnStart.First(),
+                    battlefield.WarriorBattleSide,
+                    battlefield.SpawnWarriorOnStart[0],
                     true,
                     squadID,
                     spawnPoint);
@@ -77,7 +78,7 @@ namespace General.Systems.Battle
             else
             {
                 var standPointIndex = 0;
-                foreach (var warriorType in battlefield.SpawnOnStart)
+                foreach (var warriorType in battlefield.SpawnWarriorOnStart)
                 {
                     var standPoints = battlefield.StandPoints;
                     var spawnPoint = standPoints.GetChild(standPointIndex++);
@@ -85,7 +86,7 @@ namespace General.Systems.Battle
                     if (standPointIndex >= standPoints.childCount - 1) standPointIndex = 0;
 
                     _gameTools.Events.SpawnWarrior(
-                        battlefield.BattleSide,
+                        battlefield.WarriorBattleSide,
                         warriorType,
                         false,
                         squadID,

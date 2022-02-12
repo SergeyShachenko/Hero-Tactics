@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using General.Components;
 using General.Components.Battle;
-using General.Components.Events;
+using General.Components.Events.Move;
 using General.Components.Events.Unity;
 using General.Components.Tags;
 using General.Services;
@@ -104,9 +104,7 @@ namespace General.Systems.Move
         private void UpdateAvailablePositions(bool canUpdate)
         {
             if (canUpdate == false) return;
-
             
-            _availablePositions.Clear();
 
             foreach (var index in _onTriggerEnterEvents)
             {
@@ -116,8 +114,11 @@ namespace General.Systems.Move
                 if (enterEvent.VisitorEntity.Has<PlayerTag>() == false) continue;
                 
                 
+                _availablePositions.Clear();
+                
                 ref var entitySender = ref enterEvent.SenderEntity;
                 var approvedWays = entitySender.Get<Battlefield>().AvailablePositions;
+                
                 _currentPosition = entitySender.Get<GameObj>().Value.transform.position;
                 _availablePositions.Add(_currentPosition);
 

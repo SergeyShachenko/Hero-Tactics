@@ -1,6 +1,6 @@
 ﻿using Leopotam.Ecs;
 
-namespace General.Components.Events
+namespace General.Components.Events.Battle
 {
     internal struct BattlefieldChangeStateEvent
     {

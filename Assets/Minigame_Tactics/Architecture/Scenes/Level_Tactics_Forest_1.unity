@@ -324,8 +324,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.WarriorBattleSide
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedWays.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedWays.Array.data[0]
@@ -360,6 +368,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedPositions.Array.data[0]
       value: 
       objectReference: {fileID: 1548267786}
@@ -367,6 +379,10 @@ PrefabInstance:
       propertyPath: Value.ApprovedPositions.Array.data[1]
       value: 
       objectReference: {fileID: 1413723342}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[2].Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.AvailablePositions.Array.data[0]
       value: 
@@ -383,6 +399,26 @@ PrefabInstance:
       propertyPath: Value.LinkedBattlefields.Array.data[1]
       value: 
       objectReference: {fileID: 1548267789}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[0].BattleSide
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[1].BattleSide
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[2].BattleSide
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[3].BattleSide
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
 --- !u!4 &1081984851 stripped
@@ -685,12 +721,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.HaveBoss
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnBoss
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.BattleSide
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.WarriorBattleSide
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedWays.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedWays.Array.data[0]
@@ -713,6 +765,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedPositions.Array.data[0]
       value: 
       objectReference: {fileID: 1081984851}
@@ -720,6 +776,14 @@ PrefabInstance:
       propertyPath: Value.ApprovedPositions.Array.data[1]
       value: 
       objectReference: {fileID: 1548267786}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[0].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[1].Type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.AvailablePositions.Array.data[0]
       value: 
@@ -732,6 +796,14 @@ PrefabInstance:
       propertyPath: Value.LinkedBattlefields.Array.data[0]
       value: 
       objectReference: {fileID: 1843185781}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
 --- !u!4 &1413723342 stripped
@@ -1151,6 +1223,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorTypes.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1187,9 +1263,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedPositions.Array.data[0]
       value: 
       objectReference: {fileID: 1081984851}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[2].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnOnStart.Array.data[3].Type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.AvailablePositions.Array.data[0]
       value: 
@@ -1198,6 +1286,10 @@ PrefabInstance:
       propertyPath: Value.LinkedBattlefields.Array.data[0]
       value: 
       objectReference: {fileID: 1843185781}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.SpawnWarriorOnStart.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9004999675897547239, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}

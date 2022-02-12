@@ -1,9 +1,9 @@
 ﻿using General.Components.Battle;
+using General.Components.Events.Battle;
 using General.Components.Events.Unity;
 using General.Services;
 using General.UnityComponents.Data;
 using Leopotam.Ecs;
-using UnityEngine;
 
 namespace General.Systems.Battle
 {
@@ -14,18 +14,20 @@ namespace General.Systems.Battle
         
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggerEnterEvents;
         private readonly EcsFilter<OnTriggerExitEvent> _onTriggerExitEvents;
+        private readonly EcsFilter<EndFightEvent> _endFightEvents;
         
         
         void IEcsRunSystem.Run()
         {
-            CheckVisitors();
-            CheckGoneVisitors();
+            CheckVisitors(canCheck:_onTriggerEnterEvents.IsEmpty() == false);
+            CheckGoneVisitors(canCheck:_onTriggerExitEvents.IsEmpty() == false);
+            CheckDeadVisitors(canCheck:_endFightEvents.IsEmpty() == false);
         }
-        
-        
-        private void CheckVisitors()
+
+
+        private void CheckVisitors(bool canCheck)
         {
-            if (_onTriggerEnterEvents.IsEmpty()) return;
+            if (canCheck == false) return;
             
             
             foreach (var index in _onTriggerEnterEvents)
@@ -34,12 +36,13 @@ namespace General.Systems.Battle
 
                 if (enterEvent.SenderEntity.Has<Battlefield>() == false) continue;
                 if (enterEvent.VisitorEntity.Has<Fighter>() == false) continue;
+                if (enterEvent.VisitorEntity.Get<Fighter>().State != FighterState.Alive) continue; 
                     
                     
                 ref var battlefield = ref enterEvent.SenderEntity.Get<Battlefield>();
                 battlefield.Visitors.Add(enterEvent.VisitorEntity);
-                
-                
+
+
                 if (UpdateState(ref battlefield))
                 {
                     _gameTools.Events.BattlefieldChangeState(ref enterEvent.SenderEntity);
@@ -50,9 +53,9 @@ namespace General.Systems.Battle
             }
         }
         
-        private void CheckGoneVisitors()
+        private void CheckGoneVisitors(bool canCheck)
         {
-            if (_onTriggerExitEvents.IsEmpty()) return;
+            if (canCheck == false) return;
             
             
             foreach (var index in _onTriggerExitEvents)
@@ -74,6 +77,29 @@ namespace General.Systems.Battle
                 }
                 
                 //Debug.Log("Remove Visitor");
+            }
+        }
+        
+        private void CheckDeadVisitors(bool canCheck)
+        {
+            if (canCheck == false) return;
+
+
+            foreach (var index in _endFightEvents)
+            {
+                ref var endFightEvent = ref _endFightEvents.GetEntity(index).Get<EndFightEvent>();
+                
+                if (endFightEvent.PlaceEntity.Has<Battlefield>() == false) return;
+                
+                
+                ref var battlefield = ref endFightEvent.PlaceEntity.Get<Battlefield>();
+                
+                for (int i = 0; i < battlefield.Visitors.Count; i++)
+                {
+                    var visitor = battlefield.Visitors[i];
+                    
+                    if (visitor.Get<Fighter>().State == FighterState.Dead) battlefield.Visitors.Remove(visitor);
+                }
             }
         }
         

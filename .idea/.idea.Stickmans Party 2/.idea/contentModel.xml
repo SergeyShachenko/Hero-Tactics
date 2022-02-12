@@ -16,9 +16,16 @@
                   <e p="Warrior.cs" t="Include" />
                 </e>
                 <e p="Events" t="Include">
-                  <e p="BattlefieldChangeStateEvent.cs" t="Include" />
-                  <e p="MoveHeroesToEvent.cs" t="Include" />
-                  <e p="MoveHeroToEvent.cs" t="Include" />
+                  <e p="Battle" t="Include">
+                    <e p="BattlefieldChangeStateEvent.cs" t="Include" />
+                    <e p="EndFightEvent.cs" t="Include" />
+                    <e p="EndPlacementFighterSquadEvent.cs" t="Include" />
+                    <e p="WarriorDeadEvent.cs" t="Include" />
+                  </e>
+                  <e p="Move" t="Include">
+                    <e p="MoveHeroesToEvent.cs" t="Include" />
+                    <e p="MoveHeroToEvent.cs" t="Include" />
+                  </e>
                   <e p="SpawnWarriorEvent.cs" t="Include" />
                   <e p="Unity" t="Include">
                     <e p="OnCollisionEnterEvent.cs" t="Include" />
@@ -32,6 +39,10 @@
                 </e>
                 <e p="GameObj.cs" t="Include" />
                 <e p="Movable.cs" t="Include" />
+                <e p="Physics" t="Include">
+                  <e p="ColliderB.cs" t="Include" />
+                  <e p="RigidB.cs" t="Include" />
+                </e>
                 <e p="Tags" t="Include">
                   <e p="BossTag.cs" t="Include" />
                   <e p="PlayerTag.cs" t="Include" />
@@ -47,6 +58,8 @@
                 <e p="Battle" t="Include">
                   <e p="BattlefieldSystem.cs" t="Include" />
                   <e p="BattlefieldVisitorsSystem.cs" t="Include" />
+                  <e p="WarriorDeathSystem.cs" t="Include" />
+                  <e p="WarriorFightSystem.cs" t="Include" />
                   <e p="WarriorSystem.cs" t="Include" />
                 </e>
                 <e p="Main" t="Include">
@@ -91,6 +104,10 @@
                     <e p="OnTriggerStayLink.cs" t="Include" />
                   </e>
                   <e p="MovableLink.cs" t="Include" />
+                  <e p="Physics" t="Include">
+                    <e p="ColliderLink.cs" t="Include" />
+                    <e p="RigidbodyLink.cs" t="Include" />
+                  </e>
                   <e p="Tags" t="Include">
                     <e p="BossTagLink.cs" t="Include" />
                     <e p="PlayerTagLink.cs" t="Include" />

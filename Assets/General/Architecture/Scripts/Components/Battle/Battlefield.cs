@@ -7,11 +7,11 @@ namespace General.Components.Battle
 {
     [Serializable] public struct Battlefield
     {
-        public BattleSide BattleSide;
-        public bool IsBoss;
-        public List<WarriorType> SpawnOnStart;
-        public List<Transform> AvailablePositions;
         [HideInInspector] public BattlefieldState State;
+        public bool SpawnBoss;
+        public BattleSide WarriorBattleSide;
+        public List<WarriorType> SpawnWarriorOnStart;
+        public List<Transform> AvailablePositions;
         [HideInInspector] public List<EcsEntity> Visitors;
         [HideInInspector] public Transform StandPoints, BattlePoints;
     }

@@ -19,37 +19,45 @@ MonoBehaviour:
       Type: 0
       Stats:
         Health: 5
-        Armor: 0
         Damage: 5
+        Armor: 0
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0
   - IsBoss: 0
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: d8910126f2adc274d9d40d31b3659f33, type: 3}
       Type: 1
       Stats:
         Health: 5
-        Armor: 2
         Damage: 5
+        Armor: 20
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0
   - IsBoss: 1
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: 84e7f9b7bce743a46b5b5d697dd3cfc0, type: 3}
       Type: 0
       Stats:
         Health: 10
-        Armor: 0
         Damage: 10
+        Armor: 0
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0
   - IsBoss: 1
     Warrior:
       Prefab: {fileID: 210573583222284281, guid: 919a22311a8c52c4981b84e493cc6064, type: 3}
       Type: 1
       Stats:
         Health: 10
-        Armor: 4
         Damage: 10
+        Armor: 40
       Movable:
         Speed: 3
+        State: 0
+        IsMovable: 0

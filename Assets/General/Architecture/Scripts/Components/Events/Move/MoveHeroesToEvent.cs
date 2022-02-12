@@ -2,7 +2,7 @@
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace General.Components.Events
+namespace General.Components.Events.Move
 {
     internal struct MoveHeroesToEvent
     {

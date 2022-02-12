@@ -1,9 +1,11 @@
+using System;
 using General.Components;
 using General.Components.Battle;
 using General.UnityComponents.Data;
 using General.UnityComponents.MonoLinks;
 using Leopotam.Ecs;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace General.UnityComponents.Services
 {
@@ -37,7 +39,7 @@ namespace General.UnityComponents.Services
             {
                 BattleSide = BattleSide.Hero,
                 SquadID = squadID,
-                State = FighterState.Disabled,
+                State = FighterState.Alive,
                 Stats = heroData.Warrior.Stats
             };
             entity.Get<Warrior>() = new Warrior
@@ -77,7 +79,7 @@ namespace General.UnityComponents.Services
             {
                 BattleSide = BattleSide.Enemy,
                 SquadID = squadID,
-                State = FighterState.Disabled,
+                State = FighterState.Alive,
                 Stats = enemyData.Warrior.Stats
             };
             entity.Get<Warrior>() = new Warrior
@@ -92,4 +94,11 @@ namespace General.UnityComponents.Services
             };
         }
     }
+}
+
+
+[Serializable] public struct SpawnedWarrior
+{
+    public BattleSide BattleSide;
+    public WarriorType Type;
 }

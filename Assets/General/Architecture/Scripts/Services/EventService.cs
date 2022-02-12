@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using General.Components.Battle;
 using General.Components.Events;
+using General.Components.Events.Battle;
+using General.Components.Events.Move;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -51,6 +53,32 @@ namespace General.Services
             _world.NewEntity().Get<BattlefieldChangeStateEvent>() = new BattlefieldChangeStateEvent
             {
                 BattlefieldEntity = entity
+            };
+        }
+
+        public void EndPlacementFighterSquad(BattleSide battleSide, List<EcsEntity> fighters, EcsEntity place)
+        {
+            _world.NewEntity().Get<EndPlacementFighterSquadEvent>() = new EndPlacementFighterSquadEvent
+            {
+                BattleSide = battleSide,
+                Fighters = fighters,
+                PlaceEntity = place
+            };
+        }
+
+        public void EndFight(ref EcsEntity entity)
+        {
+            _world.NewEntity().Get<EndFightEvent>() = new EndFightEvent
+            {
+                PlaceEntity = entity
+            };
+        }
+
+        public void WarriorDead(ref EcsEntity entity)
+        {
+            _world.NewEntity().Get<WarriorDeadEvent>() = new WarriorDeadEvent
+            {
+                Entity = entity
             };
         }
     }

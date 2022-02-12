@@ -2,8 +2,7 @@
 using System.Linq;
 using General.Components;
 using General.Components.Battle;
-using General.Components.Events;
-using General.Components.Events.Unity;
+using General.Components.Events.Battle;
 using General.Components.Tags;
 using General.Services;
 using Leopotam.Ecs;
@@ -54,6 +53,7 @@ namespace General.Systems.Move
                 foreach (var visitor in visitors)
                 {
                     if (visitor.Get<Fighter>().BattleSide != BattleSide.Enemy) continue;
+                    if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
                         
                         
                     var fighter = new PlacebleFighter {Entity = visitor, Place = entity};

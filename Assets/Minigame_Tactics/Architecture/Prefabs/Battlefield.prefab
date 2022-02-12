@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value:
-    BattleSide: 0
-    IsBoss: 0
-    SpawnOnStart: 010000000000000000000000
-    AvailablePositions: []
     State: 0
+    SpawnBoss: 0
+    WarriorBattleSide: 0
+    SpawnWarriorOnStart: 000000000000000001000000
+    AvailablePositions: []
     StandPoints: {fileID: 2756776536823809962}
     BattlePoints: {fileID: 2756776535541352830}
 --- !u!114 &8810570769544268397

@@ -1,4 +1,6 @@
 using General.Components.Events;
+using General.Components.Events.Battle;
+using General.Components.Events.Move;
 using General.Components.Events.Unity;
 using General.UnityComponents.Data;
 using General.Services;
@@ -95,14 +97,19 @@ namespace General
         private void InitGameplaySystems()
         {
             _gameplaySystems
-                .Add(BattleSystems())
                 .Add(MoveSystems())
+                .Add(BattleSystems())
+
+                .OneFrame<MoveHeroesToEvent>()
+                .OneFrame<EndPlacementFighterSquadEvent>()
+                
+                .OneFrame<BattlefieldChangeStateEvent>()
+                .OneFrame<EndFightEvent>()
+                .OneFrame<WarriorDeadEvent>()
                 
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
                 .OneFrame<OnTriggerExitEvent>()
-                .OneFrame<MoveHeroesToEvent>()
-                .OneFrame<BattlefieldChangeStateEvent>()
 
                 .Inject(GameSettings)
                 .Inject(GameData)
@@ -133,8 +140,6 @@ namespace General
 
             return moveSystems
                 .Add(new PlayerInputSystem())
-                .Add(new PlacementHeroSystem())
-                .Add(new PlacementEnemySystem())
                 .Add(new MoveHeroSystem());
         }
         
@@ -145,7 +150,11 @@ namespace General
             return battleSystems
                 .Add(new BattlefieldSystem())
                 .Add(new BattlefieldVisitorsSystem())
-                .Add(new WarriorSystem());
+                .Add(new PlacementHeroSystem())
+                .Add(new PlacementEnemySystem())
+                .Add(new WarriorFightSystem())
+                .Add(new WarriorSystem())
+                .Add(new WarriorDeathSystem());
         }
 
         private void Debug(bool isEnable)
