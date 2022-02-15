@@ -5,10 +5,12 @@ using Components.Events.Unity;
 using UnityComponents.Data;
 using Services;
 using Systems.Battle;
+using Systems.Game;
 using Systems.Main;
 using Systems.Main.Spawn;
 using Systems.Move;
 using Components.Events.Spawn;
+using General.Systems;
 using UnityComponents.Services;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -17,12 +19,9 @@ namespace General
 {
     public sealed class GameStartup : MonoBehaviour
     {
-        [Header("Settings")]
-        [SerializeField] private MapPreset Map = MapPreset.Forest;
-        [SerializeField] private GameSettings GameSettings;
-        
         [Header("Data")]
         [SerializeField] private GameData GameData;
+        [SerializeField] private GameSettings GameSettings;
         [SerializeField] private GameServices GameServices;
 
         private EcsWorld _world;
@@ -36,7 +35,8 @@ namespace General
             _mainSystems = new EcsSystems(_world, "Main Systems");
             _gameplaySystems = new EcsSystems(_world, "Gameplay Systems");
             
-            Debug(GameSettings.ECSDebug);
+            Debug(isEnable:
+                GameSettings.ECSDebug);
             
             InitServices();
             InitMainSystems();
@@ -100,20 +100,18 @@ namespace General
             _gameplaySystems
                 .Add(MoveSystems())
                 .Add(BattleSystems())
-                .Add(new GameStateSystem())
+                .Add(GameSystems())
 
-                .OneFrame<MoveHeroesToEvent>()
-                .OneFrame<EndPlacementFighterSquadEvent>()
-                
-                .OneFrame<BattlefieldChangeStateEvent>()
-                .OneFrame<EndFightEvent>()
-                .OneFrame<WarriorDeadEvent>()
+                .OneFrame<StartBattleEvent>()
+                .OneFrame<EndBattleEvent>()
+                .OneFrame<DeadFighterEvent>()
 
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
                 .OneFrame<OnTriggerExitEvent>()
                 
-                .OneFrame<GameChangeStateEvent>()
+                .OneFrame<ChangedStateBattlefieldEvent>()
+                .OneFrame<ChangeGameStateEvent>()
 
                 .Inject(GameSettings)
                 .Inject(GameData)
@@ -144,7 +142,9 @@ namespace General
 
             return moveSystems
                 .Add(new PlayerInputSystem())
-                .Add(new MoveHeroSystem());
+                .Add(new MoveHeroSystem())
+                
+                .OneFrame<MoveHeroesToEvent>();
         }
         
         private EcsSystems BattleSystems()
@@ -153,17 +153,29 @@ namespace General
 
             return battleSystems
                 .Add(new BattlefieldSystem())
-                .Add(new BattlefieldVisitorsSystem())
                 .Add(new PlacementHeroSystem())
                 .Add(new PlacementEnemySystem())
-                .Add(new WarriorFightSystem())
-                .Add(new WarriorSystem())
-                .Add(new WarriorDeathSystem());
+                
+                .Add(new BattleSystem())
+
+                .Add(new FighterSystem())
+                .Add(new FighterAnimationSystem())
+                .Add(new FighterDeathSystem())
+
+                .OneFrame<EndPlacementFighterSquadEvent>();
+        }
+
+        private EcsSystems GameSystems()
+        {
+            var gameSystems = new EcsSystems(_world, "Game Systems");
+
+            return gameSystems
+                .Add(new GameStateSystem());
         }
 
         private void Debug(bool isEnable)
         {
-            if (!isEnable) return;
+            if (isEnable == false) return;
 
             
 #if UNITY_EDITOR
@@ -171,12 +183,6 @@ namespace General
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_mainSystems);
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_gameplaySystems);
 #endif
-        }
-        
-        
-        public enum MapPreset
-        {
-            Forest, Desert, Winter
         }
     }
 }

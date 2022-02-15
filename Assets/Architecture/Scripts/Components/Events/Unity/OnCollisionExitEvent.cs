@@ -5,9 +5,9 @@ namespace Components.Events.Unity
 {
     internal struct OnCollisionExitEvent
     {
-        public GameObject Sender;
+        public GameObject GameObjSender;
         public Collision Collision;
-        public EcsEntity EntitySender;
-        public EcsEntity EntityVisitor;
+        public EcsEntity Sender;
+        public EcsEntity Visitor;
     }
 }

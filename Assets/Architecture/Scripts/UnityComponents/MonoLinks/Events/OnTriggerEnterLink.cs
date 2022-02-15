@@ -14,10 +14,10 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnTriggerEnterEvent>() = new OnTriggerEnterEvent
             {
-                Sender = gameObject,
+                GameObjSender = gameObject,
                 Collider = other,
-                SenderEntity = entitySender,
-                VisitorEntity = entityVisitor
+                Sender = entitySender,
+                Visitor = entityVisitor
             };
             
             //Debug.Log("OnTriggerEnter");

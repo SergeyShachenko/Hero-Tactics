@@ -12,8 +12,8 @@ namespace Systems.Move
     {
         private readonly GameTools _gameTools;
 
+        private readonly EcsFilter<OnPointerClickEvent> _onPointerClicks;
         private readonly EcsFilter<Movable, PlayerTag> _movableHeroes;
-        private readonly EcsFilter<OnPointerClickEvent> _onPointerClickEvents;
 
 
         void IEcsRunSystem.Run()
@@ -24,14 +24,14 @@ namespace Systems.Move
         
         private void ClickOnBattlefield()
         {
-            if (_onPointerClickEvents.IsEmpty()) return;
+            if (_onPointerClicks.IsEmpty()) return;
 
 
-            foreach (var index in _onPointerClickEvents)
+            foreach (var index in _onPointerClicks)
             {
-                ref var clickEvent = ref _onPointerClickEvents.GetEntity(index).Get<OnPointerClickEvent>();
+                ref var clickEvent = ref _onPointerClicks.GetEntity(index).Get<OnPointerClickEvent>();
 
-                if (clickEvent.EntitySender.Has<Battlefield>() == false || _movableHeroes.IsEmpty()) continue;
+                if (clickEvent.Sender.Has<Battlefield>() == false || _movableHeroes.IsEmpty()) continue;
 
                 
                 var heroes = new List<EcsEntity>();
@@ -43,7 +43,7 @@ namespace Systems.Move
                     if (entity.Get<Movable>().IsMovable) heroes.Add(entity);
                 }
 
-                _gameTools.Events.MoveEntitysTo(heroes, clickEvent.Sender.transform.position);
+                _gameTools.Events.MoveEntitiesTo(heroes, clickEvent.GameObjSender.transform.position);
             }
         }
     }

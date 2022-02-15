@@ -14,7 +14,7 @@ namespace Systems.Main.Spawn
         private readonly GameData _gameData;
         private readonly GameServices _gameServices;
 
-        private readonly EcsFilter<SpawnWarriorEvent> _spawnWarriorEvents;
+        private readonly EcsFilter<SpawnWarriorEvent> _spawnWarriors;
 
         private List<HeroData> _heroesData;
         private List<EnemyData> _enemysData;
@@ -28,12 +28,12 @@ namespace Systems.Main.Spawn
         
         void IEcsRunSystem.Run()
         {
-            if (_spawnWarriorEvents.IsEmpty()) return;
+            if (_spawnWarriors.IsEmpty()) return;
             
             
-            foreach (var index in _spawnWarriorEvents)
+            foreach (var index in _spawnWarriors)
             {
-                var spawnEvent = _spawnWarriorEvents.GetEntity(index).Get<SpawnWarriorEvent>();
+                var spawnEvent = _spawnWarriors.GetEntity(index).Get<SpawnWarriorEvent>();
 
 
                 if (spawnEvent.BattleSide == BattleSide.Hero)

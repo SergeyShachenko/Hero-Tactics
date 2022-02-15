@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Systems.Battle;
 using Components;
 using Components.Battle;
 using Components.Events.Battle;
@@ -15,42 +14,45 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<BattlefieldChangeStateEvent> _battlefieldChangeStateEvents;
+        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
 
-        private List<PlacebleFighter> _enemysForMove, _enemysCompleteMove;
+        private List<PlacebleFighter> _enemiesForMove, _enemiesCompleteMove;
         private int _defencePositionsIndex, _freePositionsIndex;
 
         
         void IEcsInitSystem.Init()
         {
-            _enemysForMove = new List<PlacebleFighter>();
-            _enemysCompleteMove = new List<PlacebleFighter>();
+            _enemiesForMove = new List<PlacebleFighter>();
+            _enemiesCompleteMove = new List<PlacebleFighter>();
         }
 
         void IEcsRunSystem.Run()
         {
-            UpdateEnemysForMove(canUpdate:_battlefieldChangeStateEvents.IsEmpty() == false);
+            UpdateEnemiesForMove(canUpdate:
+                _changedStateBattlefields.IsEmpty() == false);
 
-            MoveEnemys(canMove:_enemysForMove.Count > 0);
+            MoveEnemies(canMove:
+                _enemiesForMove.Count > 0);
             
-            ClearEnemysForMove(canClear:_enemysForMove.Count == _enemysCompleteMove.Count && _enemysForMove.Count > 0);
+            ClearEnemiesForMove(canClear:
+                _enemiesForMove.Count <= _enemiesCompleteMove.Count && _enemiesForMove.Count > 0);
         }
 
 
-        private void UpdateEnemysForMove(bool canUpdate)
+        private void UpdateEnemiesForMove(bool canUpdate)
         {
             if (canUpdate == false) return;
             
             
-            foreach (var index in  _battlefieldChangeStateEvents)
+            foreach (var index in  _changedStateBattlefields)
             {
                 ref var changeStateEvent = 
-                    ref _battlefieldChangeStateEvents.GetEntity(index).Get<BattlefieldChangeStateEvent>();
+                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>();
                 
-                ref var entity = ref changeStateEvent.BattlefieldEntity;
+                ref var entity = ref changeStateEvent.Battlefield;
                 ref var visitors = ref entity.Get<Battlefield>().Visitors;
-                    
-                    
+
+
                 foreach (var visitor in visitors)
                 {
                     if (visitor.Get<Fighter>().BattleSide != BattleSide.Enemy) continue;
@@ -59,21 +61,21 @@ namespace Systems.Battle
                         
                     var fighter = new PlacebleFighter {Entity = visitor, Place = entity};
 
-                    if (_enemysForMove.Contains(fighter) == false)
+                    if (_enemiesForMove.Contains(fighter) == false)
                     { 
                         fighter.Entity.Get<Movable>().IsMovable = false; 
-                        _enemysForMove.Add(fighter);
+                        _enemiesForMove.Add(fighter);
                     }
                 }
             }
         }
 
-        private void MoveEnemys(bool canMove)
+        private void MoveEnemies(bool canMove)
         {
             if (canMove == false) return;
 
 
-            foreach (var enemy in _enemysForMove)
+            foreach (var enemy in _enemiesForMove)
             {
                 ref var battlefield = ref enemy.Place.Get<Battlefield>();
                 bool enemyOnTheMove;
@@ -98,7 +100,6 @@ namespace Systems.Battle
                                 0.05f);
                             
                             enemy.Entity.Get<GameObj>().Value.transform.LookAt(mainAssaultPoint);
-                            enemy.Entity.Get<Movable>().State = enemyOnTheMove ? MovableState.Walk : MovableState.Stand;
                         }
                         else
                         {
@@ -108,14 +109,14 @@ namespace Systems.Battle
                                 0.05f);
 
                             enemy.Entity.Get<GameObj>().Value.transform.LookAt(mainAssaultPoint);
-                            enemy.Entity.Get<Movable>().State = enemyOnTheMove ? MovableState.Walk : MovableState.Stand;
                         }
                         
                         
                         if (_defencePositionsIndex >= defencePlacementPositions.Count - 1) _defencePositionsIndex = 0;
                         
-                        if (enemyOnTheMove == false && _enemysCompleteMove.Contains(enemy) == false)
-                            _enemysCompleteMove.Add(enemy);
+                        if (enemyOnTheMove == false && _enemiesCompleteMove.Contains(enemy) == false || 
+                            enemy.Entity.Get<Fighter>().State == FighterState.Disabled)
+                            _enemiesCompleteMove.Add(enemy);
                         
                         break;
 
@@ -136,7 +137,6 @@ namespace Systems.Battle
                                 0.05f);
                             
                             enemy.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(0,180,0);
-                            enemy.Entity.Get<Movable>().State = enemyOnTheMove ? MovableState.Walk : MovableState.Stand;
                         }
                         else
                         {
@@ -146,13 +146,12 @@ namespace Systems.Battle
                                 0.05f);
                             
                             enemy.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(0,180,0);
-                            enemy.Entity.Get<Movable>().State = enemyOnTheMove ? MovableState.Walk : MovableState.Stand;
                         }
 
                         
-                        if (enemyOnTheMove == false && _enemysCompleteMove.Contains(enemy) == false || 
+                        if (enemyOnTheMove == false && _enemiesCompleteMove.Contains(enemy) == false || 
                             enemy.Entity.Get<Fighter>().State == FighterState.Disabled)
-                            _enemysCompleteMove.Add(enemy);
+                            _enemiesCompleteMove.Add(enemy);
 
                         if (_freePositionsIndex >= freePlacementPositions.Count - 1) _freePositionsIndex = 0;
                         
@@ -161,15 +160,23 @@ namespace Systems.Battle
             }
         }
         
-        private void ClearEnemysForMove(bool canClear)
+        private void ClearEnemiesForMove(bool canClear)
         {
             if (canClear == false) return;
 
 
-            foreach (var enemy in _enemysCompleteMove) enemy.Entity.Get<Movable>().IsMovable = true;
+            var enemies = new List<EcsEntity>();
 
-            _enemysForMove.Clear();
-            _enemysCompleteMove.Clear();
+            foreach (var enemy in _enemiesCompleteMove)
+            {
+                enemy.Entity.Get<Movable>().IsMovable = true;
+                enemies.Add(enemy.Entity);
+            }
+
+            _gameTools.Events.EndPlacementFighterSquad(BattleSide.Enemy, enemies, _enemiesCompleteMove.First().Place);
+            
+            _enemiesForMove.Clear();
+            _enemiesCompleteMove.Clear();
         }
     }
 }

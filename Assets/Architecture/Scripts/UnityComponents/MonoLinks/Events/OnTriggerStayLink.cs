@@ -14,10 +14,10 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnTriggerStayEvent>() = new OnTriggerStayEvent
             {
-                Sender = gameObject,
+                GameObjSender = gameObject,
                 Collider = other,
-                EntitySender = entitySender,
-                EntityVisitor = entityVisitor
+                Sender = entitySender,
+                Visitor = entityVisitor
             };
         }
     }

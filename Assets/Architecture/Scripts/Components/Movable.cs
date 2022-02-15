@@ -12,6 +12,6 @@ namespace Components
 
     public enum MovableState
     {
-        Stand, Walk, Run
+        Idle, Walk, Run
     }
 }

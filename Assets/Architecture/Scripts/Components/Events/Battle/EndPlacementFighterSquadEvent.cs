@@ -8,6 +8,6 @@ namespace Components.Events.Battle
     {
         public BattleSide BattleSide;
         public List<EcsEntity> Fighters;
-        public EcsEntity PlaceEntity;
+        public EcsEntity Place;
     }
 }

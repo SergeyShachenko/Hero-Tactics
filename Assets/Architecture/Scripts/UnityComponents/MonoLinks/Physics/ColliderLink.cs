@@ -2,5 +2,5 @@
 
 namespace UnityComponents.MonoLinks.Physics
 {
-    public class ColliderLink : MonoLink<ColliderComponent> { }
+    public class ColliderLink : MonoLink<ColliderComp> { }
 }

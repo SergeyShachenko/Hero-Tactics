@@ -14,8 +14,8 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggerEnterEvents;
-        private readonly EcsFilter<BattlefieldChangeStateEvent> _battlefieldChangeStateEvents;
+        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
+        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
 
         private List<PlacebleFighter> _heroesForMove, _heroesCompleteMove;
         private int _assaultPositionsIndex, _freePositionsIndex;
@@ -30,7 +30,7 @@ namespace Systems.Battle
         void IEcsRunSystem.Run()
         {
             UpdateHeroesForMove(canUpdate:
-                _onTriggerEnterEvents.IsEmpty() == false || _battlefieldChangeStateEvents.IsEmpty() == false);
+                _onTriggersEnter.IsEmpty() == false || _changedStateBattlefields.IsEmpty() == false);
 
             MoveHeroes(canMove:
                 _heroesForMove.Count > 0);
@@ -44,13 +44,13 @@ namespace Systems.Battle
         {
             if (canUpdate == false) return;
 
-            if (_onTriggerEnterEvents.IsEmpty() == false)
+            if (_onTriggersEnter.IsEmpty() == false)
             {
-                foreach (var index in _onTriggerEnterEvents)
+                foreach (var index in _onTriggersEnter)
                 {
-                    ref var triggerEvent = ref _onTriggerEnterEvents.GetEntity(index).Get<OnTriggerEnterEvent>();
-                    ref var eventSender = ref triggerEvent.SenderEntity;
-                    ref var eventVisitor = ref triggerEvent.VisitorEntity;
+                    ref var triggerEvent = ref _onTriggersEnter.GetEntity(index).Get<OnTriggerEnterEvent>();
+                    ref var eventSender = ref triggerEvent.Sender;
+                    ref var eventVisitor = ref triggerEvent.Visitor;
                 
                     if (eventSender.Has<Battlefield>() == false || eventVisitor.Has<Fighter>() == false) continue;
                     if (eventVisitor.Get<Fighter>().State != FighterState.Alive) continue;
@@ -66,14 +66,14 @@ namespace Systems.Battle
                 }
             }
 
-            if (_battlefieldChangeStateEvents.IsEmpty() == false)
+            if (_changedStateBattlefields.IsEmpty() == false)
             {
-                foreach (var index in  _battlefieldChangeStateEvents)
+                foreach (var index in  _changedStateBattlefields)
                 {
                     ref var changeStateEvent = 
-                        ref _battlefieldChangeStateEvents.GetEntity(index).Get<BattlefieldChangeStateEvent>();
+                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>();
                 
-                    ref var entity = ref changeStateEvent.BattlefieldEntity;
+                    ref var entity = ref changeStateEvent.Battlefield;
                     ref var visitors = ref entity.Get<Battlefield>().Visitors;
                     
                     
@@ -123,7 +123,6 @@ namespace Systems.Battle
                             0.05f);
                         
                         hero.Entity.Get<GameObj>().Value.transform.LookAt(mainDefencePoint);
-                        hero.Entity.Get<Movable>().State = heroOnTheMove ? MovableState.Walk : MovableState.Stand;
 
 
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)
@@ -148,9 +147,8 @@ namespace Systems.Battle
                             0.05f);
                         
                         hero.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(Vector3.zero);
-                        hero.Entity.Get<Movable>().State = heroOnTheMove ? MovableState.Run : MovableState.Stand;
 
-                        
+
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)
                             _heroesCompleteMove.Add(hero);
 

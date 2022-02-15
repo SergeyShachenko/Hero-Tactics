@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Systems.Game;
 using Components.Battle;
 using Components.Events.Battle;
 using Components.Events.Main;
 using Components.Events.Move;
-using Systems.Main;
 using Components.Events.Spawn;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -32,7 +32,7 @@ namespace Services
             };
         }
 
-        public void MoveEntitysTo(List<EcsEntity> entities, Vector3 targetPosition)
+        public void MoveEntitiesTo(List<EcsEntity> entities, Vector3 targetPosition)
         {
             _world.NewEntity().Get<MoveHeroesToEvent>() = new MoveHeroesToEvent
             {
@@ -50,17 +50,17 @@ namespace Services
             };
         }
 
-        public void BattlefieldChangeState(ref EcsEntity entity)
+        public void ChangedStateBattlefield(ref EcsEntity battlefield)
         {
-            _world.NewEntity().Get<BattlefieldChangeStateEvent>() = new BattlefieldChangeStateEvent
+            _world.NewEntity().Get<ChangedStateBattlefieldEvent>() = new ChangedStateBattlefieldEvent
             {
-                BattlefieldEntity = entity
+                Battlefield = battlefield
             };
         }
 
-        public void GameChangeState(GameState state)
+        public void ChangeGameState(GameState state)
         {
-            _world.NewEntity().Get<GameChangeStateEvent>() = new GameChangeStateEvent
+            _world.NewEntity().Get<ChangeGameStateEvent>() = new ChangeGameStateEvent
             {
                 State = state
             };
@@ -72,23 +72,35 @@ namespace Services
             {
                 BattleSide = battleSide,
                 Fighters = fighters,
-                PlaceEntity = place
+                Place = place
             };
         }
 
-        public void EndFight(ref EcsEntity entity)
+        public void StartBattle(int assaultSquadID, int defenceSquadID, ref EcsEntity place)
         {
-            _world.NewEntity().Get<EndFightEvent>() = new EndFightEvent
+            _world.NewEntity().Get<StartBattleEvent>() = new StartBattleEvent
             {
-                PlaceEntity = entity
+                AssaultSquadID = assaultSquadID,
+                DefenceSquadID = defenceSquadID,
+                Place = place
+            };
+        }
+        
+        public void EndBattle(int assaultSquadID, int defenceSquadID, ref EcsEntity place)
+        {
+            _world.NewEntity().Get<EndBattleEvent>() = new EndBattleEvent
+            {
+                AssaultSquadID = assaultSquadID,
+                DefenceSquadID = defenceSquadID,
+                Place = place
             };
         }
 
-        public void WarriorDead(ref EcsEntity entity)
+        public void DeadFighter(ref EcsEntity fighter)
         {
-            _world.NewEntity().Get<WarriorDeadEvent>() = new WarriorDeadEvent
+            _world.NewEntity().Get<DeadFighterEvent>() = new DeadFighterEvent
             {
-                Entity = entity
+                Fighter = fighter
             };
         }
     }

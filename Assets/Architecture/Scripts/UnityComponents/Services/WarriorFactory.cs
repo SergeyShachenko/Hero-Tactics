@@ -40,6 +40,7 @@ namespace UnityComponents.Services
                 BattleSide = BattleSide.Hero,
                 SquadID = squadID,
                 State = FighterState.Alive,
+                Action = FighterAction.None,
                 Stats = heroData.Warrior.Stats
             };
             entity.Get<Warrior>() = new Warrior
@@ -49,7 +50,7 @@ namespace UnityComponents.Services
             entity.Get<Movable>() = new Movable
             {
                 Speed = Random.Range(heroData.Warrior.Movable.Speed - speedOffset, heroData.Warrior.Movable.Speed),
-                State = MovableState.Stand,
+                State = MovableState.Idle,
                 IsMovable = true
             };
         }
@@ -80,6 +81,7 @@ namespace UnityComponents.Services
                 BattleSide = BattleSide.Enemy,
                 SquadID = squadID,
                 State = FighterState.Alive,
+                Action = FighterAction.None,
                 Stats = enemyData.Warrior.Stats
             };
             entity.Get<Warrior>() = new Warrior
@@ -89,7 +91,7 @@ namespace UnityComponents.Services
             entity.Get<Movable>() = new Movable
             {
                 Speed = Random.Range(enemyData.Warrior.Movable.Speed - speedOffset, enemyData.Warrior.Movable.Speed),
-                State = MovableState.Stand,
+                State = MovableState.Idle,
                 IsMovable = true
             };
         }

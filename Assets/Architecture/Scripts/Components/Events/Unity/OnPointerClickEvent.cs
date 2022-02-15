@@ -5,7 +5,7 @@ namespace Components.Events.Unity
 {
     internal struct OnPointerClickEvent
     {
-        public GameObject Sender;
-        public EcsEntity EntitySender;
+        public GameObject GameObjSender;
+        public EcsEntity Sender;
     }
 }

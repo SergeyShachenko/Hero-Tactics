@@ -5,9 +5,9 @@ namespace Components.Events.Unity
 {
     internal struct OnTriggerEnterEvent
     {
-        public GameObject Sender;
+        public GameObject GameObjSender;
         public Collider Collider;
-        public EcsEntity SenderEntity;
-        public EcsEntity VisitorEntity;
+        public EcsEntity Sender;
+        public EcsEntity Visitor;
     }
 }

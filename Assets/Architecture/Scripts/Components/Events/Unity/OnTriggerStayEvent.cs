@@ -5,9 +5,9 @@ namespace Components.Events.Unity
 {
     internal struct OnTriggerStayEvent
     {
-        public GameObject Sender;
+        public GameObject GameObjSender;
         public Collider Collider;
-        public EcsEntity EntitySender;
-        public EcsEntity EntityVisitor;
+        public EcsEntity Sender;
+        public EcsEntity Visitor;
     }
 }

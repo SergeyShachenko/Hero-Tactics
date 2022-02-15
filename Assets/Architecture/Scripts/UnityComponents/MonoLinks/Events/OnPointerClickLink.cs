@@ -13,8 +13,8 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnPointerClickEvent>() = new OnPointerClickEvent
             {
-                Sender = gameObject,
-                EntitySender = entitySender
+                GameObjSender = gameObject,
+                Sender = entitySender
             };
             
             //Debug.Log("OnPointerClick");

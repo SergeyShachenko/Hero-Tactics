@@ -9,6 +9,7 @@ namespace Components.Battle
         public BattleSide BattleSide;
         public int SquadID;
         public FighterState State;
+        public FighterAction Action;
         public FighterStats Stats;
     }
     
@@ -23,10 +24,15 @@ namespace Components.Battle
         Disabled, Alive, Dead, 
     }
 
+    public enum FighterAction
+    {
+        Attack, GetDamage, None
+    }
+
     [Serializable] public struct FighterStats
     {
-        public int Health;
-        public int Damage;
+        public float Health;
+        public float Damage;
         [Range(0, 100)] public int Armor;
     }
     
@@ -35,7 +41,7 @@ namespace Components.Battle
         public BattleSide BattleSide;
         public SquadState State;
         public int ID;
-        public float Health, Armor, Damage;
+        public FighterStats Stats;
         public EcsEntity Place;
     }
 

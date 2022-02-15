@@ -9,12 +9,14 @@ namespace Services
     public sealed class GameplayService
     {
         private readonly EcsWorld _world;
+        private readonly GameTools _gameTools;
 
         private readonly EcsFilter<Fighter> _fighters;
         
-        public GameplayService(EcsWorld world)
+        public GameplayService(EcsWorld world, GameTools gameTools)
         {
             _world = world;
+            _gameTools = gameTools;
         }
         
 
@@ -35,23 +37,19 @@ namespace Services
 
             return Vector3.Distance(newPosition, targetPosition) >= minDistance;
         }
-        
-        // public List<EcsEntity> GetSquad(int squadID)
-        // {
-        //     if (_fighters.IsEmpty()) return null;
-        //
-        //
-        //     var squad = new List<EcsEntity>();
-        //     
-        //     foreach (var index in _fighters)
-        //     {
-        //         ref var entity = ref _fighters.GetEntity(index);
-        //         ref var fighter = ref entity.Get<Fighter>();
-        //
-        //         if (fighter.SquadID == squadID) squad.Add(entity);
-        //     }
-        //
-        //     return squad.Count > 0 ? squad : null;
-        // }
+
+        public void TakeDamageInPercent(float percent, EcsEntity entity)
+        {
+            if (entity.Has<Fighter>() == false) return;
+
+            ref var fighter = ref entity.Get<Fighter>();
+            
+            var newHealth = fighter.Stats.Health;
+            newHealth -= newHealth / 100 * percent;
+
+            if (newHealth < 0) newHealth = 0;
+
+            fighter.Stats.Health = newHealth;
+        }
     }
 }

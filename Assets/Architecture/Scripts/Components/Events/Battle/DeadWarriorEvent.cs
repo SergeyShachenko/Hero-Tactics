@@ -2,8 +2,8 @@
 
 namespace Components.Events.Battle
 {
-    internal struct WarriorDeadEvent
+    internal struct DeadFighterEvent
     {
-        public EcsEntity Entity;
+        public EcsEntity Fighter;
     }
 }

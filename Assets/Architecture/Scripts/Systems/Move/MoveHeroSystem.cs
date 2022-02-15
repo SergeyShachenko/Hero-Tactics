@@ -16,8 +16,8 @@ namespace Systems.Move
         private readonly GameTools _gameTools;
         private readonly GameSettings _gameSettings;
         
-        private readonly EcsFilter<MoveHeroesToEvent> _moveHeroesEvents;
-        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggerEnterEvents;
+        private readonly EcsFilter<MoveHeroesToEvent> _moveHeroes;
+        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
 
         private Vector3 _currentPosition, _nextPosition;
         private List<Vector3> _availablePositions, _placementPositions;
@@ -41,12 +41,20 @@ namespace Systems.Move
 
         void IEcsRunSystem.Run()
         {
-            UpdateHeroesForMove(canUpdate:_moveHeroesEvents.IsEmpty() == false);
-            UpdatePlacementPositions(canUpdate:_heroesForMove.Count > 0);
-            UpdateAvailablePositions(canUpdate:_onTriggerEnterEvents.IsEmpty() == false);
+            UpdateHeroesForMove(canUpdate:
+                _moveHeroes.IsEmpty() == false);
+            
+            UpdatePlacementPositions(canUpdate:
+                _heroesForMove.Count > 0);
+            
+            UpdateAvailablePositions(canUpdate:
+                _onTriggersEnter.IsEmpty() == false);
 
-            MoveHeroes(canMove:_availablePositions.Contains(_nextPosition));
-            ClearHeroesForMove(canClear:_heroesForMove.Count == _heroesCompleteMove.Count && _heroesForMove.Count > 0);
+            MoveHeroes(canMove:
+                _availablePositions.Contains(_nextPosition));
+            
+            ClearHeroesForMove(canClear:
+                _heroesForMove.Count == _heroesCompleteMove.Count && _heroesForMove.Count > 0);
         }
         
 
@@ -58,9 +66,9 @@ namespace Systems.Move
             var heroes = new List<EcsEntity>();
             var targetPosition = new Vector3();
             
-            foreach (var index in _moveHeroesEvents)
+            foreach (var index in _moveHeroes)
             {
-                ref var moveEvent = ref _moveHeroesEvents.GetEntity(index).Get<MoveHeroesToEvent>();
+                ref var moveEvent = ref _moveHeroes.GetEntity(index).Get<MoveHeroesToEvent>();
                 heroes = moveEvent.Heroes;
                 targetPosition = moveEvent.TargetPosition;
             }
@@ -78,14 +86,14 @@ namespace Systems.Move
 
         private void UpdatePlacementPositions(bool canUpdate)
         {
-            if (canUpdate == false || _moveHeroesEvents.IsEmpty()) return;
+            if (canUpdate == false || _moveHeroes.IsEmpty()) return;
 
 
             var targetPosition = new Vector3();
             
-            foreach (var index in _moveHeroesEvents)
+            foreach (var index in _moveHeroes)
             {
-                targetPosition = _moveHeroesEvents.GetEntity(index).Get<MoveHeroesToEvent>().TargetPosition;
+                targetPosition = _moveHeroes.GetEntity(index).Get<MoveHeroesToEvent>().TargetPosition;
             }
             
             if (_availablePositions.Contains(targetPosition) == false || targetPosition == _currentPosition) return;
@@ -106,17 +114,17 @@ namespace Systems.Move
             if (canUpdate == false) return;
             
 
-            foreach (var index in _onTriggerEnterEvents)
+            foreach (var index in _onTriggersEnter)
             {
-                ref var enterEvent = ref _onTriggerEnterEvents.GetEntity(index).Get<OnTriggerEnterEvent>();
+                ref var enterEvent = ref _onTriggersEnter.GetEntity(index).Get<OnTriggerEnterEvent>();
 
-                if (enterEvent.SenderEntity.Has<Battlefield>() == false) continue;
-                if (enterEvent.VisitorEntity.Has<PlayerTag>() == false) continue;
+                if (enterEvent.Sender.Has<Battlefield>() == false) continue;
+                if (enterEvent.Visitor.Has<PlayerTag>() == false) continue;
                 
                 
                 _availablePositions.Clear();
                 
-                ref var entitySender = ref enterEvent.SenderEntity;
+                ref var entitySender = ref enterEvent.Sender;
                 var approvedWays = entitySender.Get<Battlefield>().AvailablePositions;
                 
                 _currentPosition = entitySender.Get<GameObj>().Value.transform.position;
@@ -140,16 +148,22 @@ namespace Systems.Move
             {
                 var targetPosition = _placementPositions[placementPositionsIndex++];
                 if (placementPositionsIndex >= _placementPositions.Count) placementPositionsIndex = 0;
-                
-                var heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(hero, targetPosition, 0.5f);
-                hero.Get<GameObj>().Value.transform.LookAt(targetPosition);
-                hero.Get<Movable>().State = heroOnTheMove ? MovableState.Run : MovableState.Stand;
 
-                
-                if (heroOnTheMove == false || hero.Get<Movable>().IsMovable == false)
+                if (hero.Get<Movable>().IsMovable == false)
                 {
                     if (_heroesCompleteMove.Contains(hero) == false) _heroesCompleteMove.Add(hero);
+                    hero.Get<Movable>().State = MovableState.Idle;
+                    continue;
                 }
+                
+                
+                var heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(hero, targetPosition, 0.5f);
+                
+                hero.Get<GameObj>().Value.transform.LookAt(targetPosition);
+                hero.Get<Movable>().State = heroOnTheMove ? MovableState.Run : MovableState.Idle;
+
+                if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false) 
+                    _heroesCompleteMove.Add(hero);
             }
         }
         

@@ -14,10 +14,10 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnTriggerExitEvent>() = new OnTriggerExitEvent
             {
-                Sender = gameObject,
+                GameObjSender = gameObject,
                 Collider = other,
-                EntitySender = entitySender,
-                EntityGoneVisitor = entityVisitor
+                Sender = entitySender,
+                GoneVisitor = entityVisitor
             };
             
             //Debug.Log("OnTriggerExit");

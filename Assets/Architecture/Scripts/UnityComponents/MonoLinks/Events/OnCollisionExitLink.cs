@@ -14,10 +14,10 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnCollisionExitEvent>() = new OnCollisionExitEvent
             {
-                Sender = gameObject,
+                GameObjSender = gameObject,
                 Collision = other,
-                EntitySender = entitySender,
-                EntityVisitor = entityVisitor
+                Sender = entitySender,
+                Visitor = entityVisitor
             };
         }
     }

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Sergey\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Sergey\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Hero Tactics.-1224677358.00" t="ExcludeRecursive" />
+    <e p="E:\04. Unity\Hero Tactics" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Architecture" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Components" t="Include">
+              <e p="AnimatorComp.cs" t="Include" />
+              <e p="Battle" t="Include">
+                <e p="Battlefield.cs" t="Include" />
+                <e p="Fighter.cs" t="Include" />
+                <e p="Warrior.cs" t="Include" />
+              </e>
+              <e p="Events" t="Include">
+                <e p="Battle" t="Include">
+                  <e p="ChangedStateBattlefieldEvent.cs" t="Include" />
+                  <e p="DeadWarriorEvent.cs" t="Include" />
+                  <e p="EndBattleEvent.cs" t="Include" />
+                  <e p="EndPlacementFighterSquadEvent.cs" t="Include" />
+                  <e p="StartBattleEvent.cs" t="Include" />
+                </e>
+                <e p="Main" t="Include">
+                  <e p="ChangeGameStateEvent.cs" t="Include" />
+                </e>
+                <e p="Move" t="Include">
+                  <e p="MoveHeroesToEvent.cs" t="Include" />
+                  <e p="MoveHeroToEvent.cs" t="Include" />
+                </e>
+                <e p="Spawn" t="Include">
+                  <e p="SpawnWarriorEvent.cs" t="Include" />
+                </e>
+                <e p="Unity" t="Include">
+                  <e p="OnCollisionEnterEvent.cs" t="Include" />
+                  <e p="OnCollisionExitEvent.cs" t="Include" />
+                  <e p="OnCollisionStayEvent.cs" t="Include" />
+                  <e p="OnPointerClickEvent.cs" t="Include" />
+                  <e p="OnTriggerEnterEvent.cs" t="Include" />
+                  <e p="OnTriggerExitEvent.cs" t="Include" />
+                  <e p="OnTriggerStayEvent.cs" t="Include" />
+                </e>
+              </e>
+              <e p="GameObj.cs" t="Include" />
+              <e p="Movable.cs" t="Include" />
+              <e p="Physics" t="Include">
+                <e p="ColliderComp.cs" t="Include" />
+                <e p="RigidbodyComp.cs" t="Include" />
+              </e>
+              <e p="Tags" t="Include">
+                <e p="BossTag.cs" t="Include" />
+                <e p="PlayerTag.cs" t="Include" />
+              </e>
+            </e>
+            <e p="GameStartup.cs" t="Include" />
+            <e p="Services" t="Include">
+              <e p="EventService.cs" t="Include" />
+              <e p="GameplayService.cs" t="Include" />
+              <e p="GameTools.cs" t="Include" />
+            </e>
+            <e p="Systems" t="Include">
+              <e p="Battle" t="Include">
+                <e p="BattlefieldSystem.cs" t="Include" />
+                <e p="BattleSystem.cs" t="Include" />
+                <e p="FighterDeathSystem.cs" t="Include" />
+                <e p="FighterSystem.cs" t="Include" />
+                <e p="PlacementEnemySystem.cs" t="Include" />
+                <e p="PlacementHeroSystem.cs" t="Include" />
+              </e>
+              <e p="FighterAnimationSystem.cs" t="Include" />
+              <e p="Game" t="Include">
+                <e p="GameStateSystem.cs" t="Include" />
+              </e>
+              <e p="Main" t="Include">
+                <e p="MonoEntitySystem.cs" t="Include" />
+                <e p="Spawn" t="Include">
+                  <e p="SpawnWarriorSystem.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Move" t="Include">
+                <e p="MoveHeroSystem.cs" t="Include" />
+                <e p="PlayerInputSystem.cs" t="Include" />
+              </e>
+            </e>
+            <e p="UnityComponents" t="Include">
+              <e p="Data" t="Include">
+                <e p="EnemysData.cs" t="Include" />
+                <e p="GameData.cs" t="Include" />
+                <e p="GameSettings.cs" t="Include" />
+                <e p="HeroesData.cs" t="Include" />
+              </e>
+              <e p="MonoLinks" t="Include">
+                <e p="AnimatorLink.cs" t="Include" />
+                <e p="Base" t="Include">
+                  <e p="MonoEntity.cs" t="Include" />
+                  <e p="MonoLink.cs" t="Include" />
+                  <e p="MonoLinkBase.cs" t="Include" />
+                  <e p="PhysicsLinkBase.cs" t="Include" />
+                </e>
+                <e p="Battle" t="Include">
+                  <e p="BattlefieldLink.cs" t="Include" />
+                  <e p="FighterLink.cs" t="Include" />
+                  <e p="WarriorLink.cs" t="Include" />
+                </e>
+                <e p="Events" t="Include">
+                  <e p="OnCollisionEnterLink.cs" t="Include" />
+                  <e p="OnCollisionExitLink.cs" t="Include" />
+                  <e p="OnCollisionStayLink.cs" t="Include" />
+                  <e p="OnPointerClickLink.cs" t="Include" />
+                  <e p="OnTriggerEnterLink.cs" t="Include" />
+                  <e p="OnTriggerExitLink.cs" t="Include" />
+                  <e p="OnTriggerStayLink.cs" t="Include" />
+                </e>
+                <e p="MovableLink.cs" t="Include" />
+                <e p="Physics" t="Include">
+                  <e p="ColliderLink.cs" t="Include" />
+                  <e p="RigidbodyLink.cs" t="Include" />
+                </e>
+                <e p="Tags" t="Include">
+                  <e p="BossTagLink.cs" t="Include" />
+                  <e p="PlayerTagLink.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Services" t="Include">
+                <e p="GameServices.cs" t="Include" />
+                <e p="WarriorFactory.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Hero Tactics.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp\Bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

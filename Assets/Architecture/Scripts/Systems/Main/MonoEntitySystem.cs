@@ -11,9 +11,9 @@ namespace Systems.Main
 
         void IEcsInitSystem.Init()
         {
-            var monoEntitys = GameObject.FindObjectsOfType<MonoEntity>();
+            var monoEntities = GameObject.FindObjectsOfType<MonoEntity>();
             
-            foreach (var gameObject in monoEntitys)
+            foreach (var gameObject in monoEntities)
             {
                 gameObject.GetComponent<MonoEntity>().Init(_world);
             }
