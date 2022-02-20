@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 191096920}
   m_Layer: 0
-  m_Name: Enemys
+  m_Name: Enemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,9 +234,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorBattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1413723342}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1442614730}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.SpawnWarriorBattleSide
       value: 1
@@ -398,7 +410,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783993475}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -492,9 +504,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorBattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1644107376}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1754476810}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.SpawnWarriorBattleSide
       value: 1
@@ -641,9 +665,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorBattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1548267786}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1413723342}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.SpawnWarriorBattleSide
       value: 1
@@ -1054,9 +1090,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorBattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1081984851}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1644107376}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.SpawnWarriorBattleSide
       value: 1
@@ -1303,7 +1351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763045449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -3.2}
+  m_LocalPosition: {x: 0, y: -0.51, z: -3.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1575,9 +1623,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.WarriorBattleSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1442614730}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1548267786}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.SpawnWarriorBattleSide
       value: 1
@@ -1715,10 +1775,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2756776536030559121, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2756776536448377312, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
+      propertyPath: Value.Ways.Array.data[0]
+      value: 
+      objectReference: {fileID: 1081984851}
     - target: {fileID: 6504461724943105828, guid: 15b96bd2e97f84f438e84e38430e6cc0, type: 3}
       propertyPath: Value.ApprovedWays.Array.size
       value: 2
@@ -1857,6 +1929,10 @@ PrefabInstance:
       propertyPath: SpawnHeroesTo
       value: 
       objectReference: {fileID: 1397458539}
+    - target: {fileID: 8363654098589357898, guid: c6fe968b8e2208546b7a6bd90c991511, type: 3}
+      propertyPath: SpawnEnemiesTo
+      value: 
+      objectReference: {fileID: 191096920}
     - target: {fileID: 8363654098589357898, guid: c6fe968b8e2208546b7a6bd90c991511, type: 3}
       propertyPath: SpawnWarriorsTo
       value: 

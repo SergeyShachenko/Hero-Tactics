@@ -123,14 +123,14 @@ namespace Systems.Battle
                 var fighters = _gameTools.GetFighterSquad(_assaultSquad.Value.ID, _fighters);
 
                 foreach (var fighter in fighters)
-                    _gameTools.Gameplay.TakeDamageInPercent(20, fighter);
+                    _gameTools.Gameplay.TakeDamageInPercent(0.2f, fighter);
             }
             else if (_assaultSquad.Value.State == SquadState.Dead)
             {
                 var fighters = _gameTools.GetFighterSquad(_assaultSquad.Value.ID, _fighters);
 
                 foreach (var fighter in fighters) 
-                    _gameTools.Gameplay.TakeDamageInPercent(100, fighter);
+                    _gameTools.Gameplay.TakeDamageInPercent(1f, fighter);
             }
 
             if (_defenceSquad.Value.State == SquadState.Alive)
@@ -138,14 +138,14 @@ namespace Systems.Battle
                 var fighters = _gameTools.GetFighterSquad(_defenceSquad.Value.ID, _fighters);
 
                 foreach (var fighter in fighters)
-                    _gameTools.Gameplay.TakeDamageInPercent(20, fighter);
+                    _gameTools.Gameplay.TakeDamageInPercent(0.2f, fighter);
             }
             else if (_defenceSquad.Value.State == SquadState.Dead)
             {
                 var fighters = _gameTools.GetFighterSquad(_defenceSquad.Value.ID, _fighters);
 
                 foreach (var fighter in fighters) 
-                    _gameTools.Gameplay.TakeDamageInPercent(100, fighter);
+                    _gameTools.Gameplay.TakeDamageInPercent(1f, fighter);
             }
 
             _assaultSquad = null;

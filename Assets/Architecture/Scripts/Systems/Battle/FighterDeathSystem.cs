@@ -18,7 +18,7 @@ namespace Systems.Battle
         void IEcsRunSystem.Run()
         {
             ProcessDeadFighters(canProcess:
-                _deadFighters.IsEmpty());
+                _deadFighters.IsEmpty() == false);
             
             RemoveDeadFightersFromBattlefields(canRemove:
                 _endBattles.IsEmpty() == false);
@@ -34,6 +34,12 @@ namespace Systems.Battle
                 ref var entity = ref _deadFighters.GetEntity(index).Get<DeadFighterEvent>().Fighter;
 
                 if (entity.Has<Movable>()) entity.Get<Movable>().IsMovable = false;
+                
+                if (entity.Has<HealthBar>())
+                {
+                    ref var healthBar = ref entity.Get<HealthBar>();
+                    healthBar.Frame.color = new Color(0f, 0f, 0f, 0f);
+                }
             }
         }
 

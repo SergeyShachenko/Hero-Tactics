@@ -82,6 +82,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2859826727836399483, guid: 978689ca419dba44cb4fbf62e9a3e884, type: 3}
+      propertyPath: Value.Value
+      value: 
+      objectReference: {fileID: 1781491030454184425}
+    - target: {fileID: 2859826727836399483, guid: 978689ca419dba44cb4fbf62e9a3e884, type: 3}
       propertyPath: Value.Animator
       value: 
       objectReference: {fileID: 1781491030454184425}

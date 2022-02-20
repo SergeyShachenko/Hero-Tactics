@@ -125,7 +125,8 @@ namespace General
             var startupSystems = new EcsSystems(_world, "Startup Systems");
 
             return startupSystems
-                .Add(new MonoEntitySystem());
+                .Add(new MonoEntitySystem())
+                .Add(new DrawWaySystem());
         }
 
         private EcsSystems SpawnSystems()

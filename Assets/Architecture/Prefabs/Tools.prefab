@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8363654098589357899}
   - component: {fileID: 8363654098589357896}
   - component: {fileID: 8363654098589357898}
+  - component: {fileID: 8361079032878666740}
   m_Layer: 0
   m_Name: GameServices
   m_TagString: Untagged
@@ -78,7 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f05c24d724d794388f98b4a49c650b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WarriorFactory: {fileID: 8363654098589357898}
+  GameObjectFactory: {fileID: 8361079032878666740}
+  FighterFactory: {fileID: 8363654098589357898}
 --- !u!114 &8363654098589357898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,7 +94,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnHeroesTo: {fileID: 0}
-  SpawnEnemysTo: {fileID: 0}
+  SpawnEnemiesTo: {fileID: 0}
+--- !u!114 &8361079032878666740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8363654098589357897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 360949ebc2254e90887addad7bf4fdba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8363654100067676568
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7786b982631884293229e4a1b87649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map: 0
-  GameSettings: {fileID: 11400000, guid: ba9bd564162a71e48aa47441eb332fa1, type: 2}
   GameData: {fileID: 11400000, guid: fbd6e7392fa218c489ca096e2d5a5ce3, type: 2}
+  GameSettings: {fileID: 11400000, guid: ba9bd564162a71e48aa47441eb332fa1, type: 2}
   GameServices: {fileID: 8363654098589357896}

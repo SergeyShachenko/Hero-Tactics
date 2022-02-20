@@ -11,9 +11,10 @@ namespace Components.Battle
         public bool SpawnBoss;
         public BattleSide SpawnWarriorBattleSide;
         public List<WarriorType> SpawnWarriorOnStart;
-        public List<Transform> AvailablePositions;
+        public List<Transform> Ways;
         [HideInInspector] public List<EcsEntity> Visitors;
         [HideInInspector] public Transform StandPoints, BattlePoints;
+        [HideInInspector] public Transform Model;
     }
 
     public enum BattlefieldState

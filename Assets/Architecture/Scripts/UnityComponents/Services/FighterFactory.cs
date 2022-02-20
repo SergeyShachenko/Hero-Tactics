@@ -1,4 +1,3 @@
-using System;
 using Components;
 using Components.Battle;
 using Leopotam.Ecs;
@@ -9,12 +8,12 @@ using Random = UnityEngine.Random;
 
 namespace UnityComponents.Services
 {
-    public class WarriorFactory : MonoBehaviour
+    public class FighterFactory : MonoBehaviour
     {
-        [SerializeField] private Transform SpawnHeroesTo, SpawnEnemysTo;
+        [SerializeField] private Transform SpawnHeroesTo, SpawnEnemiesTo;
 
 
-        public void Spawn(EcsWorld world, HeroData heroData, int squadID, Vector3 spawnPosition)
+        public void SpawnWarrior(EcsWorld world, HeroData heroData, int squadID, Vector3 spawnPosition)
         {
             var spawnTo = SpawnHeroesTo.Find("Squad[" + squadID + "]");
 
@@ -53,16 +52,24 @@ namespace UnityComponents.Services
                 State = MovableState.Idle,
                 IsMovable = true
             };
+
+            if (entity.Has<HealthBar>())
+            {
+                ref var healthBar = ref entity.Get<HealthBar>();
+
+                healthBar.StartHealth = heroData.Warrior.Stats.Health;
+                healthBar.CurrentHealth = healthBar.StartHealth;
+            }
         }
 
-        public void Spawn(EcsWorld world, EnemyData enemyData, int squadID, Vector3 spawnPosition)
+        public void SpawnWarrior(EcsWorld world, EnemyData enemyData, int squadID, Vector3 spawnPosition)
         {
-            var spawnTo = SpawnEnemysTo.Find("Squad[" + squadID + "]");
+            var spawnTo = SpawnEnemiesTo.Find("Squad[" + squadID + "]");
 
             if (spawnTo == null)
             {
                 var instanceObject = new GameObject("Squad[" + squadID + "]");
-                instanceObject.transform.parent = SpawnEnemysTo;
+                instanceObject.transform.parent = SpawnEnemiesTo;
                 
                 spawnTo = instanceObject.transform;
             }
@@ -94,13 +101,14 @@ namespace UnityComponents.Services
                 State = MovableState.Idle,
                 IsMovable = true
             };
+            
+            if (entity.Has<HealthBar>())
+            {
+                ref var healthBar = ref entity.Get<HealthBar>();
+
+                healthBar.StartHealth = enemyData.Warrior.Stats.Health;
+                healthBar.CurrentHealth = healthBar.StartHealth;
+            }
         }
-    }
-    
-    
-    [Serializable] public struct SpawnedWarrior
-    {
-        public BattleSide BattleSide;
-        public WarriorType Type;
     }
 }

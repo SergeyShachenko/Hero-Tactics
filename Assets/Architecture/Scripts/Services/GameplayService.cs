@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Components;
+﻿using Components;
 using Components.Battle;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -40,16 +39,23 @@ namespace Services
 
         public void TakeDamageInPercent(float percent, EcsEntity entity)
         {
-            if (entity.Has<Fighter>() == false) return;
-
-            ref var fighter = ref entity.Get<Fighter>();
+            if (entity.Has<Fighter>())
+            {
+                ref var fighter = ref entity.Get<Fighter>();
             
-            var newHealth = fighter.Stats.Health;
-            newHealth -= newHealth / 100 * percent;
+                var newHealth = fighter.Stats.Health;
+                newHealth -= Mathf.Lerp(0, newHealth, percent);
+                
+                fighter.Stats.Health = newHealth;
+            }
 
-            if (newHealth < 0) newHealth = 0;
+            if (entity.Has<HealthBar>())
+            {
+                ref var healthBar = ref entity.Get<HealthBar>();
 
-            fighter.Stats.Health = newHealth;
+                healthBar.CurrentHealth -= Mathf.Round(Mathf.Lerp(0, healthBar.StartHealth, percent));
+                healthBar.Bar.fillAmount = healthBar.CurrentHealth / (healthBar.StartHealth / 100) / 100;
+            }
         }
     }
 }

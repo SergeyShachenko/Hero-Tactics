@@ -2,5 +2,5 @@
 
 namespace UnityComponents.MonoLinks
 {
-    public class AnimatorLink : MonoLink<AnimatorComponent> {}
+    public class AnimatorLink : MonoLink<AnimatorComp> {}
 }

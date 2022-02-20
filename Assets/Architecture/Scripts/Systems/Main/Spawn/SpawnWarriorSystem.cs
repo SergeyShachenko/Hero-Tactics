@@ -22,8 +22,8 @@ namespace Systems.Main.Spawn
 
         void IEcsInitSystem.Init()
         {
-            _heroesData = _gameData.HeroesData.Heroes;
-            _enemysData = _gameData.EnemysData.Enemys;
+            _heroesData = _gameData.Heroes.Heroes;
+            _enemysData = _gameData.Enemies.Enemies;
         }
         
         void IEcsRunSystem.Run()
@@ -41,7 +41,7 @@ namespace Systems.Main.Spawn
                     foreach (var heroData in _heroesData.Where(
                         heroData => heroData.Warrior.Type == spawnEvent.WarriorType))
                     {
-                        _gameServices.WarriorFactory.Spawn(
+                        _gameServices.FighterFactory.SpawnWarrior(
                             _world, 
                             heroData, 
                             spawnEvent.SquadID, 
@@ -53,7 +53,7 @@ namespace Systems.Main.Spawn
                     foreach (var enemyData in _enemysData.Where(
                         enemyData => enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                     {
-                        _gameServices.WarriorFactory.Spawn(
+                        _gameServices.FighterFactory.SpawnWarrior(
                             _world,
                             enemyData,
                             spawnEvent.SquadID,
@@ -65,7 +65,7 @@ namespace Systems.Main.Spawn
                     foreach (var enemyData in _enemysData.Where(
                         enemyData => !enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                     {
-                        _gameServices.WarriorFactory.Spawn(
+                        _gameServices.FighterFactory.SpawnWarrior(
                             _world,
                             enemyData,
                             spawnEvent.SquadID,

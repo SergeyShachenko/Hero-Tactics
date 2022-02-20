@@ -122,7 +122,7 @@ namespace Systems.Battle
                             assaultPlacementPositions[_assaultPositionsIndex++], 
                             0.05f);
                         
-                        hero.Entity.Get<GameObj>().Value.transform.LookAt(mainDefencePoint);
+                        hero.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainDefencePoint);
 
 
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)
@@ -146,7 +146,7 @@ namespace Systems.Battle
                             freePlacementPositions[_freePositionsIndex++], 
                             0.05f);
                         
-                        hero.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(Vector3.zero);
+                        hero.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(Vector3.zero);
 
 
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)

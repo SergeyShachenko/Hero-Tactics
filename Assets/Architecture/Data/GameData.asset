@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf448b38a6446f41b8e14a9f138fb6a, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  HeroesData: {fileID: 11400000, guid: 084f70e7646839045a1e2a3d1e0afb24, type: 2}
-  EnemysData: {fileID: 11400000, guid: 212a7a874cba84844823e0d0e1dd5a97, type: 2}
+  PrefabFreeBattlefield: {fileID: 4989479782385136050, guid: 5c110f21f74e3204693a4be1b306f289, type: 3}
+  PrefabOccupiedBattlefield: {fileID: 4989479782385136050, guid: 1c14e29af9c5e7443a1c5845d644890d, type: 3}
+  Heroes: {fileID: 11400000, guid: 084f70e7646839045a1e2a3d1e0afb24, type: 2}
+  Enemies: {fileID: 11400000, guid: 212a7a874cba84844823e0d0e1dd5a97, type: 2}

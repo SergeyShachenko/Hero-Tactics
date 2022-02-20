@@ -125,7 +125,7 @@ namespace Systems.Move
                 _availablePositions.Clear();
                 
                 ref var entitySender = ref enterEvent.Sender;
-                var approvedWays = entitySender.Get<Battlefield>().AvailablePositions;
+                var approvedWays = entitySender.Get<Battlefield>().Ways;
                 
                 _currentPosition = entitySender.Get<GameObj>().Value.transform.position;
                 _availablePositions.Add(_currentPosition);
@@ -159,7 +159,7 @@ namespace Systems.Move
                 
                 var heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(hero, targetPosition, 0.5f);
                 
-                hero.Get<GameObj>().Value.transform.LookAt(targetPosition);
+                hero.Get<ModelParent>().GameObject.transform.LookAt(targetPosition);
                 hero.Get<Movable>().State = heroOnTheMove ? MovableState.Run : MovableState.Idle;
 
                 if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false) 

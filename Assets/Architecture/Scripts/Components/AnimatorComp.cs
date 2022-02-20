@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Components
 {
-    [Serializable] public struct AnimatorComponent
+    [Serializable] public struct AnimatorComp
     {
-        public Animator Animator;
+        public Animator Value;
     }
 }

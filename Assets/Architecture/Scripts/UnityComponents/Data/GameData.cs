@@ -8,9 +8,13 @@ namespace UnityComponents.Data
     [CreateAssetMenu(menuName = "Develop/Data/GameData", fileName = "GameData", order = 0)]
     public class GameData : ScriptableObject
     {
+        [Header("Battlefields")] 
+        public GameObject PrefabFreeBattlefield;
+        public GameObject PrefabOccupiedBattlefield;
+        
         [Header("Warriors")]
-        public HeroesData HeroesData;
-        public EnemysData EnemysData;
+        public HeroesData Heroes;
+        public EnemiesData Enemies;
     }
     
     

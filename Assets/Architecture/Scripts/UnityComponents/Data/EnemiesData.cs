@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace UnityComponents.Data
 {
-    [CreateAssetMenu(menuName = "Develop/Data/EnemysData", fileName = "EnemysData", order = 2)]
-    public class EnemysData : ScriptableObject
+    [CreateAssetMenu(menuName = "Develop/Data/EnemiesData", fileName = "EnemiesData", order = 2)]
+    public class EnemiesData : ScriptableObject
     {
-        public List<EnemyData> Enemys;
+        public List<EnemyData> Enemies;
     }
     
     

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   ECSDebug: 1
-  SystemsDebug: 0
-  StandOffset: 0.9
+  HeroesColor: {r: 0, g: 0.6036329, b: 1, a: 0}
+  EnemiesColor: {r: 1, g: 0.26716614, b: 0.18396229, a: 0}
+  WalkOffset: 0.9
   ZOffset: 0.3

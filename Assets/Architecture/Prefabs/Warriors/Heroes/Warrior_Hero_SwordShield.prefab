@@ -60,6 +60,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: bd818026ddd2d5b458522eb4ff7c375a, type: 2}
     - target: {fileID: 7935694122770107089, guid: a249796836309ed4387b96c09248b3b8, type: 3}
+      propertyPath: Value.Value
+      value: 
+      objectReference: {fileID: 718849478845879107}
+    - target: {fileID: 7935694122770107089, guid: a249796836309ed4387b96c09248b3b8, type: 3}
       propertyPath: Value.Animator
       value: 
       objectReference: {fileID: 718849478845879107}

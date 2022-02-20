@@ -4,6 +4,13 @@ namespace UnityComponents.Services
 {
     public class GameServices : MonoBehaviour
     {
-        public WarriorFactory WarriorFactory;
+        public GameObjectFactory GameObjectFactory;
+        public FighterFactory FighterFactory;
+
+
+        public void DestroyGameObject(GameObject gameObj)
+        {
+            Destroy(gameObj);
+        }
     }
 }

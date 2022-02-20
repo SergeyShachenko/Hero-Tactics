@@ -99,7 +99,7 @@ namespace Systems.Battle
                                 defencePlacementPositions.Last(), 
                                 0.05f);
                             
-                            enemy.Entity.Get<GameObj>().Value.transform.LookAt(mainAssaultPoint);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainAssaultPoint);
                         }
                         else
                         {
@@ -108,7 +108,7 @@ namespace Systems.Battle
                                 defencePlacementPositions[_defencePositionsIndex++], 
                                 0.05f);
 
-                            enemy.Entity.Get<GameObj>().Value.transform.LookAt(mainAssaultPoint);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainAssaultPoint);
                         }
                         
                         
@@ -136,7 +136,7 @@ namespace Systems.Battle
                                 freePlacementPositions.Last(), 
                                 0.05f);
                             
-                            enemy.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(0,180,0);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(0,180,0);
                         }
                         else
                         {
@@ -145,7 +145,7 @@ namespace Systems.Battle
                                 freePlacementPositions[_freePositionsIndex++],
                                 0.05f);
                             
-                            enemy.Entity.Get<GameObj>().Value.transform.rotation = Quaternion.Euler(0,180,0);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(0,180,0);
                         }
 
                         

@@ -8,7 +8,7 @@ namespace General.Systems
 {
     public sealed class FighterAnimationSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly EcsFilter<Fighter, AnimatorComponent> _warriors;
+        private readonly EcsFilter<Fighter, AnimatorComp> _warriors;
         
         private List<AnimatedWarrior> _animatedWarriors;
 
@@ -37,7 +37,7 @@ namespace General.Systems
             {
                 ref var entity = ref _warriors.GetEntity(index);
                 ref var fighter = ref entity.Get<Fighter>();
-                ref var animator = ref entity.Get<AnimatorComponent>().Animator;
+                ref var animator = ref entity.Get<AnimatorComp>().Value;
 
                 if (fighter.State == FighterState.Disabled) continue;
                 

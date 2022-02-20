@@ -1,17 +1,23 @@
 using System.Collections.Generic;
 using Components;
 using Components.Battle;
+using Components.Events.Battle;
 using Components.Events.Unity;
 using Services;
 using Leopotam.Ecs;
+using UnityComponents.Data;
+using UnityComponents.Services;
 using UnityEngine;
 
 namespace Systems.Battle
 {
     public sealed class BattlefieldSystem : IEcsInitSystem, IEcsRunSystem
     {
+        private readonly GameServices _gameServices;
+        private readonly GameData _gameData;
         private readonly GameTools _gameTools;
-        
+
+        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
         private readonly EcsFilter<OnTriggerExitEvent> _onTriggersExit;
         private readonly EcsFilter<Battlefield> _battlefields;
@@ -27,12 +33,13 @@ namespace Systems.Battle
                 ref var entity = ref _battlefields.GetEntity(index);
                 ref var gameObj = ref entity.Get<GameObj>().Value;
                 ref var battlefield = ref entity.Get<Battlefield>();
-                
+
                 battlefield.State = BattlefieldState.Free;
                 battlefield.Visitors = new List<EcsEntity>();
                 battlefield.StandPoints = gameObj.transform.GetChild(0);
                 battlefield.BattlePoints = gameObj.transform.GetChild(1);
-                
+                battlefield.Model = entity.Get<ModelParent>().GameObject.transform;
+
                 OptimizeSpawnOnStart(ref battlefield);
                 CallSpawnWarriorEvents(ref battlefield, squadID:index);
             }    
@@ -47,9 +54,11 @@ namespace Systems.Battle
                 _onTriggersExit.IsEmpty() == false);
             
             UpdateState();
+
+            UpdateColor(canUpdate:
+                _changedStateBattlefields.IsEmpty() == false);
         }
-        
-        
+
         private void CheckVisitors(bool canCheck)
         {
             if (canCheck == false) return;
@@ -152,6 +161,38 @@ namespace Systems.Battle
                     
                         Debug.Log(battlefield.State);
                     }
+                }
+            }
+        }
+        
+        private void UpdateColor(bool canUpdate)
+        {
+            if (canUpdate == false) return;
+
+
+            foreach (var index in _changedStateBattlefields)
+            {
+                ref var entity = 
+                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>().Battlefield;
+
+                ref var battlefield = ref entity.Get<Battlefield>();
+                
+                
+                switch (battlefield.State)
+                {
+                    case BattlefieldState.Free:
+
+                        _gameServices.DestroyGameObject(battlefield.Model.GetChild(0).gameObject);
+                        _gameServices.GameObjectFactory.Spawn(_gameData.PrefabFreeBattlefield, battlefield.Model);
+                        
+                        break;
+                    
+                    default:
+                    
+                        _gameServices.DestroyGameObject(battlefield.Model.GetChild(0).gameObject);
+                        _gameServices.GameObjectFactory.Spawn(_gameData.PrefabOccupiedBattlefield, battlefield.Model);
+                        
+                        break;
                 }
             }
         }

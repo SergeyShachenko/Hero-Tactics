@@ -44,6 +44,10 @@
                 </e>
               </e>
               <e p="GameObj.cs" t="Include" />
+              <e p="HealthBar.cs" t="Include" />
+              <e p="LineRendererComp.cs" t="Include" />
+              <e p="MeshRendererComp.cs" t="Include" />
+              <e p="ModelParent.cs" t="Include" />
               <e p="Movable.cs" t="Include" />
               <e p="Physics" t="Include">
                 <e p="ColliderComp.cs" t="Include" />
@@ -74,6 +78,7 @@
                 <e p="GameStateSystem.cs" t="Include" />
               </e>
               <e p="Main" t="Include">
+                <e p="DrawWaySystem.cs" t="Include" />
                 <e p="MonoEntitySystem.cs" t="Include" />
                 <e p="Spawn" t="Include">
                   <e p="SpawnWarriorSystem.cs" t="Include" />
@@ -86,7 +91,7 @@
             </e>
             <e p="UnityComponents" t="Include">
               <e p="Data" t="Include">
-                <e p="EnemysData.cs" t="Include" />
+                <e p="EnemiesData.cs" t="Include" />
                 <e p="GameData.cs" t="Include" />
                 <e p="GameSettings.cs" t="Include" />
                 <e p="HeroesData.cs" t="Include" />
@@ -113,6 +118,10 @@
                   <e p="OnTriggerExitLink.cs" t="Include" />
                   <e p="OnTriggerStayLink.cs" t="Include" />
                 </e>
+                <e p="HealthBarLink.cs" t="Include" />
+                <e p="LineRendererLink.cs" t="Include" />
+                <e p="MeshRendererLink.cs" t="Include" />
+                <e p="ModelParentLink.cs" t="Include" />
                 <e p="MovableLink.cs" t="Include" />
                 <e p="Physics" t="Include">
                   <e p="ColliderLink.cs" t="Include" />
@@ -124,8 +133,9 @@
                 </e>
               </e>
               <e p="Services" t="Include">
+                <e p="FighterFactory.cs" t="Include" />
+                <e p="GameObjectFactory.cs" t="Include" />
                 <e p="GameServices.cs" t="Include" />
-                <e p="WarriorFactory.cs" t="Include" />
               </e>
             </e>
           </e>
