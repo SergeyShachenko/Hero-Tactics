@@ -1,5 +1,4 @@
 ﻿using Components;
-using Components.Battle;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace Services
         private readonly EcsWorld _world;
         private readonly GameTools _gameTools;
 
-        private readonly EcsFilter<Fighter> _fighters;
+        private readonly EcsFilter<Components.Battle.Fighter> _fighters;
         
         public GameplayService(EcsWorld world, GameTools gameTools)
         {
@@ -26,36 +25,14 @@ namespace Services
             
             ref var gameObject = ref entity.Get<GameObj>().Value;
             ref var speed = ref entity.Get<Movable>().Speed;
-            
-            var newPosition = gameObject.transform.position;
-            var moveDirection = targetPosition - newPosition;
 
-            newPosition += moveDirection * (speed * Time.deltaTime);
+            var currentPosition = gameObject.transform.position;
+            var moveDirection = targetPosition - currentPosition;
+            var newPosition = currentPosition + moveDirection * (speed * Time.fixedDeltaTime);
 
             gameObject.transform.position = newPosition;
 
             return Vector3.Distance(newPosition, targetPosition) >= minDistance;
-        }
-
-        public void TakeDamageInPercent(float percent, EcsEntity entity)
-        {
-            if (entity.Has<Fighter>())
-            {
-                ref var fighter = ref entity.Get<Fighter>();
-            
-                var newHealth = fighter.Stats.Health;
-                newHealth -= Mathf.Lerp(0, newHealth, percent);
-                
-                fighter.Stats.Health = newHealth;
-            }
-
-            if (entity.Has<HealthBar>())
-            {
-                ref var healthBar = ref entity.Get<HealthBar>();
-
-                healthBar.CurrentHealth -= Mathf.Round(Mathf.Lerp(0, healthBar.StartHealth, percent));
-                healthBar.Bar.fillAmount = healthBar.CurrentHealth / (healthBar.StartHealth / 100) / 100;
-            }
         }
     }
 }

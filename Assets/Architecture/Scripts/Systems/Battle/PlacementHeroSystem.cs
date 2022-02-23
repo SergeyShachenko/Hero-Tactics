@@ -3,7 +3,7 @@ using System.Linq;
 using Components;
 using Components.Battle;
 using Components.Events.Battle;
-using Components.Events.Unity;
+using Components.Events.Physics;
 using Services;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -14,17 +14,17 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
 
-        private List<PlacebleFighter> _heroesForMove, _heroesCompleteMove;
+        private List<PlaceableFighter> _heroesForMove, _heroesCompleteMove;
         private int _assaultPositionsIndex, _freePositionsIndex;
 
         
         void IEcsInitSystem.Init()
         {
-            _heroesForMove = new List<PlacebleFighter>();
-            _heroesCompleteMove = new List<PlacebleFighter>();
+            _heroesForMove = new List<PlaceableFighter>();
+            _heroesCompleteMove = new List<PlaceableFighter>();
         }
 
         void IEcsRunSystem.Run()
@@ -56,7 +56,7 @@ namespace Systems.Battle
                     if (eventVisitor.Get<Fighter>().State != FighterState.Alive) continue;
 
                 
-                    var hero = new PlacebleFighter {Entity = eventVisitor, Place = eventSender};
+                    var hero = new PlaceableFighter {Entity = eventVisitor, Place = eventSender};
 
                     if (_heroesForMove.Contains(hero) == false && hero.Entity.Get<Fighter>().BattleSide == BattleSide.Hero)
                     {
@@ -71,7 +71,7 @@ namespace Systems.Battle
                 foreach (var index in  _changedStateBattlefields)
                 {
                     ref var changeStateEvent = 
-                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>();
+                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
                 
                     ref var entity = ref changeStateEvent.Battlefield;
                     ref var visitors = ref entity.Get<Battlefield>().Visitors;
@@ -83,7 +83,7 @@ namespace Systems.Battle
                         if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
                         
                         
-                        var fighter = new PlacebleFighter {Entity = visitor, Place = entity};
+                        var fighter = new PlaceableFighter {Entity = visitor, Place = entity};
 
                         if (_heroesForMove.Contains(fighter) == false)
                         { 
@@ -172,7 +172,7 @@ namespace Systems.Battle
                 heroes.Add(hero.Entity);
             }
 
-            _gameTools.Events.EndPlacementFighterSquad(BattleSide.Hero, heroes, _heroesCompleteMove.First().Place);
+            _gameTools.Events.Move.EndPlacementFighterSquad(BattleSide.Hero, heroes, _heroesCompleteMove.First().Place);
             
             _heroesForMove.Clear();
             _heroesCompleteMove.Clear();
@@ -180,7 +180,7 @@ namespace Systems.Battle
     }
     
     
-    public struct PlacebleFighter
+    public struct PlaceableFighter
     {
         public EcsEntity Entity;
         public EcsEntity Place;

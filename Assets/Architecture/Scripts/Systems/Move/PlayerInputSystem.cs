@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Components;
 using Components.Battle;
-using Components.Events.Unity;
+using Components.Events.Physics;
 using Components.Tags;
 using Services;
 using Leopotam.Ecs;
@@ -43,7 +43,7 @@ namespace Systems.Move
                     if (entity.Get<Movable>().IsMovable) heroes.Add(entity);
                 }
 
-                _gameTools.Events.MoveEntitiesTo(heroes, clickEvent.GameObjSender.transform.position);
+                _gameTools.Events.Move.HeroesTo(heroes, clickEvent.GameObjSender.transform.position);
             }
         }
     }

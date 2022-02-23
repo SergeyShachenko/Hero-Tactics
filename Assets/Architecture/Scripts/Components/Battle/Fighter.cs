@@ -31,7 +31,8 @@ namespace Components.Battle
 
     [Serializable] public struct FighterStats
     {
-        public float Health;
+        public float MaxHealth;
+        [HideInInspector] public float CurrentHealth;
         public float Damage;
         [Range(0, 100)] public int Armor;
     }

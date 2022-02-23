@@ -1,4 +1,4 @@
-﻿using Components;
+﻿using Components.Others;
 
 namespace UnityComponents.MonoLinks
 {

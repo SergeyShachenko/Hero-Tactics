@@ -13,26 +13,30 @@ namespace UnityComponents.Services
         [SerializeField] private Transform SpawnHeroesTo, SpawnEnemiesTo;
 
 
-        public void SpawnWarrior(EcsWorld world, HeroData heroData, int squadID, Vector3 spawnPosition)
+        public void SpawnWarrior(EcsWorld world, HeroWarriorData heroWarriorData, int squadID, Vector3 spawnPosition)
         {
-            var spawnTo = SpawnHeroesTo.Find("Squad[" + squadID + "]");
+            var parentGameObject = SpawnHeroesTo.Find("Squad[" + squadID + "]");
 
-            if (spawnTo == null)
+            if (parentGameObject == null)
             {
                 var instanceObject = new GameObject("Squad[" + squadID + "]");
                 instanceObject.transform.parent = SpawnHeroesTo;
                 
-                spawnTo = instanceObject.transform;
+                parentGameObject = instanceObject.transform;
             }
 
 
             var monoEntity = Instantiate(
-                heroData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
-            monoEntity.transform.parent = spawnTo;
+                heroWarriorData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
+            
+            monoEntity.transform.parent = parentGameObject;
             monoEntity.Init(world);
 
             var entity = monoEntity.GetEntity();
             var speedOffset = 0.6f;
+            
+            
+            heroWarriorData.Warrior.Stats.CurrentHealth = heroWarriorData.Warrior.Stats.MaxHealth;
 
             entity.Get<Fighter>() = new Fighter
             {
@@ -40,75 +44,67 @@ namespace UnityComponents.Services
                 SquadID = squadID,
                 State = FighterState.Alive,
                 Action = FighterAction.None,
-                Stats = heroData.Warrior.Stats
+                Stats = heroWarriorData.Warrior.Stats
             };
+            
             entity.Get<Warrior>() = new Warrior
             {
-                Type = heroData.Warrior.Type
+                Type = heroWarriorData.Warrior.Type
             };
+            
             entity.Get<Movable>() = new Movable
             {
-                Speed = Random.Range(heroData.Warrior.Movable.Speed - speedOffset, heroData.Warrior.Movable.Speed),
+                Speed = Random.Range(heroWarriorData.Warrior.Movable.Speed - speedOffset, heroWarriorData.Warrior.Movable.Speed),
                 State = MovableState.Idle,
                 IsMovable = true
             };
-
-            if (entity.Has<HealthBar>())
-            {
-                ref var healthBar = ref entity.Get<HealthBar>();
-
-                healthBar.StartHealth = heroData.Warrior.Stats.Health;
-                healthBar.CurrentHealth = healthBar.StartHealth;
-            }
         }
 
-        public void SpawnWarrior(EcsWorld world, EnemyData enemyData, int squadID, Vector3 spawnPosition)
+        public void SpawnWarrior(EcsWorld world, EnemyWarriorData enemyWarriorData, int squadID, Vector3 spawnPosition)
         {
-            var spawnTo = SpawnEnemiesTo.Find("Squad[" + squadID + "]");
+            var parentGameObject = SpawnEnemiesTo.Find("Squad[" + squadID + "]");
 
-            if (spawnTo == null)
+            if (parentGameObject == null)
             {
                 var instanceObject = new GameObject("Squad[" + squadID + "]");
                 instanceObject.transform.parent = SpawnEnemiesTo;
                 
-                spawnTo = instanceObject.transform;
+                parentGameObject = instanceObject.transform;
             }
             
             
             var monoEntity = Instantiate(
-                enemyData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
-            monoEntity.transform.parent = spawnTo;
+                enemyWarriorData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
+            
+            monoEntity.transform.parent = parentGameObject;
             monoEntity.Init(world);
             
             var entity = monoEntity.GetEntity();
             var speedOffset = 0.6f;
 
+            
+            enemyWarriorData.Warrior.Stats.CurrentHealth = enemyWarriorData.Warrior.Stats.MaxHealth;
+            
             entity.Get<Fighter>() = new Fighter
             {
                 BattleSide = BattleSide.Enemy,
                 SquadID = squadID,
                 State = FighterState.Alive,
                 Action = FighterAction.None,
-                Stats = enemyData.Warrior.Stats
+                Stats = enemyWarriorData.Warrior.Stats
             };
+            
             entity.Get<Warrior>() = new Warrior
             {
-                Type = enemyData.Warrior.Type
+                Type = enemyWarriorData.Warrior.Type
             };
+            
             entity.Get<Movable>() = new Movable
             {
-                Speed = Random.Range(enemyData.Warrior.Movable.Speed - speedOffset, enemyData.Warrior.Movable.Speed),
+                Speed = Random.Range(enemyWarriorData.Warrior.Movable.Speed - speedOffset, enemyWarriorData.Warrior.Movable.Speed),
                 State = MovableState.Idle,
                 IsMovable = true
             };
-            
-            if (entity.Has<HealthBar>())
-            {
-                ref var healthBar = ref entity.Get<HealthBar>();
-
-                healthBar.StartHealth = enemyData.Warrior.Stats.Health;
-                healthBar.CurrentHealth = healthBar.StartHealth;
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Components;
 using Components.Battle;
+using Components.Others;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -21,8 +22,7 @@ namespace Systems.Main
                     
                     var startPoint = entity.Get<GameObj>().Value.transform.position;
                     var positions = new Vector3[battlefield.Ways.Count * 3];
-
-
+                    
                     var indexPositions = 0;
                     
                     foreach (var way in battlefield.Ways)

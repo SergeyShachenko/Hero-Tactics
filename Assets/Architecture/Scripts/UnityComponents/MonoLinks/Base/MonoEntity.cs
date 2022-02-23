@@ -33,27 +33,5 @@ namespace UnityComponents.MonoLinks
         {
             return _entity;
         }
-
-        // public List<T> GetEntityComponents<T>() where T : struct 
-        // {
-        //     var components = new List<T>();
-        //     var countComponents = _entity.GetComponentsCount();
-        //
-        //     for (var i = 0; i < _entity.GetComponentsCount(); i++)
-        //     {
-        //         if (_entity.1())
-        //         {
-        //             
-        //         }
-        //     }
-        //     
-        //     
-        //     while (_entity.Has<T>())
-        //     {
-        //         components.Add(_entity.Get<T>());
-        //     }
-        //
-        //     return components;
-        // }
     }
 }

@@ -9,42 +9,16 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
-        private readonly EcsFilter<StartBattleEvent> _startBattles;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
         private readonly EcsFilter<EndBattleEvent> _endBattles;
         private readonly EcsFilter<Fighter> _fighters;
 
 
         void IEcsRunSystem.Run()
         {
-            UpdateState();
             UpdateActions();
         }
 
-
-        private void UpdateState()
-        {
-            if (_fighters.IsEmpty()) return;
-            
-            
-            foreach (var index in _fighters)
-            {
-                ref var entity = ref _fighters.GetEntity(index);
-                ref var fighter = ref entity.Get<Fighter>();
-
-
-                if (fighter.Stats.Health > 0 && fighter.State != FighterState.Alive && fighter.State != FighterState.Disabled)
-                {
-                    fighter.State = FighterState.Alive;
-                }
-                
-                if (fighter.Stats.Health <= 0 && fighter.State == FighterState.Alive)
-                {
-                    fighter.State = FighterState.Dead;
-                    _gameTools.Events.DeadFighter(ref entity);
-                }
-            }
-        }
         
         private void UpdateActions()
         {
@@ -53,11 +27,11 @@ namespace Systems.Battle
                 foreach (var index in _changedStateBattlefields)
                 {
                     ref var changeBattlefieldState = 
-                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>();
+                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
 
                     ref var battlefield = ref changeBattlefieldState.Battlefield.Get<Battlefield>();
 
-                    if (battlefield.State != BattlefieldState.Battle) return;
+                    if (battlefield.State != BattlefieldState.Battle) continue;
                     
                     
                     int assaultSquadID = 0, defenceSquadID = 0;
@@ -76,19 +50,19 @@ namespace Systems.Battle
                         }
                     }
                     
-                    _gameTools.SetActionForFighterSquad(FighterAction.Attack, assaultSquadID, _fighters);
-                    _gameTools.SetActionForFighterSquad(FighterAction.Attack, defenceSquadID, _fighters);
+                    _gameTools.Fighter.Squad.SetAction(FighterAction.Attack, assaultSquadID, _fighters);
+                    _gameTools.Fighter.Squad.SetAction(FighterAction.Attack, defenceSquadID, _fighters);
                 }
             }
-
+            
             if (_endBattles.IsEmpty() == false)
             {
                 foreach (var index in _endBattles)
                 {
                     ref var endBattle = ref _endBattles.GetEntity(index).Get<EndBattleEvent>();
                 
-                    _gameTools.SetActionForFighterSquad(FighterAction.None, endBattle.AssaultSquadID, _fighters);
-                    _gameTools.SetActionForFighterSquad(FighterAction.None, endBattle.DefenceSquadID, _fighters);
+                    _gameTools.Fighter.Squad.SetAction(FighterAction.None, endBattle.AssaultSquadID, _fighters);
+                    _gameTools.Fighter.Squad.SetAction(FighterAction.None, endBattle.DefenceSquadID, _fighters);
                 }
             }
         }

@@ -14,16 +14,16 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
 
-        private List<PlacebleFighter> _enemiesForMove, _enemiesCompleteMove;
+        private List<PlaceableFighter> _enemiesForMove, _enemiesCompleteMove;
         private int _defencePositionsIndex, _freePositionsIndex;
 
         
         void IEcsInitSystem.Init()
         {
-            _enemiesForMove = new List<PlacebleFighter>();
-            _enemiesCompleteMove = new List<PlacebleFighter>();
+            _enemiesForMove = new List<PlaceableFighter>();
+            _enemiesCompleteMove = new List<PlaceableFighter>();
         }
 
         void IEcsRunSystem.Run()
@@ -47,7 +47,7 @@ namespace Systems.Battle
             foreach (var index in  _changedStateBattlefields)
             {
                 ref var changeStateEvent = 
-                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>();
+                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
                 
                 ref var entity = ref changeStateEvent.Battlefield;
                 ref var visitors = ref entity.Get<Battlefield>().Visitors;
@@ -59,7 +59,7 @@ namespace Systems.Battle
                     if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
                         
                         
-                    var fighter = new PlacebleFighter {Entity = visitor, Place = entity};
+                    var fighter = new PlaceableFighter {Entity = visitor, Place = entity};
 
                     if (_enemiesForMove.Contains(fighter) == false)
                     { 
@@ -173,7 +173,7 @@ namespace Systems.Battle
                 enemies.Add(enemy.Entity);
             }
 
-            _gameTools.Events.EndPlacementFighterSquad(BattleSide.Enemy, enemies, _enemiesCompleteMove.First().Place);
+            _gameTools.Events.Move.EndPlacementFighterSquad(BattleSide.Enemy, enemies, _enemiesCompleteMove.First().Place);
             
             _enemiesForMove.Clear();
             _enemiesCompleteMove.Clear();

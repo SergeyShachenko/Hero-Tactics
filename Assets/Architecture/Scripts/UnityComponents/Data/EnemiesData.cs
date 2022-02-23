@@ -7,11 +7,11 @@ namespace UnityComponents.Data
     [CreateAssetMenu(menuName = "Develop/Data/EnemiesData", fileName = "EnemiesData", order = 2)]
     public class EnemiesData : ScriptableObject
     {
-        public List<EnemyData> Enemies;
+        public List<EnemyWarriorData> Warriors;
     }
     
     
-    [Serializable] public struct EnemyData
+    [Serializable] public struct EnemyWarriorData
     {
         public bool IsBoss;
         public WarriorData Warrior;

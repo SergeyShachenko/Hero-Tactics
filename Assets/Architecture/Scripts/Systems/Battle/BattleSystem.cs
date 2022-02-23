@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Components;
 using Components.Battle;
 using Components.Events.Battle;
 using Services;
 using Leopotam.Ecs;
+using UnityComponents.Data;
 using UnityEngine;
 
 namespace Systems.Battle
 {
     public sealed class BattleSystem : IEcsRunSystem
     {
-        private GameTools _gameTools;
+        private readonly GameTools _gameTools;
+        private readonly GameSettings _gameSettings;
         
         private readonly EcsFilter<EndPlacementFighterSquadEvent> _endPlacementFighterSquads;
         private readonly EcsFilter<EndBattleEvent> _endBattles;
@@ -44,16 +47,17 @@ namespace Systems.Battle
 
                 ref var place = ref endPlacementSquad.Place;
                 
-                if (place.Has<Battlefield>() == false) return;
+                if (place.Has<Battlefield>() == false) continue;
+                if (place.Get<Battlefield>().State != BattlefieldState.Battle) continue;
 
 
                 ref var battlefield = ref place.Get<Battlefield>();
+                var visitorsEndMove = true;
                 
+                foreach (var visitor in battlefield.Visitors.Where(
+                    visitor => visitor.Get<Movable>().IsMovable == false)) visitorsEndMove = false;
                 
-                if (battlefield.State != BattlefieldState.Battle) return;
-                
-                foreach (var visitor in battlefield.Visitors)
-                    if (visitor.Get<Movable>().IsMovable == false) return;
+                if (visitorsEndMove == false) continue;
 
                 
                 var heroSquad = new List<EcsEntity>();
@@ -65,27 +69,23 @@ namespace Systems.Battle
                         
                         heroSquad = endPlacementSquad.Fighters;
 
-                        foreach (var visitor in battlefield.Visitors)
-                        {
-                            if (visitor.Get<Fighter>().BattleSide == BattleSide.Enemy) enemySquad.Add(visitor);
-                        }
-                        
+                        enemySquad.AddRange(battlefield.Visitors.Where(
+                            visitor => visitor.Get<Fighter>().BattleSide == BattleSide.Enemy));
+
                         break;
                     
                     case BattleSide.Enemy:
                         
                         enemySquad = endPlacementSquad.Fighters;
 
-                        foreach (var visitor in battlefield.Visitors)
-                        {
-                            if (visitor.Get<Fighter>().BattleSide == BattleSide.Hero) heroSquad.Add(visitor);
-                        }
+                        heroSquad.AddRange(battlefield.Visitors.Where(
+                            visitor => visitor.Get<Fighter>().BattleSide == BattleSide.Hero));
 
                         break;
                 }
 
-                _assaultSquad = _gameTools.CreateFighterSquad(ref place, heroSquad);
-                _defenceSquad = _gameTools.CreateFighterSquad(ref place, enemySquad);
+                _assaultSquad = _gameTools.Fighter.Squad.Create(ref place, heroSquad);
+                _defenceSquad = _gameTools.Fighter.Squad.Create(ref place, enemySquad);
             }
         }
 
@@ -96,18 +96,14 @@ namespace Systems.Battle
             
             var defenceSquad = _defenceSquad.Value;
             var assaultSquad = _assaultSquad.Value;
-            
 
-            while (defenceSquad.Stats.Health > 0 && assaultSquad.Stats.Health > 0)
+            while (defenceSquad.State == SquadState.Alive && assaultSquad.State == SquadState.Alive)
             {
-                defenceSquad.Stats.Health -= (assaultSquad.Stats.Damage / 100) * (100 - defenceSquad.Stats.Armor);
-                assaultSquad.Stats.Health -= (defenceSquad.Stats.Damage / 100) * (100 - assaultSquad.Stats.Armor);
+                _gameTools.Fighter.Squad.TakeDamage(ref defenceSquad, assaultSquad.Stats.Damage);
+                _gameTools.Fighter.Squad.TakeDamage(ref assaultSquad, defenceSquad.Stats.Damage);
             }
-            
-            if (assaultSquad.Stats.Health <= 0) assaultSquad.State = SquadState.Dead;
-            if (defenceSquad.Stats.Health <= 0) defenceSquad.State = SquadState.Dead;
-            
-            _gameTools.Events.EndBattle(assaultSquad.ID, defenceSquad.ID, ref assaultSquad.Place);
+
+            _gameTools.Events.Battle.End(assaultSquad.ID, defenceSquad.ID, ref assaultSquad.Place);
 
             _assaultSquad = assaultSquad;
             _defenceSquad = defenceSquad;
@@ -118,34 +114,62 @@ namespace Systems.Battle
             if (canProcess == false) return;
 
             
-            if (_assaultSquad.Value.State == SquadState.Alive)
+            switch (_assaultSquad.Value.State)
             {
-                var fighters = _gameTools.GetFighterSquad(_assaultSquad.Value.ID, _fighters);
+                case SquadState.Alive:
+                {
+                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighters);
 
-                foreach (var fighter in fighters)
-                    _gameTools.Gameplay.TakeDamageInPercent(0.2f, fighter);
+                    foreach (var fighter in fighters)
+                    {
+                        var entity = fighter;
+                        _gameTools.Fighter.TakeDamageInPercent(ref entity, _gameSettings.ImminentDamageInPercent);
+                    }
+
+                    break;
+                }
+                
+                case SquadState.Dead:
+                {
+                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighters);
+                
+                    foreach (var fighter in fighters)
+                    {
+                        var entity = fighter;
+                        _gameTools.Fighter.TakeDamageInPercent(ref entity, 1f);
+                    }
+
+                    break;
+                }
             }
-            else if (_assaultSquad.Value.State == SquadState.Dead)
+
+            switch (_defenceSquad.Value.State)
             {
-                var fighters = _gameTools.GetFighterSquad(_assaultSquad.Value.ID, _fighters);
+                case SquadState.Alive:
+                {
+                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighters);
 
-                foreach (var fighter in fighters) 
-                    _gameTools.Gameplay.TakeDamageInPercent(1f, fighter);
-            }
+                    foreach (var fighter in fighters)
+                    {
+                        var entity = fighter;
+                        _gameTools.Fighter.TakeDamageInPercent(ref entity, _gameSettings.ImminentDamageInPercent);
+                    }
 
-            if (_defenceSquad.Value.State == SquadState.Alive)
-            {
-                var fighters = _gameTools.GetFighterSquad(_defenceSquad.Value.ID, _fighters);
+                    break;
+                }
+                
+                case SquadState.Dead:
+                {
+                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighters);
 
-                foreach (var fighter in fighters)
-                    _gameTools.Gameplay.TakeDamageInPercent(0.2f, fighter);
-            }
-            else if (_defenceSquad.Value.State == SquadState.Dead)
-            {
-                var fighters = _gameTools.GetFighterSquad(_defenceSquad.Value.ID, _fighters);
+                    foreach (var fighter in fighters)
+                    {
+                        var entity = fighter;
+                        _gameTools.Fighter.TakeDamageInPercent(ref entity, 1f);
+                    }
 
-                foreach (var fighter in fighters) 
-                    _gameTools.Gameplay.TakeDamageInPercent(1f, fighter);
+                    break;
+                }
             }
 
             _assaultSquad = null;

@@ -13,10 +13,8 @@ namespace Systems.Main
         {
             var monoEntities = GameObject.FindObjectsOfType<MonoEntity>();
             
-            foreach (var gameObject in monoEntities)
-            {
+            foreach (var gameObject in monoEntities) 
                 gameObject.GetComponent<MonoEntity>().Init(_world);
-            }
         }
     }
 }

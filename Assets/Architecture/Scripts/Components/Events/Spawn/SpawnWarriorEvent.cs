@@ -9,6 +9,6 @@ namespace Components.Events.Spawn
         public WarriorType WarriorType;
         public bool IsBoss;
         public int SquadID;
-        public Transform SpawnPoint;
+        public Transform Parent;
     }
 }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Components;
 using Components.Battle;
 using Components.Events.Battle;
-using Components.Events.Unity;
+using Components.Events.Physics;
+using Components;
 using Services;
 using Leopotam.Ecs;
 using UnityComponents.Data;
@@ -13,11 +13,11 @@ namespace Systems.Battle
 {
     public sealed class BattlefieldSystem : IEcsInitSystem, IEcsRunSystem
     {
+        private readonly GameTools _gameTools;
         private readonly GameServices _gameServices;
         private readonly GameData _gameData;
-        private readonly GameTools _gameTools;
 
-        private readonly EcsFilter<ChangedStateBattlefieldEvent> _changedStateBattlefields;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
         private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
         private readonly EcsFilter<OnTriggerExitEvent> _onTriggersExit;
         private readonly EcsFilter<Battlefield> _battlefields;
@@ -40,7 +40,7 @@ namespace Systems.Battle
                 battlefield.BattlePoints = gameObj.transform.GetChild(1);
                 battlefield.Model = entity.Get<ModelParent>().GameObject.transform;
 
-                OptimizeSpawnOnStart(ref battlefield);
+                OptimizeSpawnWarriorsOnStart(ref battlefield);
                 CallSpawnWarriorEvents(ref battlefield, squadID:index);
             }    
         }
@@ -55,7 +55,7 @@ namespace Systems.Battle
             
             UpdateState();
 
-            UpdateColor(canUpdate:
+            UpdateModel(canUpdate:
                 _changedStateBattlefields.IsEmpty() == false);
         }
 
@@ -75,7 +75,7 @@ namespace Systems.Battle
                     
                 ref var battlefield = ref triggerEnter.Sender.Get<Battlefield>();
 
-                if (battlefield.Visitors.Contains(triggerEnter.Visitor) == false)
+                if (battlefield.Visitors.Contains(triggerEnter.Visitor) == false) 
                     battlefield.Visitors.Add(triggerEnter.Visitor);
 
                 //Debug.Log("Add Visitor");
@@ -93,6 +93,7 @@ namespace Systems.Battle
 
                 if (triggerExit.Sender.Has<Battlefield>() == false) continue;
                 if (triggerExit.GoneVisitor.Has<Fighter>() == false) continue;
+                if (triggerExit.GoneVisitor.Get<Fighter>().State != FighterState.Alive) continue;
                     
                     
                 ref var battlefield = ref triggerExit.Sender.Get<Battlefield>();
@@ -127,7 +128,7 @@ namespace Systems.Battle
                     if (battlefield.State != BattlefieldState.Free)
                     {
                         battlefield.State = BattlefieldState.Free;
-                        _gameTools.Events.ChangedStateBattlefield(ref entity);
+                        _gameTools.Events.Battle.ChangedStateBattlefield(ref entity);
                     
                         Debug.Log(battlefield.State);
                     }
@@ -137,7 +138,7 @@ namespace Systems.Battle
                     if (battlefield.State != BattlefieldState.Free)
                     {
                         battlefield.State = BattlefieldState.Free;
-                        _gameTools.Events.ChangedStateBattlefield(ref entity);
+                        _gameTools.Events.Battle.ChangedStateBattlefield(ref entity);
                     
                         Debug.Log(battlefield.State);
                     }
@@ -147,7 +148,7 @@ namespace Systems.Battle
                     if (battlefield.State != BattlefieldState.Occupied)
                     {
                         battlefield.State = BattlefieldState.Occupied;
-                        _gameTools.Events.ChangedStateBattlefield(ref entity);
+                        _gameTools.Events.Battle.ChangedStateBattlefield(ref entity);
                     
                         Debug.Log(battlefield.State);
                     }
@@ -157,7 +158,7 @@ namespace Systems.Battle
                     if (battlefield.State != BattlefieldState.Battle)
                     {
                         battlefield.State = BattlefieldState.Battle;
-                        _gameTools.Events.ChangedStateBattlefield(ref entity);
+                        _gameTools.Events.Battle.ChangedStateBattlefield(ref entity);
                     
                         Debug.Log(battlefield.State);
                     }
@@ -165,7 +166,7 @@ namespace Systems.Battle
             }
         }
         
-        private void UpdateColor(bool canUpdate)
+        private void UpdateModel(bool canUpdate)
         {
             if (canUpdate == false) return;
 
@@ -173,11 +174,10 @@ namespace Systems.Battle
             foreach (var index in _changedStateBattlefields)
             {
                 ref var entity = 
-                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedStateBattlefieldEvent>().Battlefield;
+                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>().Battlefield;
 
                 ref var battlefield = ref entity.Get<Battlefield>();
-                
-                
+
                 switch (battlefield.State)
                 {
                     case BattlefieldState.Free:
@@ -197,11 +197,10 @@ namespace Systems.Battle
             }
         }
 
-        private void OptimizeSpawnOnStart(ref Battlefield battlefield)
+        private void OptimizeSpawnWarriorsOnStart(ref Battlefield battlefield)
         {
-            ref var warriors = ref battlefield.SpawnWarriorOnStart;
-            
-            
+            ref var warriors = ref battlefield.SpawnWarriorsOnStart;
+
             if(warriors.Count == 0) return; 
             
 
@@ -220,7 +219,7 @@ namespace Systems.Battle
         
         private void CallSpawnWarriorEvents(ref Battlefield battlefield, int squadID)
         {
-            if (battlefield.SpawnWarriorOnStart.Count == 0) return;
+            if (battlefield.SpawnWarriorsOnStart.Count == 0) return;
              
             
             if (battlefield.SpawnBoss)
@@ -228,9 +227,9 @@ namespace Systems.Battle
                 var standPoints = battlefield.StandPoints;
                 var spawnPoint = standPoints.GetChild(standPoints.childCount - 1);
                 
-                _gameTools.Events.SpawnWarrior(
+                _gameTools.Events.Spawn.Warrior(
                     battlefield.SpawnWarriorBattleSide,
-                    battlefield.SpawnWarriorOnStart[0],
+                    battlefield.SpawnWarriorsOnStart[0],
                     true,
                     squadID,
                     spawnPoint);
@@ -238,14 +237,16 @@ namespace Systems.Battle
             else
             {
                 var standPointIndex = 0;
-                foreach (var warriorType in battlefield.SpawnWarriorOnStart)
+                
+                foreach (var warriorType in battlefield.SpawnWarriorsOnStart)
                 {
                     var standPoints = battlefield.StandPoints;
                     var spawnPoint = standPoints.GetChild(standPointIndex++);
                     
-                    if (standPointIndex >= standPoints.childCount - 1) standPointIndex = 0;
+                    if (standPointIndex >= standPoints.childCount - 1) 
+                        standPointIndex = 0;
 
-                    _gameTools.Events.SpawnWarrior(
+                    _gameTools.Events.Spawn.Warrior(
                         battlefield.SpawnWarriorBattleSide,
                         warriorType,
                         false,

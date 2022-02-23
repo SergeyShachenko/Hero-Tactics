@@ -33,12 +33,14 @@ namespace Systems.Battle
             {
                 ref var entity = ref _deadFighters.GetEntity(index).Get<DeadFighterEvent>().Fighter;
 
-                if (entity.Has<Movable>()) entity.Get<Movable>().IsMovable = false;
+                if (entity.Has<Movable>()) 
+                    entity.Get<Movable>().IsMovable = false;
                 
                 if (entity.Has<HealthBar>())
                 {
                     ref var healthBar = ref entity.Get<HealthBar>();
                     healthBar.Frame.color = new Color(0f, 0f, 0f, 0f);
+                    healthBar.Background.color = new Color(0f, 0f, 0f, 0f);
                 }
             }
         }
@@ -52,12 +54,12 @@ namespace Systems.Battle
             {
                 ref var endBattle = ref _endBattles.GetEntity(index).Get<EndBattleEvent>();
                 
-                if (endBattle.Place.Has<Battlefield>() == false) return;
+                if (endBattle.Place.Has<Battlefield>() == false) continue;
                 
                 
                 ref var battlefield = ref endBattle.Place.Get<Battlefield>();
                 
-                for (int i = 0; i < battlefield.Visitors.Count;)
+                for (var i = 0; i < battlefield.Visitors.Count;)
                 {
                     var visitor = battlefield.Visitors[i];
         
@@ -65,6 +67,7 @@ namespace Systems.Battle
                     {
                         battlefield.Visitors.Remove(visitor);
                         i = 0;
+                        
                         //Debug.Log("Remove Dead Visitor");
                         continue;
                     }

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Components;
 using Components.Battle;
 using Components.Events.Move;
-using Components.Events.Unity;
+using Components.Events.Physics;
 using Components.Tags;
 using Services;
 using UnityComponents.Data;
@@ -78,10 +79,9 @@ namespace Systems.Move
 
             _nextPosition = targetPosition;
             
-            foreach (var hero in heroes)
-            {
-                if (_heroesForMove.Contains(hero) == false) _heroesForMove.Add(hero);
-            }
+            foreach (var hero in heroes.Where(
+                hero => _heroesForMove.Contains(hero) == false)) _heroesForMove.Add(hero);
+            
         }
 
         private void UpdatePlacementPositions(bool canUpdate)

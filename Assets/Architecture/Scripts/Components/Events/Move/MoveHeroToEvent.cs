@@ -6,6 +6,6 @@ namespace Components.Events.Move
     internal struct MoveHeroToEvent
     {
         public EcsEntity Entity;
-        public Vector3 Position;
+        public Vector3 TargetPosition;
     }
 }

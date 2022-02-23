@@ -11,19 +11,19 @@ namespace Systems.Main.Spawn
     public sealed class SpawnWarriorSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly EcsWorld _world;
-        private readonly GameData _gameData;
         private readonly GameServices _gameServices;
+        private readonly GameData _gameData;
 
         private readonly EcsFilter<SpawnWarriorEvent> _spawnWarriors;
 
-        private List<HeroData> _heroesData;
-        private List<EnemyData> _enemysData;
+        private List<HeroWarriorData> _heroesData;
+        private List<EnemyWarriorData> _enemiesData;
         
 
         void IEcsInitSystem.Init()
         {
-            _heroesData = _gameData.Heroes.Heroes;
-            _enemysData = _gameData.Enemies.Enemies;
+            _heroesData = _gameData.Heroes.Warriors;
+            _enemiesData = _gameData.Enemies.Warriors;
         }
         
         void IEcsRunSystem.Run()
@@ -45,31 +45,31 @@ namespace Systems.Main.Spawn
                             _world, 
                             heroData, 
                             spawnEvent.SquadID, 
-                            spawnEvent.SpawnPoint.position);
+                            spawnEvent.Parent.position);
                     }
                 }
                 else if (spawnEvent.IsBoss)
                 {
-                    foreach (var enemyData in _enemysData.Where(
+                    foreach (var enemyData in _enemiesData.Where(
                         enemyData => enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                     {
                         _gameServices.FighterFactory.SpawnWarrior(
                             _world,
                             enemyData,
                             spawnEvent.SquadID,
-                            spawnEvent.SpawnPoint.position);
+                            spawnEvent.Parent.position);
                     }
                 }
                 else
                 {
-                    foreach (var enemyData in _enemysData.Where(
+                    foreach (var enemyData in _enemiesData.Where(
                         enemyData => !enemyData.IsBoss && enemyData.Warrior.Type == spawnEvent.WarriorType))
                     {
                         _gameServices.FighterFactory.SpawnWarrior(
                             _world,
                             enemyData,
                             spawnEvent.SquadID,
-                            spawnEvent.SpawnPoint.position);
+                            spawnEvent.Parent.position);
                     }
                 }
             }

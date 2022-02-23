@@ -1,7 +1,7 @@
 using Components.Events.Battle;
-using Components.Events.Main;
+using Components.Events.Game;
 using Components.Events.Move;
-using Components.Events.Unity;
+using Components.Events.Physics;
 using UnityComponents.Data;
 using Services;
 using Systems.Battle;
@@ -85,13 +85,11 @@ namespace General
             _mainSystems
                 .Add(StartupSystems())
                 .Add(SpawnSystems())
-                
-                .OneFrame<SpawnWarriorEvent>()
 
+                .Inject(_gameTools)
+                .Inject(GameServices)
                 .Inject(GameSettings)
                 .Inject(GameData)
-                .Inject(GameServices)
-                .Inject(_gameTools)
                 .Init();
         }
 
@@ -101,22 +99,21 @@ namespace General
                 .Add(MoveSystems())
                 .Add(BattleSystems())
                 .Add(GameSystems())
-
-                .OneFrame<StartBattleEvent>()
+                
                 .OneFrame<EndBattleEvent>()
                 .OneFrame<DeadFighterEvent>()
 
+                .OneFrame<ChangedBattlefieldStateEvent>()
+                .OneFrame<ChangedGameStateEvent>()
+                
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
                 .OneFrame<OnTriggerExitEvent>()
-                
-                .OneFrame<ChangedStateBattlefieldEvent>()
-                .OneFrame<ChangeGameStateEvent>()
 
+                .Inject(_gameTools)
+                .Inject(GameServices)
                 .Inject(GameSettings)
                 .Inject(GameData)
-                .Inject(GameServices)
-                .Inject(_gameTools)
                 .Init();
         }
 
@@ -134,7 +131,9 @@ namespace General
             var spawnSystems = new EcsSystems(_world, "Spawn Systems");
 
             return spawnSystems
-                .Add(new SpawnWarriorSystem());
+                .Add(new SpawnWarriorSystem())
+
+                .OneFrame<SpawnWarriorEvent>();
         }
 
         private EcsSystems MoveSystems()
@@ -160,7 +159,7 @@ namespace General
                 .Add(new BattleSystem())
 
                 .Add(new FighterSystem())
-                .Add(new FighterAnimationSystem())
+                .Add(new FighterAnimatorSystem())
                 .Add(new FighterDeathSystem())
 
                 .OneFrame<EndPlacementFighterSquadEvent>();

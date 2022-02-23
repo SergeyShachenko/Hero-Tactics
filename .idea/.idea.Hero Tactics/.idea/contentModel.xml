@@ -9,7 +9,6 @@
         <e p="Architecture" t="Include">
           <e p="Scripts" t="Include">
             <e p="Components" t="Include">
-              <e p="AnimatorComp.cs" t="Include" />
               <e p="Battle" t="Include">
                 <e p="Battlefield.cs" t="Include" />
                 <e p="Fighter.cs" t="Include" />
@@ -17,23 +16,19 @@
               </e>
               <e p="Events" t="Include">
                 <e p="Battle" t="Include">
-                  <e p="ChangedStateBattlefieldEvent.cs" t="Include" />
+                  <e p="ChangedBattlefieldStateEvent.cs" t="Include" />
                   <e p="DeadWarriorEvent.cs" t="Include" />
                   <e p="EndBattleEvent.cs" t="Include" />
                   <e p="EndPlacementFighterSquadEvent.cs" t="Include" />
-                  <e p="StartBattleEvent.cs" t="Include" />
                 </e>
-                <e p="Main" t="Include">
-                  <e p="ChangeGameStateEvent.cs" t="Include" />
+                <e p="Game" t="Include">
+                  <e p="ChangedGameStateEvent.cs" t="Include" />
                 </e>
                 <e p="Move" t="Include">
                   <e p="MoveHeroesToEvent.cs" t="Include" />
                   <e p="MoveHeroToEvent.cs" t="Include" />
                 </e>
-                <e p="Spawn" t="Include">
-                  <e p="SpawnWarriorEvent.cs" t="Include" />
-                </e>
-                <e p="Unity" t="Include">
+                <e p="Physics" t="Include">
                   <e p="OnCollisionEnterEvent.cs" t="Include" />
                   <e p="OnCollisionExitEvent.cs" t="Include" />
                   <e p="OnCollisionStayEvent.cs" t="Include" />
@@ -42,13 +37,20 @@
                   <e p="OnTriggerExitEvent.cs" t="Include" />
                   <e p="OnTriggerStayEvent.cs" t="Include" />
                 </e>
+                <e p="Spawn" t="Include">
+                  <e p="SpawnWarriorEvent.cs" t="Include" />
+                </e>
               </e>
               <e p="GameObj.cs" t="Include" />
+              <e p="GamePerformance.cs" t="Include" />
               <e p="HealthBar.cs" t="Include" />
-              <e p="LineRendererComp.cs" t="Include" />
-              <e p="MeshRendererComp.cs" t="Include" />
               <e p="ModelParent.cs" t="Include" />
               <e p="Movable.cs" t="Include" />
+              <e p="Others" t="Include">
+                <e p="AnimatorComp.cs" t="Include" />
+                <e p="LineRendererComp.cs" t="Include" />
+                <e p="MeshRendererComp.cs" t="Include" />
+              </e>
               <e p="Physics" t="Include">
                 <e p="ColliderComp.cs" t="Include" />
                 <e p="RigidbodyComp.cs" t="Include" />
@@ -60,7 +62,17 @@
             </e>
             <e p="GameStartup.cs" t="Include" />
             <e p="Services" t="Include">
-              <e p="EventService.cs" t="Include" />
+              <e p="Events" t="Include">
+                <e p="BattleEventsService.cs" t="Include" />
+                <e p="EventsService.cs" t="Include" />
+                <e p="FighterEventsService.cs" t="Include" />
+                <e p="MoveEventsService.cs" t="Include" />
+                <e p="SpawnEventsService.cs" t="Include" />
+              </e>
+              <e p="Fighters" t="Include">
+                <e p="FighterService.cs" t="Include" />
+                <e p="FighterSquadService.cs" t="Include" />
+              </e>
               <e p="GameplayService.cs" t="Include" />
               <e p="GameTools.cs" t="Include" />
             </e>
@@ -73,7 +85,7 @@
                 <e p="PlacementEnemySystem.cs" t="Include" />
                 <e p="PlacementHeroSystem.cs" t="Include" />
               </e>
-              <e p="FighterAnimationSystem.cs" t="Include" />
+              <e p="FighterAnimatorSystem.cs" t="Include" />
               <e p="Game" t="Include">
                 <e p="GameStateSystem.cs" t="Include" />
               </e>

@@ -12,26 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced0deb47220457daf5136298e76e523, type: 3}
   m_Name: HeroesData
   m_EditorClassIdentifier: 
-  Heroes:
+  Warriors:
   - Warrior:
       Prefab: {fileID: 3026205881318650062, guid: 0cd31a9abb1892441bd6a7951d0d6b13, type: 3}
       Type: 0
       Stats:
-        Health: 10
+        MaxHealth: 5
+        CurrentHealth: 0
         Damage: 5
         Armor: 0
       Movable:
-        Speed: 3
+        Speed: 3.5
         State: 0
         IsMovable: 0
   - Warrior:
       Prefab: {fileID: 3026205881318650062, guid: cda94b3db5f9e5941a5d94fbf13aad47, type: 3}
       Type: 1
       Stats:
-        Health: 10
+        MaxHealth: 5
+        CurrentHealth: 0
         Damage: 5
         Armor: 20
       Movable:
-        Speed: 3
+        Speed: 3.5
         State: 0
         IsMovable: 0
