@@ -14,26 +14,25 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
-        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefieldEvents;
+        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnterEvents;
 
-        private List<PlaceableFighter> _heroesForMove, _heroesCompleteMove;
+        private HashSet<PlaceableFighter> _heroesForMove, _heroesCompleteMove;
         private int _assaultPositionsIndex, _freePositionsIndex;
 
         
         void IEcsInitSystem.Init()
         {
-            _heroesForMove = new List<PlaceableFighter>();
-            _heroesCompleteMove = new List<PlaceableFighter>();
+            _heroesForMove = new HashSet<PlaceableFighter>();
+            _heroesCompleteMove = new HashSet<PlaceableFighter>();
         }
 
         void IEcsRunSystem.Run()
         {
             UpdateHeroesForMove(canUpdate:
-                _onTriggersEnter.IsEmpty() == false || _changedStateBattlefields.IsEmpty() == false);
+                _onTriggersEnterEvents.IsEmpty() == false || _changedStateBattlefieldEvents.IsEmpty() == false);
 
-            MoveHeroes(canMove:
-                _heroesForMove.Count > 0);
+            MoveHeroes(canMove: _heroesForMove.Count > 0);
             
             ClearHeroesForMove(canClear:
                 _heroesForMove.Count == _heroesCompleteMove.Count && _heroesForMove.Count > 0);
@@ -44,52 +43,45 @@ namespace Systems.Battle
         {
             if (canUpdate == false) return;
 
-            if (_onTriggersEnter.IsEmpty() == false)
+            
+            foreach (var index in _onTriggersEnterEvents)
             {
-                foreach (var index in _onTriggersEnter)
+                ref var onTriggerEnterEvent = ref _onTriggersEnterEvents.Get1(index);
+                ref var eventSender = ref onTriggerEnterEvent.Sender;
+                ref var eventVisitor = ref onTriggerEnterEvent.Visitor;
+                
+                if (eventSender.Has<Battlefield>() == false || eventVisitor.Has<Fighter>() == false) continue;
+                if (eventVisitor.Get<Fighter>().State != FighterState.Alive) continue;
+
+                
+                var hero = new PlaceableFighter {Entity = eventVisitor, Place = eventSender};
+
+                if (hero.Entity.Get<Fighter>().BattleSide == BattleSide.Hero)
                 {
-                    ref var triggerEvent = ref _onTriggersEnter.GetEntity(index).Get<OnTriggerEnterEvent>();
-                    ref var eventSender = ref triggerEvent.Sender;
-                    ref var eventVisitor = ref triggerEvent.Visitor;
-                
-                    if (eventSender.Has<Battlefield>() == false || eventVisitor.Has<Fighter>() == false) continue;
-                    if (eventVisitor.Get<Fighter>().State != FighterState.Alive) continue;
-
-                
-                    var hero = new PlaceableFighter {Entity = eventVisitor, Place = eventSender};
-
-                    if (_heroesForMove.Contains(hero) == false && hero.Entity.Get<Fighter>().BattleSide == BattleSide.Hero)
-                    {
-                        hero.Entity.Get<Movable>().IsMovable = false;
-                        _heroesForMove.Add(hero);
-                    }
+                    hero.Entity.Get<Movable>().IsMovable = false;
+                    _heroesForMove.Add(hero);
                 }
             }
 
-            if (_changedStateBattlefields.IsEmpty() == false)
+            foreach (var index in  _changedStateBattlefieldEvents)
             {
-                foreach (var index in  _changedStateBattlefields)
+                ref var changeStateEvent = ref _changedStateBattlefieldEvents.Get1(index);
+                ref var entity = ref changeStateEvent.Battlefield;
+                ref var visitors = ref entity.Get<Battlefield>().Visitors;
+                    
+                    
+                foreach (var visitor in visitors)
                 {
-                    ref var changeStateEvent = 
-                        ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
-                
-                    ref var entity = ref changeStateEvent.Battlefield;
-                    ref var visitors = ref entity.Get<Battlefield>().Visitors;
-                    
-                    
-                    foreach (var visitor in visitors)
-                    {
-                        if (visitor.Get<Fighter>().BattleSide != BattleSide.Hero) continue;
-                        if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
+                    if (visitor.Get<Fighter>().BattleSide != BattleSide.Hero) continue;
+                    if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
                         
                         
-                        var fighter = new PlaceableFighter {Entity = visitor, Place = entity};
+                    var fighter = new PlaceableFighter {Entity = visitor, Place = entity};
 
-                        if (_heroesForMove.Contains(fighter) == false)
-                        { 
-                            fighter.Entity.Get<Movable>().IsMovable = false; 
-                            _heroesForMove.Add(fighter);
-                        }
+                    if (_heroesForMove.Contains(fighter) == false)
+                    { 
+                        fighter.Entity.Get<Movable>().IsMovable = false; 
+                        _heroesForMove.Add(fighter);
                     }
                 }
             }
@@ -119,8 +111,7 @@ namespace Systems.Battle
 
                         heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(
                             hero.Entity, 
-                            assaultPlacementPositions[_assaultPositionsIndex++], 
-                            0.05f);
+                            assaultPlacementPositions[_assaultPositionsIndex++]);
                         
                         hero.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainDefencePoint);
 
@@ -128,7 +119,8 @@ namespace Systems.Battle
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)
                             _heroesCompleteMove.Add(hero);
 
-                        if (_assaultPositionsIndex >= assaultPlacementPositions.Count) _assaultPositionsIndex = 0;
+                        if (_assaultPositionsIndex >= assaultPlacementPositions.Count) 
+                            _assaultPositionsIndex = 0;
                         
                         break;
 
@@ -143,16 +135,17 @@ namespace Systems.Battle
 
                         heroOnTheMove = _gameTools.Gameplay.MoveEntityTo(
                             hero.Entity, 
-                            freePlacementPositions[_freePositionsIndex++], 
-                            0.05f);
+                            freePlacementPositions[_freePositionsIndex++]);
                         
-                        hero.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(Vector3.zero);
+                        hero.Entity.Get<ModelParent>().GameObject.transform.rotation = 
+                            Quaternion.Euler(battlefield.PlacementHeroRotation);
 
 
                         if (heroOnTheMove == false && _heroesCompleteMove.Contains(hero) == false)
                             _heroesCompleteMove.Add(hero);
 
-                        if (_freePositionsIndex >= freePlacementPositions.Count - 1) _freePositionsIndex = 0;
+                        if (_freePositionsIndex >= freePlacementPositions.Count - 1) 
+                            _freePositionsIndex = 0;
                         
                         break;
                 }
@@ -164,7 +157,7 @@ namespace Systems.Battle
             if (canClear == false) return;
 
 
-            var heroes = new List<EcsEntity>();
+            var heroes = new HashSet<EcsEntity>();
 
             foreach (var hero in _heroesCompleteMove)
             {

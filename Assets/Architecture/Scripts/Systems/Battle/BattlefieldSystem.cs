@@ -17,87 +17,74 @@ namespace Systems.Battle
         private readonly GameServices _gameServices;
         private readonly GameData _gameData;
 
-        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
-        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnter;
-        private readonly EcsFilter<OnTriggerExitEvent> _onTriggersExit;
-        private readonly EcsFilter<Battlefield> _battlefields;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefieldEvents;
+        private readonly EcsFilter<OnTriggerEnterEvent> _onTriggersEnterEvents;
+        private readonly EcsFilter<OnTriggerExitEvent> _onTriggersExitEvents;
+        private readonly EcsFilter<Battlefield> _battlefieldFilter;
         
 
         void IEcsInitSystem.Init()
         {
-            if (_battlefields.IsEmpty()) return;
+            InitBattlefields();
+        }
 
-            
-            foreach (var index in _battlefields)
+        void IEcsRunSystem.Run()
+        {
+            CheckVisitors();
+            CheckGoneVisitors();
+            UpdateState();
+            UpdateModel();
+        }
+
+        
+        private void InitBattlefields()
+        {
+            foreach (var index in _battlefieldFilter)
             {
-                ref var entity = ref _battlefields.GetEntity(index);
+                ref var entity = ref _battlefieldFilter.GetEntity(index);
                 ref var gameObj = ref entity.Get<GameObj>().Value;
                 ref var battlefield = ref entity.Get<Battlefield>();
 
                 battlefield.State = BattlefieldState.Free;
-                battlefield.Visitors = new List<EcsEntity>();
+                battlefield.Visitors = new HashSet<EcsEntity>();
                 battlefield.StandPoints = gameObj.transform.GetChild(0);
                 battlefield.BattlePoints = gameObj.transform.GetChild(1);
                 battlefield.Model = entity.Get<ModelParent>().GameObject.transform;
 
                 OptimizeSpawnWarriorsOnStart(ref battlefield);
-                CallSpawnWarriorEvents(ref battlefield, squadID:index);
-            }    
+                CallSpawnWarriorEvents(ref battlefield, squadID: index);
+            }
         }
         
-        void IEcsRunSystem.Run()
+        private void CheckVisitors()
         {
-            CheckVisitors(canCheck:
-                _onTriggersEnter.IsEmpty() == false);
-            
-            CheckGoneVisitors(canCheck:
-                _onTriggersExit.IsEmpty() == false);
-            
-            UpdateState();
-
-            UpdateModel(canUpdate:
-                _changedStateBattlefields.IsEmpty() == false);
-        }
-
-        private void CheckVisitors(bool canCheck)
-        {
-            if (canCheck == false) return;
-            
-            
-            foreach (var index in _onTriggersEnter)
+            foreach (var index in _onTriggersEnterEvents)
             {
-                ref var triggerEnter = ref _onTriggersEnter.GetEntity(index).Get<OnTriggerEnterEvent>();
+                ref var onTriggerEnterEvent = ref _onTriggersEnterEvents.Get1(index);
 
-                if (triggerEnter.Sender.Has<Battlefield>() == false) continue;
-                if (triggerEnter.Visitor.Has<Fighter>() == false) continue;
-                if (triggerEnter.Visitor.Get<Fighter>().State != FighterState.Alive) continue; 
+                if (onTriggerEnterEvent.Sender.Has<Battlefield>() == false) continue;
+                if (onTriggerEnterEvent.Visitor.Has<Fighter>() == false) continue;
+                if (onTriggerEnterEvent.Visitor.Get<Fighter>().State != FighterState.Alive) continue; 
                     
                     
-                ref var battlefield = ref triggerEnter.Sender.Get<Battlefield>();
-
-                if (battlefield.Visitors.Contains(triggerEnter.Visitor) == false) 
-                    battlefield.Visitors.Add(triggerEnter.Visitor);
+                onTriggerEnterEvent.Sender.Get<Battlefield>().Visitors.Add(onTriggerEnterEvent.Visitor);
 
                 //Debug.Log("Add Visitor");
             }
         }
         
-        private void CheckGoneVisitors(bool canCheck)
+        private void CheckGoneVisitors()
         {
-            if (canCheck == false) return;
-            
-            
-            foreach (var index in _onTriggersExit)
+            foreach (var index in _onTriggersExitEvents)
             {
-                ref var triggerExit = ref _onTriggersExit.GetEntity(index).Get<OnTriggerExitEvent>();
+                ref var onTriggerExitEvent = ref _onTriggersExitEvents.Get1(index);
 
-                if (triggerExit.Sender.Has<Battlefield>() == false) continue;
-                if (triggerExit.GoneVisitor.Has<Fighter>() == false) continue;
-                if (triggerExit.GoneVisitor.Get<Fighter>().State != FighterState.Alive) continue;
+                if (onTriggerExitEvent.Sender.Has<Battlefield>() == false) continue;
+                if (onTriggerExitEvent.GoneVisitor.Has<Fighter>() == false) continue;
+                if (onTriggerExitEvent.GoneVisitor.Get<Fighter>().State != FighterState.Alive) continue;
                     
                     
-                ref var battlefield = ref triggerExit.Sender.Get<Battlefield>();
-                battlefield.Visitors.Remove(triggerExit.GoneVisitor);
+                onTriggerExitEvent.Sender.Get<Battlefield>().Visitors.Remove(onTriggerExitEvent.GoneVisitor);
 
                 //Debug.Log("Remove Gone Visitor");
             }
@@ -105,15 +92,10 @@ namespace Systems.Battle
 
         private void UpdateState()
         {
-            if (_battlefields.IsEmpty()) return;
-
-
-            foreach (var index in _battlefields)
+            foreach (var index in _battlefieldFilter)
             {
-                ref var entity = ref _battlefields.GetEntity(index);
+                ref var entity = ref _battlefieldFilter.GetEntity(index);
                 ref var battlefield = ref entity.Get<Battlefield>();
-
-
                 bool haveHeroes = false, haveEnemies = false;
 
                 foreach (var visitor in battlefield.Visitors)
@@ -166,16 +148,11 @@ namespace Systems.Battle
             }
         }
         
-        private void UpdateModel(bool canUpdate)
+        private void UpdateModel()
         {
-            if (canUpdate == false) return;
-
-
-            foreach (var index in _changedStateBattlefields)
+            foreach (var index in _changedStateBattlefieldEvents)
             {
-                ref var entity = 
-                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>().Battlefield;
-
+                ref var entity = ref _changedStateBattlefieldEvents.Get1(index).Battlefield;
                 ref var battlefield = ref entity.Get<Battlefield>();
 
                 switch (battlefield.State)
@@ -201,7 +178,7 @@ namespace Systems.Battle
         {
             ref var warriors = ref battlefield.SpawnWarriorsOnStart;
 
-            if(warriors.Count == 0) return; 
+            if (warriors.Count == 0) return; 
             
 
             if (battlefield.SpawnBoss)
@@ -212,9 +189,7 @@ namespace Systems.Battle
             }
             
             if (warriors.Count > 3)
-            {
                 warriors.RemoveRange(3, warriors.Count-3);
-            }
         }
         
         private void CallSpawnWarriorEvents(ref Battlefield battlefield, int squadID)

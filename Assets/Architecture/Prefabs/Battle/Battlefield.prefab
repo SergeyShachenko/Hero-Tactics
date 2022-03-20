@@ -146,11 +146,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value:
-    State: 0
+    PlacementHeroRotation: {x: 0, y: 0, z: 0}
+    PlacementEnemyRotation: {x: 0, y: 180, z: 0}
+    Ways: []
     SpawnBoss: 0
     SpawnWarriorBattleSide: 0
-    SpawnWarriorOnStart: 000000000000000001000000
-    Ways: []
+    SpawnWarriorsOnStart: 
+    State: 0
     StandPoints: {fileID: 2756776536823809962}
     BattlePoints: {fileID: 2756776535541352830}
     Model: {fileID: 0}

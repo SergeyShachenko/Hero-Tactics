@@ -7,39 +7,32 @@ using UnityEngine;
 
 namespace Services.Events
 {
-    public sealed class MoveEventsService
+    public sealed class MoveEventsService : GameToolServiceBase
     {
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
+        public MoveEventsService(EcsWorld world, GameTools gameTools) : base(world, gameTools) {}
 
-        public MoveEventsService(EcsWorld world, GameTools gameTools)
+
+        public void PlayersTo(HashSet<EcsEntity> heroes, Vector3 targetPosition)
         {
-            _world = world;
-            _gameTools = gameTools;
-        }
-        
-        
-        public void HeroesTo(List<EcsEntity> heroes, Vector3 targetPosition)
-        {
-            _world.NewEntity().Get<MoveHeroesToEvent>() = new MoveHeroesToEvent
+            World.NewEntity().Get<MovePlayersToEvent>() = new MovePlayersToEvent
             {
-                Heroes = heroes,
+                Players = heroes,
                 TargetPosition = targetPosition
             };
         }
         
-        public void HeroTo(EcsEntity hero, Vector3 targetPosition)
+        public void PlayerTo(EcsEntity hero, Vector3 targetPosition)
         {
-            _world.NewEntity().Get<MoveHeroToEvent>() = new MoveHeroToEvent
+            World.NewEntity().Get<MovePlayerToEvent>() = new MovePlayerToEvent
             {
                 Entity = hero,
                 TargetPosition = targetPosition
             };
         }
         
-        public void EndPlacementFighterSquad(BattleSide battleSide, List<EcsEntity> fighters, EcsEntity place)
+        public void EndPlacementFighterSquad(BattleSide battleSide, HashSet<EcsEntity> fighters, EcsEntity place)
         {
-            _world.NewEntity().Get<EndPlacementFighterSquadEvent>() = new EndPlacementFighterSquadEvent
+            World.NewEntity().Get<EndPlacementFighterSquadEvent>() = new EndPlacementFighterSquadEvent
             {
                 BattleSide = battleSide,
                 Fighters = fighters,

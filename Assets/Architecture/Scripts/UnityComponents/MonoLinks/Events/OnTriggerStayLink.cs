@@ -1,10 +1,11 @@
 ﻿using Components.Events.Physics;
 using Leopotam.Ecs;
+using UnityComponents.MonoLinks.Base;
 using UnityEngine;
 
 namespace UnityComponents.MonoLinks.Events
 {
-    public class OnTriggerStayLink : PhysicsLinkBase
+    public sealed class OnTriggerStayLink : PhysicsLinkBase
     {
         private void OnTriggerStay(Collider other)
         {
@@ -14,7 +15,7 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnTriggerStayEvent>() = new OnTriggerStayEvent
             {
-                GameObjSender = gameObject,
+                SenderGameObj = gameObject,
                 Collider = other,
                 Sender = entitySender,
                 Visitor = entityVisitor

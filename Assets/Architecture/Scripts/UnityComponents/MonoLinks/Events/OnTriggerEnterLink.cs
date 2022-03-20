@@ -1,10 +1,11 @@
 ﻿using Components.Events.Physics;
 using Leopotam.Ecs;
+using UnityComponents.MonoLinks.Base;
 using UnityEngine;
 
 namespace UnityComponents.MonoLinks.Events
 {
-    public class OnTriggerEnterLink : PhysicsLinkBase
+    public sealed class OnTriggerEnterLink : PhysicsLinkBase
     {
         private void OnTriggerEnter(Collider other)
         {
@@ -14,7 +15,7 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnTriggerEnterEvent>() = new OnTriggerEnterEvent
             {
-                GameObjSender = gameObject,
+                SenderGameObj = gameObject,
                 Collider = other,
                 Sender = entitySender,
                 Visitor = entityVisitor

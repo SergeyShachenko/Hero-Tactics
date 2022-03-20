@@ -13,15 +13,15 @@ namespace Systems.Game
         private readonly EcsWorld _world;
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedBattlefieldsState;
-        private readonly EcsFilter<GamePerformance> _gamePerformance;
-        private readonly EcsFilter<DeadFighterEvent> _deadFighters;
-        private readonly EcsFilter<Battlefield> _battlefields;
-        private readonly EcsFilter<PlayerTag> _players;
-        private readonly EcsFilter<BossTag> _bosses;
-        
-        private int _deadPlayersCount, _deadBossesCount, _freeBattlefieldsCount;
-        private bool _gameHaveBosses, _gameEnd;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedBattlefieldStateEvents;
+        private readonly EcsFilter<DeadFighterEvent> _deadFighterEvents;
+        private readonly EcsFilter<GamePerformance> _gamePerformanceFilter;
+        private readonly EcsFilter<Battlefield> _battlefieldFilter;
+        private readonly EcsFilter<Fighter, PlayerTag> _playerFilter;
+        private readonly EcsFilter<Fighter, BossTag> _bossFilter;
+
+        private int _deadPlayersCount, _deadBossesCount;
+        private bool _gameEnd;
         
         
         void IEcsInitSystem.Init()
@@ -30,15 +30,11 @@ namespace Systems.Game
 
             _deadPlayersCount = 0;
             _deadBossesCount = 0;
-            _freeBattlefieldsCount = 1;
-            
-            _gameHaveBosses = _bosses.GetEntitiesCount() > 0;
         }
         
         void IEcsRunSystem.Run()
         {
-            UpdateState(canUpdate:
-                _gameEnd == false);
+            UpdateState(canUpdate: _gameEnd == false);
         }
 
         
@@ -47,7 +43,7 @@ namespace Systems.Game
             if (canUpdate == false) return;
 
 
-            ref var gameState = ref _gamePerformance.GetEntity(0).Get<GamePerformance>().State;
+            ref var gameState = ref _gamePerformanceFilter.Get1(0).State;
 
             if (DeadAllPlayers())
             {
@@ -60,18 +56,7 @@ namespace Systems.Game
                 return;
             }
 
-            if (AllBossesKilled() && _gameHaveBosses)
-            {
-                gameState = GameState.Win;
-                _gameEnd = true;
-                
-                _gameTools.Events.ChangedGameState(gameState);
-                
-                Debug.Log("Win!");
-                return;
-            }
-            
-            if (AllBattlefieldsFreed())
+            if (AllBossesKilled() && _bossFilter.GetEntitiesCount() > 0)
             {
                 gameState = GameState.Win;
                 _gameEnd = true;
@@ -85,54 +70,34 @@ namespace Systems.Game
 
         private bool DeadAllPlayers()
         {
-            if (_deadFighters.IsEmpty()) 
-                return false;
+            if (_deadFighterEvents.IsEmpty()) return false;
 
 
-            foreach (var index in _deadFighters)
+            foreach (var index in _deadFighterEvents)
             {
-                ref var deadFighterEntity = ref _deadFighters.GetEntity(index).Get<DeadFighterEvent>().Fighter;
+                ref var entity = ref _deadFighterEvents.Get1(index).Fighter;
 
-                if (deadFighterEntity.Has<PlayerTag>()) _deadPlayersCount++;
+                if (entity.Has<PlayerTag>()) 
+                    _deadPlayersCount++;
             }
 
-            return _deadPlayersCount == _players.GetEntitiesCount();
+            return _deadPlayersCount == _playerFilter.GetEntitiesCount();
         }
         
         private bool AllBossesKilled()
         {
-            if (_deadFighters.IsEmpty()) 
-                return false;
+            if (_deadFighterEvents.IsEmpty()) return false;
 
 
-            foreach (var index in _deadFighters)
+            foreach (var index in _deadFighterEvents)
             {
-                ref var deadFighterEntity = ref _deadFighters.GetEntity(index).Get<DeadFighterEvent>().Fighter;
+                ref var entity = ref _deadFighterEvents.Get1(index).Fighter;
 
-                if (deadFighterEntity.Has<BossTag>()) _deadBossesCount++;
+                if (entity.Has<BossTag>()) 
+                    _deadBossesCount++;
             }
 
-            return _deadBossesCount == _bosses.GetEntitiesCount();
-        }
-
-        private bool AllBattlefieldsFreed()
-        {
-            if (_changedBattlefieldsState.IsEmpty()) 
-                return false;
-
-
-            foreach (var index in _changedBattlefieldsState)
-            {
-                ref var changedBattlefieldState = 
-                    ref _changedBattlefieldsState.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
-                
-                ref var battlefield = ref changedBattlefieldState.Battlefield.Get<Battlefield>();
-                
-                if (battlefield.State == BattlefieldState.Free) 
-                    _freeBattlefieldsCount++;
-            }
-            
-            return _freeBattlefieldsCount == _battlefields.GetEntitiesCount();
+            return _deadBossesCount == _bossFilter.GetEntitiesCount();
         }
     }
 }

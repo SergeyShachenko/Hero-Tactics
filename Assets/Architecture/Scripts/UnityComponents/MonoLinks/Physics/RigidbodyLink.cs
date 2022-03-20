@@ -1,6 +1,7 @@
 ﻿using Components.Physics;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks.Physics
 {
-    public class RigidbodyLink : MonoLink<RigidbodyComponent> { }
+    public sealed class RigidbodyLink : MonoLink<RigidbodyComponent> { }
 }

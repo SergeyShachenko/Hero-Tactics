@@ -7,12 +7,18 @@ namespace Components.Battle
 {
     [Serializable] public struct Battlefield
     {
-        [HideInInspector] public BattlefieldState State;
+        [Header("Settings")]
+        public Vector3 PlacementHeroRotation;
+        public Vector3 PlacementEnemyRotation;
+        public List<Transform> Ways;
+        
+        [Header("SpawnOnStart")]
         public bool SpawnBoss;
         public BattleSide SpawnWarriorBattleSide;
         public List<WarriorType> SpawnWarriorsOnStart;
-        public List<Transform> Ways;
-        [HideInInspector] public List<EcsEntity> Visitors;
+
+        [HideInInspector] public BattlefieldState State;
+        [HideInInspector] public HashSet<EcsEntity> Visitors;
         [HideInInspector] public Transform StandPoints, BattlePoints;
         [HideInInspector] public Transform Model;
     }

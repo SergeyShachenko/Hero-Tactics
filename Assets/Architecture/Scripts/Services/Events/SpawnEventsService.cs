@@ -5,21 +5,14 @@ using UnityEngine;
 
 namespace Services.Events
 {
-    public sealed class SpawnEventsService
+    public sealed class SpawnEventsService : GameToolServiceBase
     {
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
+        public SpawnEventsService(EcsWorld world, GameTools gameTools) : base(world, gameTools) {}
 
-        public SpawnEventsService(EcsWorld world, GameTools gameTools)
-        {
-            _world = world;
-            _gameTools = gameTools;
-        }
-        
-        
+
         public void Warrior(BattleSide battleSide, WarriorType type, bool isBoss, int squadID, Transform spawnPoint)
         {
-            _world.NewEntity().Get<SpawnWarriorEvent>() = new SpawnWarriorEvent
+            World.NewEntity().Get<SpawnWarriorEvent>() = new SpawnWarriorEvent
             {
                 BattleSide = battleSide,
                 WarriorType = type,

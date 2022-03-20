@@ -1,4 +1,5 @@
-﻿using Components;
+﻿using System.Linq;
+using Components;
 using Components.Battle;
 using Components.Events.Battle;
 using Leopotam.Ecs;
@@ -11,27 +12,21 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<DeadFighterEvent> _deadFighters;
-        private readonly EcsFilter<EndBattleEvent> _endBattles;
+        private readonly EcsFilter<DeadFighterEvent> _deadFighterEvents;
+        private readonly EcsFilter<EndBattleEvent> _endBattleEvents;
         
         
         void IEcsRunSystem.Run()
         {
-            ProcessDeadFighters(canProcess:
-                _deadFighters.IsEmpty() == false);
-            
-            RemoveDeadFightersFromBattlefields(canRemove:
-                _endBattles.IsEmpty() == false);
+            ProcessDeadFighters();
+            RemoveDeadFightersFromBattlefields();
         }
 
-        private void ProcessDeadFighters(bool canProcess)
+        private void ProcessDeadFighters()
         {
-            if (canProcess == false) return;
-
-
-            foreach (var index in _deadFighters)
+            foreach (var index in _deadFighterEvents)
             {
-                ref var entity = ref _deadFighters.GetEntity(index).Get<DeadFighterEvent>().Fighter;
+                ref var entity = ref _deadFighterEvents.Get1(index).Fighter;
 
                 if (entity.Has<Movable>()) 
                     entity.Get<Movable>().IsMovable = false;
@@ -45,35 +40,35 @@ namespace Systems.Battle
             }
         }
 
-        private void RemoveDeadFightersFromBattlefields(bool canRemove)
+        private void RemoveDeadFightersFromBattlefields()
         {
-            if (canRemove == false) return;
-        
-        
-            foreach (var index in _endBattles)
+            foreach (var index in _endBattleEvents)
             {
-                ref var endBattle = ref _endBattles.GetEntity(index).Get<EndBattleEvent>();
+                ref var endBattle = ref _endBattleEvents.Get1(index);
                 
                 if (endBattle.Place.Has<Battlefield>() == false) continue;
-                
-                
+
+
                 ref var battlefield = ref endBattle.Place.Get<Battlefield>();
-                
-                for (var i = 0; i < battlefield.Visitors.Count;)
+                var newVisitors = battlefield.Visitors.ToList();
+
+                for (var i = 0; i < newVisitors.Count;)
                 {
-                    var visitor = battlefield.Visitors[i];
+                    var visitor = newVisitors[i];
         
                     if (visitor.Get<Fighter>().State != FighterState.Alive)
                     {
-                        battlefield.Visitors.Remove(visitor);
+                        newVisitors.Remove(visitor);
                         i = 0;
                         
                         //Debug.Log("Remove Dead Visitor");
                         continue;
                     }
         
-                    i++;
+                    ++i;
                 }
+
+                battlefield.Visitors = newVisitors.ToHashSet();
             }
         }
     }

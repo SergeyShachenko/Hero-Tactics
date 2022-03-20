@@ -5,19 +5,13 @@ using UnityEngine;
 
 namespace Services.Fighters
 {
-    public sealed class FighterService
+    public sealed class FighterService : GameToolServiceBase
     {
         public readonly FighterSquadService Squad;
         
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
-        
-        public FighterService(EcsWorld world, GameTools gameTools)
+        public FighterService(EcsWorld world, GameTools gameTools) : base(world, gameTools)
         {
             Squad = new FighterSquadService(world, gameTools);
-            
-            _world = world;
-            _gameTools = gameTools;
         }
 
 
@@ -25,17 +19,15 @@ namespace Services.Fighters
         {
             ref var fighter = ref entity.Get<Fighter>();
             
-            
             fighter.Stats.CurrentHealth = Mathf.Clamp(
                 fighter.Stats.CurrentHealth - damage, 0, fighter.Stats.MaxHealth);
             
             if (Mathf.Approximately(fighter.Stats.CurrentHealth, 0))
             {
                 fighter.State = FighterState.Dead;
-                _gameTools.Events.Fighter.Dead(ref entity);
+                GameTools.Events.Fighter.Dead(ref entity);
             }
-            
-            
+
             if (entity.Has<HealthBar>())
             {
                 ref var healthBar = ref entity.Get<HealthBar>().Bar;

@@ -1,6 +1,4 @@
-﻿using Systems.Game;
-
-namespace Components.Events.Game
+﻿namespace Components.Events.Game
 {
     internal struct ChangedGameStateEvent
     {

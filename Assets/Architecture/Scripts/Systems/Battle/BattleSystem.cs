@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Components;
 using Components.Battle;
 using Components.Events.Battle;
 using Services;
 using Leopotam.Ecs;
 using UnityComponents.Data;
-using UnityEngine;
 
 namespace Systems.Battle
 {
@@ -15,37 +13,27 @@ namespace Systems.Battle
         private readonly GameTools _gameTools;
         private readonly GameSettings _gameSettings;
         
-        private readonly EcsFilter<EndPlacementFighterSquadEvent> _endPlacementFighterSquads;
-        private readonly EcsFilter<EndBattleEvent> _endBattles;
-        private readonly EcsFilter<Fighter> _fighters;
+        private readonly EcsFilter<EndPlacementFighterSquadEvent> _endPlacementFighterSquadEvents;
+        private readonly EcsFilter<EndBattleEvent> _endBattleEvents;
+        private readonly EcsFilter<Fighter> _fighterFilter;
 
         private FighterSquad? _assaultSquad, _defenceSquad;
         
         
         void IEcsRunSystem.Run()
         {
-            UpdateFighterSquads(canUpdate:
-                _endPlacementFighterSquads.IsEmpty() == false);
-            
-            Battle(canFight:
-                _assaultSquad.HasValue && _defenceSquad.HasValue);
-            
-            ProcessEndBattle(canProcess:
-                _endBattles.IsEmpty() == false);
+            SetSquads();
+            Battle(canFight: _assaultSquad.HasValue && _defenceSquad.HasValue);
+            ProcessEndBattle(canProcess: _endBattleEvents.IsEmpty() == false);
         }
 
         
-        private void UpdateFighterSquads(bool canUpdate)
+        private void SetSquads()
         {
-            if (canUpdate == false) return;
-
-
-            foreach (var index in _endPlacementFighterSquads)
+            foreach (var index in _endPlacementFighterSquadEvents)
             {
-                ref var endPlacementSquad =
-                    ref _endPlacementFighterSquads.GetEntity(index).Get<EndPlacementFighterSquadEvent>();
-
-                ref var place = ref endPlacementSquad.Place;
+                ref var endPlacementFighterSquadEvent = ref _endPlacementFighterSquadEvents.Get1(index);
+                ref var place = ref endPlacementFighterSquadEvent.Place;
                 
                 if (place.Has<Battlefield>() == false) continue;
                 if (place.Get<Battlefield>().State != BattlefieldState.Battle) continue;
@@ -53,35 +41,49 @@ namespace Systems.Battle
 
                 ref var battlefield = ref place.Get<Battlefield>();
                 var visitorsEndMove = true;
-                
-                foreach (var visitor in battlefield.Visitors.Where(
-                    visitor => visitor.Get<Movable>().IsMovable == false)) visitorsEndMove = false;
-                
+
+                foreach (var visitor in battlefield.Visitors)
+                {
+                    if (visitor.Get<Movable>().IsMovable == false)
+                    {
+                        visitorsEndMove = false;
+                        break;
+                    }
+                }
+
                 if (visitorsEndMove == false) continue;
 
                 
-                var heroSquad = new List<EcsEntity>();
-                var enemySquad = new List<EcsEntity>();
+                var heroSquad = new HashSet<EcsEntity>();
+                var enemySquad = new HashSet<EcsEntity>();
 
-                switch (endPlacementSquad.BattleSide)
+                switch (endPlacementFighterSquadEvent.BattleSide)
                 {
                     case BattleSide.Hero:
-                        
-                        heroSquad = endPlacementSquad.Fighters;
+                    {
+                        heroSquad = endPlacementFighterSquadEvent.Fighters;
 
-                        enemySquad.AddRange(battlefield.Visitors.Where(
-                            visitor => visitor.Get<Fighter>().BattleSide == BattleSide.Enemy));
+                        foreach (var visitor in battlefield.Visitors)
+                        {
+                            if (visitor.Get<Fighter>().BattleSide == BattleSide.Enemy)
+                                enemySquad.Add(visitor);
+                        }
 
-                        break;
-                    
+                        break;   
+                    }
+
                     case BattleSide.Enemy:
-                        
-                        enemySquad = endPlacementSquad.Fighters;
+                    {
+                        enemySquad = endPlacementFighterSquadEvent.Fighters;
 
-                        heroSquad.AddRange(battlefield.Visitors.Where(
-                            visitor => visitor.Get<Fighter>().BattleSide == BattleSide.Hero));
+                        foreach (var visitor in battlefield.Visitors)
+                        {
+                            if (visitor.Get<Fighter>().BattleSide == BattleSide.Hero)
+                                heroSquad.Add(visitor);
+                        }
 
-                        break;
+                        break;   
+                    }
                 }
 
                 _assaultSquad = _gameTools.Fighter.Squad.Create(ref place, heroSquad);
@@ -118,7 +120,7 @@ namespace Systems.Battle
             {
                 case SquadState.Alive:
                 {
-                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighters);
+                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighterFilter);
 
                     foreach (var fighter in fighters)
                     {
@@ -131,7 +133,7 @@ namespace Systems.Battle
                 
                 case SquadState.Dead:
                 {
-                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighters);
+                    var fighters = _gameTools.Fighter.Squad.Get(_assaultSquad.Value.ID, _fighterFilter);
                 
                     foreach (var fighter in fighters)
                     {
@@ -147,7 +149,7 @@ namespace Systems.Battle
             {
                 case SquadState.Alive:
                 {
-                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighters);
+                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighterFilter);
 
                     foreach (var fighter in fighters)
                     {
@@ -160,7 +162,7 @@ namespace Systems.Battle
                 
                 case SquadState.Dead:
                 {
-                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighters);
+                    var fighters = _gameTools.Fighter.Squad.Get(_defenceSquad.Value.ID, _fighterFilter);
 
                     foreach (var fighter in fighters)
                     {

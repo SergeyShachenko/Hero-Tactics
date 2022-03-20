@@ -5,8 +5,8 @@ namespace Components.Events.Physics
 {
     internal struct OnTriggerEnterEvent
     {
-        public GameObject GameObjSender;
         public Collider Collider;
+        public GameObject SenderGameObj;
         public EcsEntity Sender;
         public EcsEntity Visitor;
     }

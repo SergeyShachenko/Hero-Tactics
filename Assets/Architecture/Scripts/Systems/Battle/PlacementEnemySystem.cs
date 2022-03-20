@@ -14,42 +14,32 @@ namespace Systems.Battle
     {
         private readonly GameTools _gameTools;
         
-        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefields;
+        private readonly EcsFilter<ChangedBattlefieldStateEvent> _changedStateBattlefieldEvents;
 
-        private List<PlaceableFighter> _enemiesForMove, _enemiesCompleteMove;
+        private HashSet<PlaceableFighter> _enemiesForMove, _enemiesCompleteMove;
         private int _defencePositionsIndex, _freePositionsIndex;
 
         
         void IEcsInitSystem.Init()
         {
-            _enemiesForMove = new List<PlaceableFighter>();
-            _enemiesCompleteMove = new List<PlaceableFighter>();
+            _enemiesForMove = new HashSet<PlaceableFighter>();
+            _enemiesCompleteMove = new HashSet<PlaceableFighter>();
         }
 
         void IEcsRunSystem.Run()
         {
-            UpdateEnemiesForMove(canUpdate:
-                _changedStateBattlefields.IsEmpty() == false);
-
-            MoveEnemies(canMove:
-                _enemiesForMove.Count > 0);
-            
-            ClearEnemiesForMove(canClear:
-                _enemiesForMove.Count <= _enemiesCompleteMove.Count && _enemiesForMove.Count > 0);
+            UpdateEnemiesForMove();
+            MoveEnemies(canMove: _enemiesForMove.Count > 0);
+            ClearEnemiesForMove(canClear: _enemiesForMove.Count <= _enemiesCompleteMove.Count && _enemiesForMove.Count > 0);
         }
 
 
-        private void UpdateEnemiesForMove(bool canUpdate)
+        private void UpdateEnemiesForMove()
         {
-            if (canUpdate == false) return;
-            
-            
-            foreach (var index in  _changedStateBattlefields)
+            foreach (var index in  _changedStateBattlefieldEvents)
             {
-                ref var changeStateEvent = 
-                    ref _changedStateBattlefields.GetEntity(index).Get<ChangedBattlefieldStateEvent>();
-                
-                ref var entity = ref changeStateEvent.Battlefield;
+                ref var changeStateBattlefieldEvent = ref _changedStateBattlefieldEvents.Get1(index);
+                ref var entity = ref changeStateBattlefieldEvent.Battlefield;
                 ref var visitors = ref entity.Get<Battlefield>().Visitors;
 
 
@@ -57,15 +47,11 @@ namespace Systems.Battle
                 {
                     if (visitor.Get<Fighter>().BattleSide != BattleSide.Enemy) continue;
                     if (visitor.Get<Fighter>().State != FighterState.Alive) continue;
-                        
-                        
-                    var fighter = new PlaceableFighter {Entity = visitor, Place = entity};
-
-                    if (_enemiesForMove.Contains(fighter) == false)
-                    { 
-                        fighter.Entity.Get<Movable>().IsMovable = false; 
-                        _enemiesForMove.Add(fighter);
-                    }
+                    
+                    
+                    visitor.Get<Movable>().IsMovable = false;
+                    
+                    _enemiesForMove.Add(new PlaceableFighter {Entity = visitor, Place = entity});
                 }
             }
         }
@@ -78,7 +64,7 @@ namespace Systems.Battle
             foreach (var enemy in _enemiesForMove)
             {
                 ref var battlefield = ref enemy.Place.Get<Battlefield>();
-                bool enemyOnTheMove;
+                bool enemyIsMoving;
                 
                 switch (battlefield.State)
                 {
@@ -94,28 +80,26 @@ namespace Systems.Battle
 
                         if (enemy.Entity.Has<BossTag>())
                         {
-                            enemyOnTheMove = _gameTools.Gameplay.MoveEntityTo(
+                            enemyIsMoving = _gameTools.Gameplay.MoveEntityTo(
                                 enemy.Entity, 
-                                defencePlacementPositions.Last(), 
-                                0.05f);
+                                defencePlacementPositions.Last());
                             
                             enemy.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainAssaultPoint);
                         }
                         else
                         {
-                            enemyOnTheMove = _gameTools.Gameplay.MoveEntityTo(
+                            enemyIsMoving = _gameTools.Gameplay.MoveEntityTo(
                                 enemy.Entity, 
-                                defencePlacementPositions[_defencePositionsIndex++], 
-                                0.05f);
+                                defencePlacementPositions[_defencePositionsIndex++]);
 
                             enemy.Entity.Get<ModelParent>().GameObject.transform.LookAt(mainAssaultPoint);
                         }
                         
                         
-                        if (_defencePositionsIndex >= defencePlacementPositions.Count - 1) _defencePositionsIndex = 0;
+                        if (_defencePositionsIndex >= defencePlacementPositions.Count - 1) 
+                            _defencePositionsIndex = 0;
                         
-                        if (enemyOnTheMove == false && _enemiesCompleteMove.Contains(enemy) == false || 
-                            enemy.Entity.Get<Fighter>().State == FighterState.Disabled)
+                        if (enemyIsMoving == false || enemy.Entity.Get<Fighter>().State != FighterState.Alive)
                             _enemiesCompleteMove.Add(enemy);
                         
                         break;
@@ -131,29 +115,29 @@ namespace Systems.Battle
 
                         if (enemy.Entity.Has<BossTag>())
                         {
-                            enemyOnTheMove = _gameTools.Gameplay.MoveEntityTo(
+                            enemyIsMoving = _gameTools.Gameplay.MoveEntityTo(
                                 enemy.Entity, 
-                                freePlacementPositions.Last(), 
-                                0.05f);
+                                freePlacementPositions.Last());
                             
-                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(0,180,0);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = 
+                                Quaternion.Euler(battlefield.PlacementEnemyRotation);;
                         }
                         else
                         {
-                            enemyOnTheMove = _gameTools.Gameplay.MoveEntityTo(
+                            enemyIsMoving = _gameTools.Gameplay.MoveEntityTo(
                                 enemy.Entity, 
-                                freePlacementPositions[_freePositionsIndex++],
-                                0.05f);
+                                freePlacementPositions[_freePositionsIndex++]);
                             
-                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = Quaternion.Euler(0,180,0);
+                            enemy.Entity.Get<ModelParent>().GameObject.transform.rotation = 
+                                Quaternion.Euler(battlefield.PlacementEnemyRotation);;
                         }
 
                         
-                        if (enemyOnTheMove == false && _enemiesCompleteMove.Contains(enemy) == false || 
-                            enemy.Entity.Get<Fighter>().State == FighterState.Disabled)
+                        if (enemyIsMoving == false || enemy.Entity.Get<Fighter>().State != FighterState.Alive)
                             _enemiesCompleteMove.Add(enemy);
 
-                        if (_freePositionsIndex >= freePlacementPositions.Count - 1) _freePositionsIndex = 0;
+                        if (_freePositionsIndex >= freePlacementPositions.Count - 1) 
+                            _freePositionsIndex = 0;
                         
                         break;
                 }
@@ -165,7 +149,7 @@ namespace Systems.Battle
             if (canClear == false) return;
 
 
-            var enemies = new List<EcsEntity>();
+            var enemies = new HashSet<EcsEntity>();
 
             foreach (var enemy in _enemiesCompleteMove)
             {

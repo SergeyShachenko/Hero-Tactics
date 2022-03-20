@@ -1,6 +1,7 @@
 ﻿using Components.Tags;
+using UnityComponents.MonoLinks.Base;
 
-namespace UnityComponents.MonoLinks.Battle
+namespace UnityComponents.MonoLinks.Tags
 {
-    public class PlayerTagLink : MonoLink<PlayerTag> {}
+    public sealed class PlayerTagLink : MonoLink<PlayerTag> {}
 }

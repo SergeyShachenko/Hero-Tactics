@@ -5,7 +5,7 @@ namespace Components.Events.Physics
 {
     internal struct OnPointerClickEvent
     {
-        public GameObject GameObjSender;
+        public GameObject SenderGameObj;
         public EcsEntity Sender;
     }
 }

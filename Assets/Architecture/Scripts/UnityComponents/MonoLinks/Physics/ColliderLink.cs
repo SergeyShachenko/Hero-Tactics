@@ -1,6 +1,7 @@
 ﻿using Components.Physics;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks.Physics
 {
-    public class ColliderLink : MonoLink<ColliderComp> { }
+    public sealed class ColliderLink : MonoLink<ColliderComp> { }
 }

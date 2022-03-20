@@ -3,21 +3,14 @@ using Leopotam.Ecs;
 
 namespace Services.Events
 {
-    public sealed class BattleEventsService
+    public sealed class BattleEventsService : GameToolServiceBase
     {
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
+        public BattleEventsService(EcsWorld world, GameTools gameTools) : base(world, gameTools) {}
 
-        public BattleEventsService(EcsWorld world, GameTools gameTools)
-        {
-            _world = world;
-            _gameTools = gameTools;
-        }
-        
-        
+
         public void ChangedStateBattlefield(ref EcsEntity battlefield)
         {
-            _world.NewEntity().Get<ChangedBattlefieldStateEvent>() = new ChangedBattlefieldStateEvent
+            World.NewEntity().Get<ChangedBattlefieldStateEvent>() = new ChangedBattlefieldStateEvent
             {
                 Battlefield = battlefield
             };
@@ -25,7 +18,7 @@ namespace Services.Events
 
         public void End(int assaultSquadID, int defenceSquadID, ref EcsEntity place)
         {
-            _world.NewEntity().Get<EndBattleEvent>() = new EndBattleEvent
+            World.NewEntity().Get<EndBattleEvent>() = new EndBattleEvent
             {
                 AssaultSquadID = assaultSquadID,
                 DefenceSquadID = defenceSquadID,

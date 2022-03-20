@@ -1,6 +1,7 @@
 ﻿using Components;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks
 {
-    public class HealthBarLink : MonoLink<HealthBar> {}
+    public sealed class HealthBarLink : MonoLink<HealthBar> {}
 }

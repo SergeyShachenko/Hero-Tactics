@@ -7,7 +7,9 @@ namespace UnityComponents.Data
     [CreateAssetMenu(menuName = "Develop/Data/HeroesData", fileName = "HeroesData", order = 1)]
     public class HeroesData : ScriptableObject
     {
-        public List<HeroWarriorData> Warriors;
+        public List<HeroWarriorData> Warriors => _warriors;
+
+        [SerializeField] private List<HeroWarriorData> _warriors;
     }
 
 

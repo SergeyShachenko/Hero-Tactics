@@ -4,12 +4,19 @@
     <attachedFolders />
     <explicitIncludes>
       <Path>Library/PackageCache/com.unity.2d.sprite@1.0.0</Path>
+      <Path>Library/PackageCache/com.unity.burst@1.6.4</Path>
+      <Path>Library/PackageCache/com.unity.cinemachine@2.8.4</Path>
       <Path>Library/PackageCache/com.unity.collab-proxy@1.13.5</Path>
+      <Path>Library/PackageCache/com.unity.collab-proxy@1.15.13</Path>
       <Path>Library/PackageCache/com.unity.ext.nunit@1.0.6</Path>
       <Path>Library/PackageCache/com.unity.ide.rider@3.0.10</Path>
+      <Path>Library/PackageCache/com.unity.ide.rider@3.0.12</Path>
       <Path>Library/PackageCache/com.unity.ide.visualstudio@2.0.14</Path>
       <Path>Library/PackageCache/com.unity.ide.vscode@1.2.4</Path>
+      <Path>Library/PackageCache/com.unity.ide.vscode@1.2.5</Path>
       <Path>Library/PackageCache/com.unity.inputsystem@1.1.1</Path>
+      <Path>Library/PackageCache/com.unity.inputsystem@1.3.0</Path>
+      <Path>Library/PackageCache/com.unity.mathematics@1.2.5</Path>
       <Path>Library/PackageCache/com.unity.modules.ai@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.modules.androidjni@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.modules.animation@1.0.0</Path>
@@ -44,12 +51,22 @@
       <Path>Library/PackageCache/com.unity.modules.wind@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.modules.xr@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0</Path>
+      <Path>Library/PackageCache/com.unity.render-pipelines.core@12.1.1</Path>
+      <Path>Library/PackageCache/com.unity.render-pipelines.core@12.1.5</Path>
+      <Path>Library/PackageCache/com.unity.render-pipelines.universal@12.1.1</Path>
+      <Path>Library/PackageCache/com.unity.render-pipelines.universal@12.1.5</Path>
+      <Path>Library/PackageCache/com.unity.searcher@4.9.1</Path>
       <Path>Library/PackageCache/com.unity.services.core@1.0.1</Path>
+      <Path>Library/PackageCache/com.unity.shadergraph@12.1.1</Path>
+      <Path>Library/PackageCache/com.unity.shadergraph@12.1.5</Path>
       <Path>Library/PackageCache/com.unity.test-framework@1.1.30</Path>
+      <Path>Library/PackageCache/com.unity.test-framework@1.1.31</Path>
       <Path>Library/PackageCache/com.unity.textmeshpro@3.0.6</Path>
       <Path>Library/PackageCache/com.unity.timeline@1.6.3</Path>
+      <Path>Library/PackageCache/com.unity.timeline@1.6.4</Path>
       <Path>Library/PackageCache/com.unity.ugui@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.visualscripting@1.7.6</Path>
+      <Path>Library/PackageCache/com.unity.visualscripting@1.7.7</Path>
       <Path>Packages</Path>
       <Path>ProjectSettings</Path>
     </explicitIncludes>

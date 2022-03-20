@@ -17,4 +17,16 @@ namespace Services
             Fighter = new FighterService(world, this);
         }
     }
+
+    public abstract class GameToolServiceBase
+    {
+        protected readonly EcsWorld World;
+        protected readonly GameTools GameTools;
+
+        protected GameToolServiceBase(EcsWorld world, GameTools gameTools)
+        {
+            World = world;
+            GameTools = gameTools;
+        }
+    }
 }

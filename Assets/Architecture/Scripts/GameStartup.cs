@@ -6,11 +6,11 @@ using UnityComponents.Data;
 using Services;
 using Systems.Battle;
 using Systems.Game;
-using Systems.Main;
-using Systems.Main.Spawn;
+using Systems.Spawn;
 using Systems.Move;
+using Systems.UI;
 using Components.Events.Spawn;
-using General.Systems;
+using Systems.Startup;
 using UnityComponents.Services;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -35,8 +35,7 @@ namespace General
             _mainSystems = new EcsSystems(_world, "Main Systems");
             _gameplaySystems = new EcsSystems(_world, "Gameplay Systems");
             
-            Debug(isEnable:
-                GameSettings.ECSDebug);
+            Debug(isEnable: GameSettings.ECSDebug);
             
             InitServices();
             InitMainSystems();
@@ -99,13 +98,14 @@ namespace General
                 .Add(MoveSystems())
                 .Add(BattleSystems())
                 .Add(GameSystems())
-                
+                .Add(UISystems())
+
                 .OneFrame<EndBattleEvent>()
                 .OneFrame<DeadFighterEvent>()
 
                 .OneFrame<ChangedBattlefieldStateEvent>()
                 .OneFrame<ChangedGameStateEvent>()
-                
+
                 .OneFrame<OnPointerClickEvent>()
                 .OneFrame<OnTriggerEnterEvent>()
                 .OneFrame<OnTriggerExitEvent>()
@@ -123,6 +123,7 @@ namespace General
 
             return startupSystems
                 .Add(new MonoEntitySystem())
+                .Add(new CameraSystem())
                 .Add(new DrawWaySystem());
         }
 
@@ -132,7 +133,7 @@ namespace General
 
             return spawnSystems
                 .Add(new SpawnWarriorSystem())
-
+            
                 .OneFrame<SpawnWarriorEvent>();
         }
 
@@ -142,9 +143,9 @@ namespace General
 
             return moveSystems
                 .Add(new PlayerInputSystem())
-                .Add(new MoveHeroSystem())
+                .Add(new MovePlayerSystem())
                 
-                .OneFrame<MoveHeroesToEvent>();
+                .OneFrame<MovePlayersToEvent>();
         }
         
         private EcsSystems BattleSystems()
@@ -171,6 +172,15 @@ namespace General
 
             return gameSystems
                 .Add(new GameStateSystem());
+        }
+        
+        private EcsSystems UISystems()
+        {
+            var uiSystems = new EcsSystems(_world, "UI Systems");
+
+            return uiSystems
+                .Add(new HealthBarBillboardSystem())
+                .Add(new EndGameScreenSystem());
         }
 
         private void Debug(bool isEnable)

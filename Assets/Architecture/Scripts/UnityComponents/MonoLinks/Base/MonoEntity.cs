@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Components;
 using Leopotam.Ecs;
 using UnityEngine;
 
-namespace UnityComponents.MonoLinks
+namespace UnityComponents.MonoLinks.Base
 {
     public class MonoEntity : MonoBehaviour
     {

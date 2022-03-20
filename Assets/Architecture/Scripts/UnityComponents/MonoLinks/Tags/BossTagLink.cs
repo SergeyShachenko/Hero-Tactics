@@ -1,6 +1,7 @@
 ﻿using Components.Tags;
+using UnityComponents.MonoLinks.Base;
 
-namespace UnityComponents.MonoLinks.Battle
+namespace UnityComponents.MonoLinks.Tags
 {
-    public class BossTagLink : MonoLink<BossTag> {}
+    public sealed class BossTagLink : MonoLink<BossTag> {}
 }

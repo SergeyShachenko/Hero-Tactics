@@ -5,19 +5,12 @@ using UnityEngine;
 
 namespace Services.Fighters
 {
-    public sealed class FighterSquadService
+    public sealed class FighterSquadService : GameToolServiceBase
     {
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
-        
-        public FighterSquadService(EcsWorld world, GameTools gameTools)
-        {
-            _world = world;
-            _gameTools = gameTools;
-        }
-        
-        
-        public List<EcsEntity> Get(int squadID, EcsFilter<Fighter> fighters)
+        public FighterSquadService(EcsWorld world, GameTools gameTools) : base(world, gameTools) {}
+
+
+        public IEnumerable<EcsEntity> Get(int squadID, EcsFilter<Fighter> fighters)
         {
             if (fighters.IsEmpty()) return null;
 
@@ -35,7 +28,7 @@ namespace Services.Fighters
             return warriorSquad.Count > 0 ? warriorSquad : null;
         }
         
-        public FighterSquad Create(ref EcsEntity place, List<EcsEntity> fighterSquad)
+        public FighterSquad Create(ref EcsEntity place, HashSet<EcsEntity> fighterSquad)
         {
             var squadBattleSide = BattleSide.Hero;
             int squadArmor = 0, squadID = 0;
@@ -71,9 +64,7 @@ namespace Services.Fighters
             var fighterSquad = Get(squadID, fighters);
             
             foreach (var entity in fighterSquad)
-            {
                 entity.Get<Fighter>().Action = action;
-            }
         }
 
         public void TakeDamage(ref FighterSquad squad, float damage)

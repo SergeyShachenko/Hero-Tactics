@@ -3,21 +3,14 @@ using Leopotam.Ecs;
 
 namespace Services.Events
 {
-    public sealed class FighterEventsService
+    public sealed class FighterEventsService : GameToolServiceBase
     {
-        private readonly EcsWorld _world;
-        private readonly GameTools _gameTools;
+        public FighterEventsService(EcsWorld world, GameTools gameTools) : base(world, gameTools) {}
 
-        public FighterEventsService(EcsWorld world, GameTools gameTools)
-        {
-            _world = world;
-            _gameTools = gameTools;
-        }
-        
-        
+
         public void Dead(ref EcsEntity fighter)
         {
-            _world.NewEntity().Get<DeadFighterEvent>() = new DeadFighterEvent
+            World.NewEntity().Get<DeadFighterEvent>() = new DeadFighterEvent
             {
                 Fighter = fighter
             };

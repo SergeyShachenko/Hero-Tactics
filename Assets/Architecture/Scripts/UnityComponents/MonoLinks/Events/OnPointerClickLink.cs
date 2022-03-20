@@ -1,11 +1,11 @@
 ﻿using Components.Events.Physics;
 using Leopotam.Ecs;
-using UnityEngine;
+using UnityComponents.MonoLinks.Base;
 using UnityEngine.EventSystems;
 
 namespace UnityComponents.MonoLinks.Events
 {
-    public class OnPointerClickLink : PhysicsLinkBase, IPointerClickHandler
+    public sealed class OnPointerClickLink : PhysicsLinkBase, IPointerClickHandler
     {
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
@@ -13,7 +13,7 @@ namespace UnityComponents.MonoLinks.Events
             
             World.NewEntity().Get<OnPointerClickEvent>() = new OnPointerClickEvent
             {
-                GameObjSender = gameObject,
+                SenderGameObj = gameObject,
                 Sender = entitySender
             };
             

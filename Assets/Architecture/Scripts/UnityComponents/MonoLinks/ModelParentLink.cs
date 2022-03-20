@@ -1,6 +1,7 @@
 ﻿using Components;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks
 {
-    public class ModelParentLink : MonoLink<ModelParent> {}
+    public sealed class ModelParentLink : MonoLink<ModelParent> {}
 }

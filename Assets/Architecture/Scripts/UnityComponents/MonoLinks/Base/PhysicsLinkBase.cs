@@ -1,6 +1,6 @@
 ﻿using Leopotam.Ecs;
 
-namespace UnityComponents.MonoLinks
+namespace UnityComponents.MonoLinks.Base
 {
     public abstract class PhysicsLinkBase : MonoLinkBase
     {

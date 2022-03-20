@@ -1,6 +1,7 @@
 ﻿using Components;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks
 {
-    public class MovableLink : MonoLink<Movable> {}
+    public sealed class MovableLink : MonoLink<Movable> {}
 }

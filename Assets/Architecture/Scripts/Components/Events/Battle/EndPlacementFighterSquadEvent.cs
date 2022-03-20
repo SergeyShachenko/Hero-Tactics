@@ -7,7 +7,7 @@ namespace Components.Events.Battle
     internal struct EndPlacementFighterSquadEvent
     {
         public BattleSide BattleSide;
-        public List<EcsEntity> Fighters;
+        public HashSet<EcsEntity> Fighters;
         public EcsEntity Place;
     }
 }

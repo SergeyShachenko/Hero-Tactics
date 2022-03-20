@@ -12,8 +12,8 @@ namespace Systems.Move
     {
         private readonly GameTools _gameTools;
 
-        private readonly EcsFilter<OnPointerClickEvent> _onPointerClicks;
-        private readonly EcsFilter<Movable, PlayerTag> _movableHeroes;
+        private readonly EcsFilter<OnPointerClickEvent> _onPointerClickEvents;
+        private readonly EcsFilter<Fighter, Movable, PlayerTag> _movablePlayerFilter;
 
 
         void IEcsRunSystem.Run()
@@ -24,26 +24,24 @@ namespace Systems.Move
         
         private void ClickOnBattlefield()
         {
-            if (_onPointerClicks.IsEmpty()) return;
-
-
-            foreach (var index in _onPointerClicks)
+            foreach (var index in _onPointerClickEvents)
             {
-                ref var clickEvent = ref _onPointerClicks.GetEntity(index).Get<OnPointerClickEvent>();
+                ref var onPointerClickEvent = ref _onPointerClickEvents.Get1(index);
 
-                if (clickEvent.Sender.Has<Battlefield>() == false || _movableHeroes.IsEmpty()) continue;
+                if (onPointerClickEvent.Sender.Has<Battlefield>() == false || _movablePlayerFilter.IsEmpty()) continue;
 
                 
-                var heroes = new List<EcsEntity>();
+                var heroes = new HashSet<EcsEntity>();
                 
-                foreach (var indexHero in _movableHeroes)
+                foreach (var indexHero in _movablePlayerFilter)
                 {
-                    ref var entity = ref _movableHeroes.GetEntity(indexHero);
+                    ref var entity = ref _movablePlayerFilter.GetEntity(indexHero);
 
-                    if (entity.Get<Movable>().IsMovable) heroes.Add(entity);
+                    if (entity.Get<Movable>().IsMovable) 
+                        heroes.Add(entity);
                 }
 
-                _gameTools.Events.Move.HeroesTo(heroes, clickEvent.GameObjSender.transform.position);
+                _gameTools.Events.Move.PlayersTo(heroes, onPointerClickEvent.SenderGameObj.transform.position);
             }
         }
     }

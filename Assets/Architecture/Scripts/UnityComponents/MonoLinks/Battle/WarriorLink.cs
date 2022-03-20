@@ -1,6 +1,7 @@
 ﻿using Components.Battle;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks.Battle
 {
-    public class WarriorLink : MonoLink<Warrior> {}
+    public sealed class WarriorLink : MonoLink<Warrior> {}
 }

@@ -1,7 +1,8 @@
 using Components.Battle;
+using UnityComponents.MonoLinks.Base;
 
 namespace UnityComponents.MonoLinks.Battle
 {
-    public class BattlefieldLink : MonoLink<Battlefield> {}
+    public sealed class BattlefieldLink : MonoLink<Battlefield> {}
 }
 

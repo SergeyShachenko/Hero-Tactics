@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   ECSDebug: 1
-  ImminentDamageInPercent: 0.2
+  ImminentDamageInPercent: 0.17
   WalkOffset: 0.9
   ZOffset: 0.3

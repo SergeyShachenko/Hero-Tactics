@@ -2,34 +2,35 @@ using Components;
 using Components.Battle;
 using Leopotam.Ecs;
 using UnityComponents.Data;
-using UnityComponents.MonoLinks;
+using UnityComponents.MonoLinks.Base;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace UnityComponents.Services
 {
-    public class FighterFactory : MonoBehaviour
+    public sealed class FighterFactory : MonoBehaviour
     {
         [SerializeField] private Transform SpawnHeroesTo, SpawnEnemiesTo;
 
 
         public void SpawnWarrior(EcsWorld world, HeroWarriorData heroWarriorData, int squadID, Vector3 spawnPosition)
         {
-            var parentGameObject = SpawnHeroesTo.Find("Squad[" + squadID + "]");
+            var parent = SpawnHeroesTo.Find("Squad[" + squadID + "]");
 
-            if (parentGameObject == null)
+            if (parent == null)
             {
                 var instanceObject = new GameObject("Squad[" + squadID + "]");
                 instanceObject.transform.parent = SpawnHeroesTo;
+                instanceObject.transform.position = spawnPosition;
                 
-                parentGameObject = instanceObject.transform;
+                parent = instanceObject.transform;
             }
 
 
             var monoEntity = Instantiate(
                 heroWarriorData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
             
-            monoEntity.transform.parent = parentGameObject;
+            monoEntity.transform.parent = parent;
             monoEntity.Init(world);
 
             var entity = monoEntity.GetEntity();
@@ -62,21 +63,22 @@ namespace UnityComponents.Services
 
         public void SpawnWarrior(EcsWorld world, EnemyWarriorData enemyWarriorData, int squadID, Vector3 spawnPosition)
         {
-            var parentGameObject = SpawnEnemiesTo.Find("Squad[" + squadID + "]");
+            var parent = SpawnEnemiesTo.Find("Squad[" + squadID + "]");
 
-            if (parentGameObject == null)
+            if (parent == null)
             {
                 var instanceObject = new GameObject("Squad[" + squadID + "]");
                 instanceObject.transform.parent = SpawnEnemiesTo;
+                instanceObject.transform.position = spawnPosition;
                 
-                parentGameObject = instanceObject.transform;
+                parent = instanceObject.transform;
             }
             
             
             var monoEntity = Instantiate(
                 enemyWarriorData.Warrior.Prefab, spawnPosition, Quaternion.identity).GetComponent<MonoEntity>();
             
-            monoEntity.transform.parent = parentGameObject;
+            monoEntity.transform.parent = parent;
             monoEntity.Init(world);
             
             var entity = monoEntity.GetEntity();
